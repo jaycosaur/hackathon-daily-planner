@@ -1,25 +1,22 @@
 import React, { useContext, useState } from "react";
 import "./App.css";
 import {
-  AppBar,
-  Button,
+  BottomNavigation,
+  BottomNavigationAction,
   CircularProgress,
-  IconButton,
-  Toolbar,
 } from "@material-ui/core";
 import { useWindowSize } from "./useWindowSize";
 import { ThemeProvider } from "@material-ui/core";
 import { lightTheme } from "./theme/themes";
 import MapIcon from "@material-ui/icons/Map";
 import ListIcon from "@material-ui/icons/List";
-import CloseIcon from "@material-ui/icons/Close";
 import AddIcon from "@material-ui/icons/Add";
 
 import { AppContext } from "./AppHandler/AppContext";
 import MapView from "./MapView";
 import TaskView from "./TaskView";
 import ListView from "./ListView";
-import {LoginPage} from "./LoginPage";
+import { LoginPage } from "./LoginPage";
 
 const appBarHeight = 50;
 
@@ -29,55 +26,6 @@ enum Pages {
   "TASK_EDIT",
 }
 
-const NavButtons = ({
-  currentPage,
-  onSelect,
-}: {
-  currentPage: Pages;
-  onSelect: (page: Pages) => void;
-}) => {
-  if (currentPage === Pages.MAP_VIEW) {
-    return (
-      <IconButton
-        color="inherit"
-        aria-label="Task list"
-        onClick={() => onSelect(Pages.TASK_VIEW)}
-      >
-        <ListIcon />
-      </IconButton>
-    );
-  }
-  if (currentPage === Pages.TASK_VIEW) {
-    return (
-      <IconButton
-        color="inherit"
-        aria-label="Task list"
-        onClick={() => onSelect(Pages.MAP_VIEW)}
-      >
-        <MapIcon />
-      </IconButton>
-    );
-  }
-  if (currentPage === Pages.TASK_EDIT) {
-    return (
-      <IconButton
-        color="inherit"
-        aria-label="Task list"
-        onClick={() => onSelect(Pages.TASK_VIEW)}
-      >
-        <CloseIcon />
-      </IconButton>
-    );
-  }
-};
-
-const AddNewTaskFab = ({ onClick }: { onClick: () => void }) => {
-  return (
-    <Button onClick={onClick}>
-      <AddIcon />
-    </Button>
-  );
-};
 export const App: React.FC = () => {
   const { width, height } = useWindowSize();
   const { isLoading, activeUser } = useContext(AppContext);
@@ -93,33 +41,43 @@ export const App: React.FC = () => {
   }
 
   if (activeUser === null) {
-    return <ThemeProvider theme={lightTheme}>
-      <LoginPage />
-    </ThemeProvider>
+    return (
+      <ThemeProvider theme={lightTheme}>
+        <LoginPage />
+      </ThemeProvider>
+    );
   }
 
   return (
     <ThemeProvider theme={lightTheme}>
-      <div className="App" style={{ width, height }}>
-        <AppBar
-          position="static"
-          className="main-app-bar"
-          style={{ height: appBarHeight }}
-        >
-          <Toolbar>
-            <NavButtons currentPage={view} onSelect={setView} />
-            {view !== Pages.TASK_EDIT && (
-              <AddNewTaskFab onClick={() => setView(Pages.TASK_EDIT)} />
-            )}
-          </Toolbar>
-        </AppBar>
-
+      <div className="App" style={{ width, height: height - appBarHeight }}>
         <div className="app-content">
-          {view === Pages.MAP_VIEW && <MapView width={width} height={height} />}
+          {view === Pages.MAP_VIEW && (
+            <MapView width={width} height={height - appBarHeight} />
+          )}
           {view === Pages.TASK_EDIT && <TaskView onCompleted={() => {}} />}
           {view === Pages.TASK_VIEW && <ListView />}
         </div>
       </div>
+      <BottomNavigation
+        value={"Map"}
+        onChange={(event, newValue) => {
+          setView(newValue);
+        }}
+        showLabels
+      >
+        <BottomNavigationAction
+          label="Map"
+          icon={<MapIcon />}
+          value={Pages.MAP_VIEW}
+        />
+        <BottomNavigationAction
+          label="List"
+          icon={<ListIcon />}
+          value={Pages.TASK_VIEW}
+        />
+        <BottomNavigationAction icon={<AddIcon />} value={Pages.TASK_EDIT} />
+      </BottomNavigation>
     </ThemeProvider>
   );
 };

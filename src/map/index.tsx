@@ -118,10 +118,12 @@ const MapComponent = (props: {
 
   return (
     <>
-      <LayerSelectComponent
-        onSelect={setBaseLayer}
-        selectedBaseLayer={baseLayer}
-      />
+      {false && (
+        <LayerSelectComponent
+          onSelect={setBaseLayer}
+          selectedBaseLayer={baseLayer}
+        />
+      )}
       <Map
         center={props.center ? toPosArray(props.center) : toPosArray(position)}
         zoom={20}
