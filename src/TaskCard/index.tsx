@@ -3,6 +3,8 @@ import Paper from "@material-ui/core/Paper";
 import { format, fromUnixTime } from "date-fns";
 import Chip from "@material-ui/core/Chip";
 import { ITask, taskPriorityAsString, taskStatusAsChip } from "../types/ITask";
+import LocationDisabledIcon from "@material-ui/icons/LocationDisabled";
+import MyLocationIcon from "@material-ui/icons/MyLocation";
 
 export interface ITaskProps {
   task: ITask;
@@ -36,6 +38,14 @@ const Task: React.FC<ITaskProps> = ({ task, onClick }) => {
           label={taskPriorityAsString(priority)}
           style={{ margin: "0px 5px" }}
         />
+        {
+          <Chip
+            size="small"
+            icon={task.location ? <MyLocationIcon /> : <LocationDisabledIcon />}
+            label={task.location ? "Location" : "No Location"}
+            style={{ margin: "0px 5px" }}
+          />
+        }
       </div>
     </Paper>
   );

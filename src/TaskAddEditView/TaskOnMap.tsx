@@ -13,6 +13,7 @@ const TaskOnMap: React.FC<{
 }> = ({ width, height, onClick, onDelete, point }) => {
   return (
     <Map
+      center={point}
       width={width}
       height={height}
       onClickPoint={onClick}
@@ -22,7 +23,7 @@ const TaskOnMap: React.FC<{
               {
                 id: "jk_fake_id",
                 ...point,
-                color: "#FF0000",
+                color: "#FFFF00",
               },
             ]
           : []
