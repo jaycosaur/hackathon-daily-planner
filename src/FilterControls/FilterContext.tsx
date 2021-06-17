@@ -1,6 +1,13 @@
 import React from "react";
+import { ETaskStatus } from "../types/ITask";
 
-type Filters = { searchTerm: string; myTask: boolean; openTask: boolean };
+type Filters = {
+  searchTerm: string;
+  myTask: boolean;
+  openTask: boolean;
+  status: null | ETaskStatus;
+  teamId: string | null;
+};
 
 interface FilterState {
   filters: Filters;
@@ -14,6 +21,8 @@ export const FilterProvider: React.FC = ({ children }) => {
     searchTerm: "",
     myTask: false,
     openTask: false,
+    status: null,
+    teamId: null,
   });
   const value: FilterState = { filters: state, setFilters: setState };
   return (

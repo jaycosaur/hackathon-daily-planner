@@ -2,13 +2,7 @@ import React from "react";
 import Paper from "@material-ui/core/Paper";
 import { format, fromUnixTime } from "date-fns";
 import Chip from "@material-ui/core/Chip";
-import {
-  ETaskStatus,
-  getStatusIcon,
-  ITask,
-  taskPriorityAsString,
-  taskStatusAsChip,
-} from "../types/ITask";
+import { ITask, taskPriorityAsString, taskStatusAsChip } from "../types/ITask";
 
 export interface ITaskProps {
   task: ITask;

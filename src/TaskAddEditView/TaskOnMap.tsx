@@ -1,5 +1,4 @@
 import React from "react";
-import { ITask } from "../types/ITask";
 
 import Map from "../map";
 import { Position } from "../map/types";

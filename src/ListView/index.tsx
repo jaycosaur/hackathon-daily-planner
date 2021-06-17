@@ -1,11 +1,5 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import FilterList from "@material-ui/icons/FilterList";
-import ImportExport from "@material-ui/icons/ImportExport";
-import Search from "@material-ui/icons/Search";
-import Add from "@material-ui/icons/Add";
 import Task from "../TaskCard";
 import { ETaskStatus, getStatusIcon, ITask } from "../types/ITask";
 import { useFilteredTasks } from "../FilterControls/useFilteredTasks";

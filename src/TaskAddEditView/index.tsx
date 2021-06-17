@@ -70,6 +70,7 @@ const TaskAddEditView = (props: {
       location,
       priority,
       imageId: null,
+      startDate: null,
       dueDate: moment(dueDate).unix(),
     };
 

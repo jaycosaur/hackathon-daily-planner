@@ -140,17 +140,37 @@ const MapComponent = (props: {
         <BaseLayer type={baseLayer} />
         {typeof longitude === "number" && (
           <CircleMarker
+            key={"me-bottom"}
+            center={toPosArray({
+              latitude,
+              longitude,
+            })}
+            radius={40}
+            weight={3}
+            opacity={0}
+            fill={true}
+            bubblingMouseEvents={false}
+            fillOpacity={0.4}
+            fillColor={"#03c2fc"}
+            bor
+            color={"#ffffff"}
+          ></CircleMarker>
+        )}
+        {typeof longitude === "number" && (
+          <CircleMarker
             key={"me"}
             center={toPosArray({
               latitude,
               longitude,
             })}
             radius={10}
+            weight={3}
             fill={true}
             bubblingMouseEvents={false}
             fillOpacity={1}
-            fillColor={"#ff0000"}
-            color={"#ff0000"}
+            fillColor={"#03c2fc"}
+            bor
+            color={"#ffffff"}
           ></CircleMarker>
         )}
         {props.points?.map((point) => (

@@ -8,6 +8,7 @@
 .component-TaskSummaryView .task-summary-ribbon {
     display: flex;
     padding: 0 10px;
+    align-items: center;
 }
 
 .component-TaskSummaryView .spacer {
@@ -16,10 +17,25 @@
 
 .component-TaskSummaryView .task-activities {
     flex: 1;
-    background-color: #ccc;
+    background-color: #eee;
+    text-align: left;
+    padding: 5px;
 }
 
 .component-TaskSummaryView .task-activity-bar {
-    background-color: red;
-    height: 80px;
+    background-color: #fff;
+    min-height: 50px;
+    border-bottom: 1px solid #ccc;
+    text-align: left;
+}
+
+.component-TaskSummaryView .task-activity-bar .MuiButton-text {
+    margin-top: -30px;
+}
+
+.component-TaskSummaryView .task-activity-bar .textarea {
+    outline: none;
+    margin: 5px;
+    min-height: 35px;
+    width: 60%;
 }
