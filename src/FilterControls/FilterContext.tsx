@@ -6,7 +6,7 @@ type Filters = {
   myTask: boolean;
   openTask: boolean;
   status: null | ETaskStatus;
-  teamId: string | null;
+  userId: string | null;
 };
 
 interface FilterState {
@@ -22,7 +22,7 @@ export const FilterProvider: React.FC = ({ children }) => {
     myTask: false,
     openTask: false,
     status: null,
-    teamId: null,
+    userId: null,
   });
   const value: FilterState = { filters: state, setFilters: setState };
   return (
