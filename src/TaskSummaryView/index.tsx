@@ -8,6 +8,7 @@ import TaskOnMap from "../TaskAddEditView/TaskOnMap";
 import { useWindowSize } from "../useWindowSize";
 import { TaskActivityCard } from "../TaskActivityCard";
 import { TaskActivityBar } from "./TaskActivityBar";
+import { ETaskActivityType } from "../types/ITaskActivity";
 
 export interface ITaskSummaryViewProps {
   task: ITask;
@@ -65,10 +66,12 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({
           <TaskActivityCard taskActivity={taskActivity} />
         ))}
         {images.map((i) => (
-          <img
-            src={i.data}
-            style={{
-              width: "100%",
+          <TaskActivityCard
+            taskActivity={{
+              _id: i._id,
+              taskId: i.taskId,
+              taskImageId: i._id,
+              type: ETaskActivityType.Image,
             }}
           />
         ))}

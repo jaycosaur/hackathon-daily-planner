@@ -76,13 +76,11 @@ export const TaskActivityCard: React.FC<ITaskActivityCardProps> = ({
   }
 
   if (taskActivity.type === ETaskActivityType.Image) {
-    // this is async, image may not be loaded yet
     return (
-      <div>
-        {taskImage && (
-          <img src={"data:image/png;base64," + taskImage.data} alt="" />
-        )}
-      </div>
+      <ListItem alignItems="flex-start">
+        <ListItemText primary="Image Uploaded" />
+        {taskImage && <img src={taskImage.data} alt="" width={"100%"} />}
+      </ListItem>
     );
   }
 };
