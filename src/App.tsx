@@ -42,7 +42,7 @@ function App() {
 
   return (
     <ThemeProvider theme={lightTheme}>
-      {/* <div className="App" style={{ width, height }}>
+      <div className="App" style={{ width, height }}>
         <Map
           width={width}
           height={height}
@@ -54,8 +54,7 @@ function App() {
             setPoints((old) => old.filter((old) => old.id !== pt.id))
           }
         />
-      </div> */}
-      <TaskView />
+      </div>
     </ThemeProvider>
   );
 }
