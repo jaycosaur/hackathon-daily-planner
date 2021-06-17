@@ -31,6 +31,27 @@ enum Pages {
   "TASK_EDIT",
 }
 
+const hasSearch = (page: Pages) => {
+  if ([Pages.MAP_VIEW, Pages.TASK_VIEW].includes(page)) {
+    return true;
+  }
+  return false;
+};
+
+const PageContainer: React.FC<{ page: Pages }> = (props) => {
+  return (
+    <div>
+      {hasSearch(props.page) && (
+        <div style={{ position: "fixed", zIndex: 100, width: "100%" }}>
+          <FilterControls />
+        </div>
+      )}
+
+      {props.children}
+    </div>
+  );
+};
+
 export const App: React.FC = () => {
   const { width, height } = useWindowSize();
   const { isLoading, activeUser } = useContext(AppContext);
@@ -69,23 +90,22 @@ export const App: React.FC = () => {
   return (
     <FilterProvider>
       <ThemeProvider theme={lightTheme}>
-        <div style={{ position: "fixed", zIndex: 100, width }}>
-          <FilterControls />
-        </div>
         <div className="App" style={{ width, height: height - appBarHeight }}>
           <div className="app-content">
-            {view === Pages.MAP_VIEW && (
-              <MapView
-                width={width}
-                height={height - appBarHeight}
-                onTaskSelect={handleSelectTask}
-                onEmptyPositionSelect={handleCreateTaskFromPosition}
-              />
-            )}
-            {view === Pages.TASK_EDIT && <TaskView taskId={activeTaskId} />}
-            {view === Pages.TASK_VIEW && (
-              <ListView onTaskSelect={handleSelectTask} />
-            )}
+            <PageContainer page={view}>
+              {view === Pages.MAP_VIEW && (
+                <MapView
+                  width={width}
+                  height={height - appBarHeight}
+                  onTaskSelect={handleSelectTask}
+                  onEmptyPositionSelect={handleCreateTaskFromPosition}
+                />
+              )}
+              {view === Pages.TASK_EDIT && <TaskView taskId={activeTaskId} />}
+              {view === Pages.TASK_VIEW && (
+                <ListView onTaskSelect={handleSelectTask} />
+              )}
+            </PageContainer>
           </div>
         </div>
         <div style={{ background: "white" }}>
