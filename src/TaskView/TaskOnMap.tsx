@@ -3,12 +3,12 @@ import { ITask } from "../types/ITask";
 
 import Map from "../map";
 
-const TaskOnMap: React.FC<{ task: ITask; width: number; height: number }> = ({
+const TaskOnMap: React.FC<{ task?: ITask; width: number; height: number }> = ({
   width,
   height,
   task,
 }) => {
-  if (!task.location) {
+  if (!task || !task.location) {
     return <Map width={width} height={height} />;
   }
   return (
