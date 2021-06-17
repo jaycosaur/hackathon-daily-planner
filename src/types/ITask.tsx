@@ -1,6 +1,8 @@
 import { guid } from "./guid";
 import { ILocation } from "./ILocation";
 import { unixTimestamp } from "./unixTimestamp";
+import { Assignment, Build, PanTool, Visibility } from "@material-ui/icons";
+import DoneIcon from "@material-ui/icons/Done";
 
 export enum ETaskStatus {
   Pending = "pending",
@@ -15,6 +17,21 @@ export enum ETaskPriority {
   Medium = "medium",
   High = "high",
 }
+
+export const getStatusIcon = (status: ETaskStatus) => {
+  switch (status) {
+    case ETaskStatus.Pending:
+      return <Assignment />;
+    case ETaskStatus.Done:
+      return <DoneIcon />;
+    case ETaskStatus.Blocked:
+      return <PanTool />;
+    case ETaskStatus.InProgress:
+      return <Build />;
+    case ETaskStatus.InReview:
+      return <Visibility />;
+  }
+};
 
 export interface ITask {
   _id: guid;
