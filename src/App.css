@@ -2,9 +2,17 @@
   text-align: center;
 }
 
-/*.App .app-content {*/
-/*  !* sorry *!*/
-/*  position: fixed;*/
-/*  top: 50px;*/
-/*  height: calc(100vh - 50px);*/
-/*}*/
+.App .app-content {
+  /* sorry */
+  position: fixed;
+  top: 50px;
+  height: calc(100vh - 50px);
+}
+
+.App.loading-spinner {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
