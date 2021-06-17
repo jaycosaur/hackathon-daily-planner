@@ -1,6 +1,24 @@
-import { Box, Button, Grid, MenuItem, TextField } from "@material-ui/core";
-import React, { useState } from "react";
+import {
+    Box,
+    Button,
+    Grid,
+    makeStyles,
+    MenuItem,
+    TextField,
+} from "@material-ui/core";
+import { Autocomplete } from "@material-ui/lab";
+import React, { useContext, useState } from "react";
+import { AppContext } from "../AppHandler/AppContext";
 import { ETaskPriority, ETaskStatus, ITask } from "../types/ITask";
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        "& .MuiTextField-root": {
+            margin: theme.spacing(1),
+            width: "25ch",
+        },
+    },
+}));
 
 const TaskView = (props: { task?: ITask }) => {
     // const [task, setTask] = useState<ITask>({
@@ -15,60 +33,93 @@ const TaskView = (props: { task?: ITask }) => {
     //     imageId: null,
     //     dueDate: null,
     // });
+    const classes = useStyles();
 
+    const { isLoading, users, activeUser, login, tasks } =
+        useContext(AppContext);
+
+    const [_id, use_id] = useState();
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [status, setStatus] = useState("");
 
+    const save = () => {};
+
+    console.log(users);
+
     return (
-        <Grid container spacing={3} alignItems="stretch">
-            <Grid item xs={12}>
-                <h2>Add/Edit task</h2>
-            </Grid>
+        <form className={classes.root}>
+            <Grid container spacing={3} alignItems="stretch">
+                <Grid item xs={12}>
+                    <h2>Add/Edit task</h2>
+                </Grid>
 
-            <Grid item xs={12}>
-                <TextField
-                    label="Task Title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                ></TextField>
-            </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        label="Task Title"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                    ></TextField>
+                </Grid>
 
-            <Grid item xs={12}>
-                <TextField
-                    label="Description"
-                    select
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                ></TextField>
-            </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        label="Description"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                    ></TextField>
+                </Grid>
 
-            <Grid item xs={12}>
-                <TextField
-                    select
-                    label="Status"
-                    value={status}
-                    onChange={(e) => setDescription(e.target.value)}
-                >
-                    <MenuItem>Pending</MenuItem>
-                </TextField>
-            </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        select
+                        label="Status"
+                        value={status}
+                        onChange={(e) => setDescription(e.target.value)}
+                    >
+                        {Object.entries(ETaskStatus).map((entry) => {
+                            const [key, value] = entry;
+                            return (
+                                <MenuItem key={key} value={value}>
+                                    {value}
+                                </MenuItem>
+                            );
+                        })}
+                    </TextField>
+                </Grid>
 
-            <Grid item xs={12}>
-                <TextField
-                    label="Priority"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                ></TextField>
-            </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        select
+                        label="Priority"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                    >
+                        {Object.entries(ETaskPriority).map((entry) => {
+                            const [key, value] = entry;
+                            return (
+                                <MenuItem key={key} value={value}>
+                                    {value}
+                                </MenuItem>
+                            );
+                        })}
+                    </TextField>
+                </Grid>
 
-            <Grid item xs={12}>
-                <TextField label="Task Title"></TextField>
+                <Grid item xs={12}>
+                    <Autocomplete
+                        options={users}
+                        getOptionLabel={(user) => user.email}
+                        renderInput={(params) => (
+                            <TextField {...params} label="Assigned user" />
+                        )}
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <Button>Save</Button>
+                </Grid>
             </Grid>
-            <Grid item xs={12}>
-                <Button>Save</Button>
-            </Grid>
-        </Grid>
+        </form>
     );
 };
 

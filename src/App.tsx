@@ -23,7 +23,7 @@ function App() {
 
     return (
         <div className="App" style={{ width, height }}>
-            <Map
+            {/* <Map
                 width={width}
                 height={height}
                 points={[
@@ -33,7 +33,8 @@ function App() {
                         id: "1",
                     },
                 ]}
-            />
+            /> */}
+            <TaskView></TaskView>
         </div>
     );
 }
