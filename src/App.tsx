@@ -1,7 +1,12 @@
 import React, { useContext, useState } from "react";
 import "./App.css";
-import { AppBar, CircularProgress, IconButton } from "@material-ui/core";
-// import TaskView from "./TaskView";
+import {
+  AppBar,
+  Button,
+  CircularProgress,
+  IconButton,
+  Toolbar,
+} from "@material-ui/core";
 import { useWindowSize } from "./useWindowSize";
 import { ThemeProvider } from "@material-ui/core";
 import { lightTheme } from "./theme/themes";
@@ -67,9 +72,9 @@ const NavButtons = ({
 
 const AddNewTaskFab = ({ onClick }: { onClick: () => void }) => {
   return (
-    <Fab color="primary" onClick={onClick}>
+    <Button onClick={onClick}>
       <AddIcon />
-    </Fab>
+    </Button>
   );
 };
 export const App: React.FC = () => {
@@ -90,14 +95,16 @@ export const App: React.FC = () => {
     <ThemeProvider theme={lightTheme}>
       <div className="App" style={{ width, height }}>
         <AppBar
-          position="fixed"
+          position="static"
           className="main-app-bar"
           style={{ height: appBarHeight }}
         >
-          <NavButtons currentPage={view} onSelect={setView} />
-          {view !== Pages.TASK_EDIT && (
-            <AddNewTaskFab onClick={() => setView(Pages.TASK_EDIT)} />
-          )}
+          <Toolbar>
+            <NavButtons currentPage={view} onSelect={setView} />
+            {view !== Pages.TASK_EDIT && (
+              <AddNewTaskFab onClick={() => setView(Pages.TASK_EDIT)} />
+            )}
+          </Toolbar>
         </AppBar>
 
         <div className="app-content">

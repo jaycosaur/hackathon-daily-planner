@@ -1,19 +1,6 @@
 import React from "react";
 import Map from "../map";
 import { v4 as uuid } from "uuid";
-import { Fab } from "@material-ui/core";
-import AddIcon from "@material-ui/icons/Add";
-
-const AddNewTaskFab = () => {
-  return (
-    <Fab
-      color="primary"
-      style={{ zIndex: 100, position: "fixed", right: 12, top: 12 }}
-    >
-      <AddIcon />
-    </Fab>
-  );
-};
 
 const MapView = (props: { width: number; height: number }) => {
   const [points, setPoints] = React.useState<
@@ -32,7 +19,6 @@ const MapView = (props: { width: number; height: number }) => {
 
   return (
     <>
-      <AddNewTaskFab />
       <Map
         width={props.width}
         height={props.height}
