@@ -3,6 +3,8 @@ import { ILocation } from "./ILocation";
 import { unixTimestamp } from "./unixTimestamp";
 import { Assignment, Build, PanTool, Visibility } from "@material-ui/icons";
 import DoneIcon from "@material-ui/icons/Done";
+import React from "react";
+import { Chip } from "@material-ui/core";
 
 // TODO: this is all a bit gross... a map would be better
 export enum ETaskStatus {
@@ -70,6 +72,20 @@ export const getStatusIcon = (status: ETaskStatus) => {
     case ETaskStatus.InReview:
       return <Visibility />;
   }
+};
+
+export const taskStatusAsChip = (
+  status: ETaskStatus,
+  style?: React.CSSProperties
+) => {
+  return (
+    <Chip
+      icon={getStatusIcon(status)}
+      size="small"
+      label={taskStatusAsString(status)}
+      style={style}
+    />
+  );
 };
 
 export interface ITask {

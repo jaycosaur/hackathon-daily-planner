@@ -7,8 +7,9 @@ import ImportExport from "@material-ui/icons/ImportExport";
 import Search from "@material-ui/icons/Search";
 import Add from "@material-ui/icons/Add";
 import Task from "../TaskCard";
-import { ETaskStatus, ITask } from "../types/ITask";
+import { ETaskStatus, getStatusIcon, ITask } from "../types/ITask";
 import { useFilteredTasks } from "../FilterControls/useFilteredTasks";
+import { Badge } from "@material-ui/core";
 
 export interface IListViewProps {
   onTaskSelect(task: ITask): void;
@@ -36,60 +37,42 @@ const ListView: React.FC<IListViewProps> = ({ onTaskSelect }) => {
         margin: "1rem 0px",
       }}
     >
-      <div style={{ display: "flex", gap: "1rem" }}>
-        <Button
-          variant="outlined"
-          style={{ fontSize: "0.5rem", flexBasis: "80.00%" }}
-          size="medium"
-          startIcon={<Search />}
-        >
-          Search
-        </Button>
-        <Button
-          variant="outlined"
-          style={{ fontSize: "0.5rem", flexBasis: "10%" }}
-          size="medium"
-          startIcon={<Add />}
-        ></Button>
-      </div>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div style={{ display: "flex", gap: "0.5rem" }}>
-          <Button
-            variant="outlined"
-            startIcon={<FilterList />}
-            style={{ fontSize: "0.5rem" }}
-            size="small"
-          >
-            My tasks
-          </Button>
-          <Button
-            variant="outlined"
-            startIcon={<FilterList />}
-            style={{ fontSize: "0.5rem" }}
-            size="small"
-          >
-            Open tasks
-          </Button>
-        </div>
-        <div style={{ display: "flex", gap: "0.5rem" }}>
-          <IconButton
-            size="small"
-            style={{ border: "1px solid grey", color: "black" }}
-          >
-            <ImportExport />
-          </IconButton>
-          <IconButton
-            size="small"
-            style={{ border: "1px solid grey", color: "black" }}
-          >
-            <FilterList />
-          </IconButton>
-        </div>
-      </div>
       <div style={{ display: "flex", gap: "0.5rem" }}>
-        <p>Pending {pendingTasks.length}</p>
-        <p>In-Progress {inProgressTasks.length}</p>
-        <p>Blocked {blockedTasks.length}</p>
+        <div
+          style={{
+            fontSize: 20,
+          }}
+        >
+          Summary:{" "}
+        </div>
+
+        <div
+          style={{
+            paddingRight: 12,
+          }}
+        >
+          <Badge badgeContent={pendingTasks.length} color="primary">
+            {getStatusIcon(ETaskStatus.Pending)}
+          </Badge>
+        </div>
+        <div
+          style={{
+            paddingRight: 12,
+          }}
+        >
+          <Badge badgeContent={inProgressTasks.length} color="primary">
+            {getStatusIcon(ETaskStatus.InProgress)}
+          </Badge>
+        </div>
+        <div
+          style={{
+            paddingRight: 12,
+          }}
+        >
+          <Badge badgeContent={blockedTasks.length} color="primary">
+            {getStatusIcon(ETaskStatus.Blocked)}
+          </Badge>
+        </div>
       </div>
       {tasks &&
         tasks.map((t) => (
