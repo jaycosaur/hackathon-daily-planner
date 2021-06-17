@@ -19,11 +19,17 @@ export const useFilteredTasks = () => {
     ? textSearchTasks(filters.searchTerm, tasks)
     : tasks;
 
-  const filteredTasks = filters.openTask
-    ? searchedTasks.filter((task) => task.status !== ETaskStatus.Done)
+  const filteredStatusTasks = filters.status
+    ? searchedTasks.filter((task) => task.status === filters.status)
     : searchedTasks;
 
+  const filteredUserTasks = filters.userId
+    ? filteredStatusTasks.filter(
+        (task) => task.assignedUserId === filters.userId
+      )
+    : filteredStatusTasks;
+
   return {
-    tasks: filteredTasks,
+    tasks: filteredUserTasks,
   };
 };
