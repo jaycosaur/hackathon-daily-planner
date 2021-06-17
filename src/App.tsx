@@ -5,6 +5,9 @@ import { v4 as uuid } from "uuid";
 import Map from "./map";
 import TaskView from "./TaskView";
 import { useWindowSize } from "./useWindowSize";
+import { ThemeProvider } from "@material-ui/core";
+
+import { lightTheme } from "./theme/themes";
 
 function App() {
   const { width, height } = useWindowSize();
@@ -38,19 +41,21 @@ function App() {
   }
 
   return (
-    <div className="App" style={{ width, height }}>
-      <Map
-        width={width}
-        height={height}
-        points={points}
-        onClickPoint={(pt) =>
-          setPoints((old) => [...old, { id: uuid(), ...pt }])
-        }
-        onPointSelected={(pt) =>
-          setPoints((old) => old.filter((old) => old.id !== pt.id))
-        }
-      />
-    </div>
+    <ThemeProvider theme={lightTheme}>
+      <div className="App" style={{ width, height }}>
+        <Map
+          width={width}
+          height={height}
+          points={points}
+          onClickPoint={(pt) =>
+            setPoints((old) => [...old, { id: uuid(), ...pt }])
+          }
+          onPointSelected={(pt) =>
+            setPoints((old) => old.filter((old) => old.id !== pt.id))
+          }
+        />
+      </div>
+    </ThemeProvider>
   );
 }
 
