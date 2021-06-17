@@ -1,0 +1,12 @@
+
+.component-TaskSummaryView {
+
+}
+
+.component-TaskSummaryView .task-summary-ribbon {
+    display: flex;
+}
+
+.component-TaskSummaryView .spacer {
+    flex: 1;
+}
