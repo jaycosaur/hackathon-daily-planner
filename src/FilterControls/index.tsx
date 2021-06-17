@@ -12,7 +12,9 @@ import { useFilters } from "./FilterContext";
 const FilterControls = () => {
   const { filters, setFilters } = useFilters();
   return (
-    <div style={{ padding: "12px 12px 6px", background: "white" }}>
+    <div
+      style={{ padding: "12px 12px 6px", background: "rgba(255,255,255,0.5)" }}
+    >
       <TextField
         value={filters.searchTerm}
         onChange={(ev) =>
