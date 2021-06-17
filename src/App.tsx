@@ -15,11 +15,11 @@ import CloseIcon from "@material-ui/icons/Close";
 
 import { AppContext } from "./AppHandler/AppContext";
 import MapView from "./MapView";
-import TaskView from "./TaskView";
 import ListView from "./ListView";
 import { LoginPage } from "./LoginPage";
 import FilterControls from "./FilterControls";
 import { FilterProvider } from "./FilterControls/FilterContext";
+import { TaskView } from "./TaskView";
 
 const appBarHeight = 50;
 
@@ -62,40 +62,52 @@ export const App: React.FC = () => {
             {view === Pages.MAP_VIEW && (
               <MapView width={width} height={height - appBarHeight} />
             )}
-            {view === Pages.TASK_EDIT && <TaskView onCompleted={() => {}} />}
+            {view === Pages.TASK_EDIT && (
+              // TODO: this needs to take a task ID to allow editing existing tasks
+              <TaskView />
+            )}
             {view === Pages.TASK_VIEW && <ListView />}
           </div>
-        </div>
-        <div style={{ background: "white" }}>
-          <BottomNavigation
-            value={"Map"}
-            onChange={(event, newValue) => {
-              setView(newValue);
-            }}
-            showLabels
-          >
-            <BottomNavigationAction
-              label="Map"
-              icon={<MapIcon />}
-              value={Pages.MAP_VIEW}
-            />
-            <BottomNavigationAction
-              label="List"
-              icon={<ListIcon />}
-              value={Pages.TASK_VIEW}
-            />
-            {view === Pages.TASK_EDIT ? (
+          <div className="App" style={{ width, height: height - appBarHeight }}>
+            <div className="app-content">
+              {view === Pages.MAP_VIEW && (
+                <MapView width={width} height={height - appBarHeight} />
+              )}
+              {view === Pages.TASK_EDIT && <TaskView />}
+              {view === Pages.TASK_VIEW && <ListView />}
+            </div>
+          </div>
+          <div style={{ background: "white" }}>
+            <BottomNavigation
+              value={"Map"}
+              onChange={(event, newValue) => {
+                setView(newValue);
+              }}
+              showLabels
+            >
               <BottomNavigationAction
-                icon={<CloseIcon />}
+                label="Map"
+                icon={<MapIcon />}
                 value={Pages.MAP_VIEW}
               />
-            ) : (
               <BottomNavigationAction
-                icon={<AddIcon />}
-                value={Pages.TASK_EDIT}
+                label="List"
+                icon={<ListIcon />}
+                value={Pages.TASK_VIEW}
               />
-            )}
-          </BottomNavigation>
+              {view === Pages.TASK_EDIT ? (
+                <BottomNavigationAction
+                  icon={<CloseIcon />}
+                  value={Pages.MAP_VIEW}
+                />
+              ) : (
+                <BottomNavigationAction
+                  icon={<AddIcon />}
+                  value={Pages.TASK_EDIT}
+                />
+              )}
+            </BottomNavigation>
+          </div>
         </div>
       </ThemeProvider>
     </FilterProvider>

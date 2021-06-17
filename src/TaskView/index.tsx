@@ -1,165 +1,58 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  Button,
-  Grid,
-  makeStyles,
-  MenuItem,
-  TextField,
-} from "@material-ui/core";
-import { Autocomplete } from "@material-ui/lab";
-import { AppContext } from "../AppHandler/AppContext";
-import { useContext, useState } from "react";
-import { Position } from "../map/types";
-import { ETaskPriority, ETaskStatus, ITask } from "../types/ITask";
-import TaskOnMap from "./TaskOnMap";
-import { IUser } from "../types/IUser";
+import React, {useCallback, useContext, useMemo, useState} from "react";
+import {ITask} from "../types/ITask";
+import {TaskSummaryView} from "../TaskSummaryView";
+import TaskAddEditView from "../TaskAddEditView";
+import {guid} from "../types/guid";
+import {AppContext} from "../AppHandler/AppContext";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    "& .MuiTextField-root": {
-      margin: theme.spacing(1),
-      width: "25ch",
-    },
-  },
-}));
+export interface ITaskViewViewProps {
+  taskId?: guid; // undefined to create a new task
+}
 
-const TaskView = (props: { task?: ITask; onCompleted: () => void }) => {
-  // const [task, setTask] = useState<ITask>({
-  //     _id: "someId",
-  //     title: "hello",
-  //     createdUserId: "1",
-  //     assignedUserId: "2",
-  //     description: "desc",
-  //     status: ETaskStatus.Pending,
-  //     priority: ETaskPriority.Medium,
-  //     location: null,
-  //     imageId: null,
-  //     dueDate: null,
-  // });
-  const classes = useStyles();
+export const TaskView: React.FC<ITaskViewViewProps> = ({ taskId }) => {
+  const [mode, setMode] = useState<"view" | "edit" | "new">(taskId ? "view" : "new");
 
-  const { isLoading, users, activeUser, login, tasks, createTask } =
-    useContext(AppContext);
+  // bit of a hack, store the ID of a task we just created (if in new mode) so we can show the summary screen on save
+  const [createdTaskId, setCreatedTaskId] = useState<null | guid>(null);
 
-  const { task, onCompleted } = props;
+  const { tasks } = useContext(AppContext);
 
-  const [_id, use_id] = useState(task?._id ?? "");
-  const [title, setTitle] = useState(task?._id ?? "");
-  const [description, setDescription] = useState(task?._id ?? "");
-  const [status, setStatus] = useState<ETaskStatus>(
-    task?.status ?? ETaskStatus.Pending
-  );
-  const [priority, setPriority] = useState<ETaskPriority>(
-    task?.priority ?? ETaskPriority.High
-  );
-  const [createdUser, setCreatedUser] = useState<IUser>();
-  const [assignedUser, setAssignedUser] = useState<IUser>();
-  const [location, setLocation] = useState<Position | null>(null);
+  const setModeView = useCallback(() => setMode("view"), [setMode]);
+  const setModeEdit = useCallback(() => setMode("edit"), [setMode]);
+  const handleNewTaskCreated = useCallback((createdTask: ITask) => {
+    setCreatedTaskId(createdTask._id);
+    setModeView();
+  }, [setModeView]);
 
-  const save = () => {
-    const task: ITask = {
-      _id,
-      title,
-      createdUserId: createdUser?._id,
-      assignedUserId: assignedUser?._id,
-      description,
-      status,
-      location,
-      priority,
-      imageId: null,
-      dueDate: null,
-    };
+  const task = useMemo<null | ITask>(() => {
+    // allow createdTaskId to override taskId
+    const filterTaskId = createdTaskId || taskId;
+    if (!filterTaskId) {
+      return null;
+    }
 
-    createTask(task);
-    onCompleted();
-  };
+    return tasks.find(x => x._id === filterTaskId)
+  }, [createdTaskId, taskId, tasks]);
 
-  return (
-    <form className={classes.root}>
-      <Grid container spacing={3} alignItems="stretch">
-        <Grid item xs={12}>
-          <h2>Add/Edit task</h2>
-        </Grid>
+  if (mode === "view") {
+    return <TaskSummaryView
+      task={task}
+      onEdit={setModeEdit}
+    />
+  }
 
-        <Grid item xs={12}>
-          <TextField
-            label="Task Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          ></TextField>
-        </Grid>
+  if (mode === "edit") {
+    return <TaskAddEditView
+      task={task}
+      onCompleted={setModeView}
+    />
+  }
 
-        <Grid item xs={12}>
-          <TextField
-            label="Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          ></TextField>
-        </Grid>
+  if (mode === "new") {
+    return <TaskAddEditView
+      onCompleted={handleNewTaskCreated}
+    />
+  }
 
-        <Grid item xs={12}>
-          <TextField
-            select
-            label="Status"
-            value={status}
-            onChange={(e) => setStatus(e.target.value as ETaskStatus)}
-          >
-            {Object.entries(ETaskStatus).map((entry) => {
-              const [key, value] = entry;
-              return (
-                <MenuItem key={key} value={value}>
-                  {value}
-                </MenuItem>
-              );
-            })}
-          </TextField>
-        </Grid>
-
-        <Grid item xs={12}>
-          <TextField
-            select
-            label="Priority"
-            value={priority}
-            onChange={(e) => setPriority(e.target.value as ETaskPriority)}
-          >
-            {Object.entries(ETaskPriority).map((entry) => {
-              const [key, value] = entry;
-              return (
-                <MenuItem key={key} value={value}>
-                  {value}
-                </MenuItem>
-              );
-            })}
-          </TextField>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Autocomplete
-            options={users}
-            getOptionLabel={(user) => user.email}
-            renderInput={(params) => (
-              <TextField {...params} label="Assigned user" />
-            )}
-            onChange={(event, user: IUser) => {
-              user && setAssignedUser(user);
-            }}
-          />
-        </Grid>
-
-        <TaskOnMap
-          width={400}
-          height={400}
-          task={{ ...props.task, location }}
-          onClick={setLocation}
-          onDelete={() => setLocation(null)}
-        />
-
-        <Grid item xs={12}>
-          <Button onClick={save}>Save</Button>
-        </Grid>
-      </Grid>
-    </form>
-  );
-};
-
-export default TaskView;
+  return <h1>TaskView</h1>;
+}

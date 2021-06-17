@@ -177,7 +177,7 @@ export const AppHandler: React.FC = ({children}) => {
   const retrieveActivityForTask = useCallback((taskId: guid) => {
     // we pre-index in the fetch so this function can be used in render bodies without any slowdown
     return taskActivities.get(taskId) || [];
-  }, []);
+  }, [taskActivities]);
 
   const createTaskActivity = useCallback(async (taskActivity: ITaskActivity) => {
     const response = await fetch(serverBaseUrl + "/task-activities", {
@@ -192,7 +192,7 @@ export const AppHandler: React.FC = ({children}) => {
     await refetchTasksActivities();
 
     return createdTaskActivity;
-  }, []);
+  }, [refetchTasksActivities]);
 
   const providerValue = useMemo<IAppContextValue>(() => ({
     isLoading,
@@ -210,7 +210,19 @@ export const AppHandler: React.FC = ({children}) => {
     createTaskActivity,
 
     retrieveTaskImage
-  }), [isLoading, activeUser, users, login, logout, tasks, createTask, updateTask, retrieveTaskImage]);
+  }), [
+    isLoading,
+    activeUser,
+    users,
+    login,
+    logout,
+    tasks,
+    createTask,
+    updateTask,
+    retrieveActivityForTask,
+    createTaskActivity,
+    retrieveTaskImage
+  ]);
 
   return <AppContext.Provider value={providerValue}>
     {children}
