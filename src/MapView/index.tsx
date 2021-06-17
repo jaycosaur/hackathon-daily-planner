@@ -28,6 +28,7 @@ const MapView: React.FC<IMapViewProps> = ({
             id: task._id,
             latitude: task.location.latitude,
             longitude: task.location.longitude,
+            tooltip: task._id,
           }))}
         onClickPoint={(pt) => onEmptyPositionSelect(pt)}
         onPointSelected={(pt) => onTaskSelect(pt.id)}

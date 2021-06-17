@@ -18,6 +18,7 @@ type Point = {
   longitude: number;
   id: string;
   color?: string;
+  tooltip?: React.ReactNode;
 };
 
 const BaseLayer: React.FC<{ type: MapBaseLayer }> = ({ type }) => {
@@ -145,7 +146,7 @@ const MapComponent = (props: {
             color={point.color || "#ffdd00"}
           >
             <Tooltip direction="top" offset={[0, -10]}>
-              My id!: {point.id}
+              {point.tooltip}
             </Tooltip>
           </CircleMarker>
         ))}
