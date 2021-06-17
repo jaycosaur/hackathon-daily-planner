@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TaskView = (props: { task?: ITask }) => {
+const TaskView = (props: { task?: ITask; onCompleted: () => {} }) => {
   // const [task, setTask] = useState<ITask>({
   //     _id: "someId",
   //     title: "hello",
@@ -41,7 +41,7 @@ const TaskView = (props: { task?: ITask }) => {
   const { isLoading, users, activeUser, login, tasks, createTask } =
     useContext(AppContext);
 
-  const { task } = props;
+  const { task, onCompleted } = props;
 
   const [_id, use_id] = useState(task?._id ?? "");
   const [title, setTitle] = useState(task?._id ?? "");
@@ -71,6 +71,7 @@ const TaskView = (props: { task?: ITask }) => {
     };
 
     createTask(task);
+    onCompleted();
   };
 
   return (
