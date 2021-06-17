@@ -171,7 +171,6 @@ const TaskAddEditView = (props: {
           setDueDate(e.target.value);
         }}
       ></TextField>
-      <PhotoUpload></PhotoUpload>
       <Button
         onClick={save}
         variant="contained"

@@ -1,23 +1,15 @@
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { readAndCompressImage } from "browser-image-resizer";
+import { Button } from "@material-ui/core";
 
-const PhotoUpload = () => {
+export interface IPhotoUploadProps {
+  onUpload: (base64data: string) => void;
+}
+
+const PhotoUpload: React.FC<IPhotoUploadProps> = ({ children, onUpload }) => {
   const uploader = useRef<HTMLInputElement>();
 
-  const handleChange = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onload = (upload) => {
-      console.log(upload.target.result);
-    };
-  };
-
-  const [file, setFile] = useState<string>();
-  const [imagePreview, setImagePreview] = useState<any>("");
   const [base64, setBase64] = useState<string>();
-  const [name, setName] = useState<string>();
-  const [size, setSize] = useState<string>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const photoUpload = (e: any) => {
     e.preventDefault();
@@ -34,8 +26,8 @@ const PhotoUpload = () => {
       const blobReader = new FileReader();
       blobReader.readAsDataURL(resized);
       blobReader.onloadend = () => {
-        const base64data = blobReader.result;
-        setBase64(base64data as string);
+        const base64data = blobReader.result as string;
+        onUpload(base64data);
       };
     });
     // if (reader !== undefined && file !== undefined) {
@@ -51,22 +43,34 @@ const PhotoUpload = () => {
   };
 
   return (
-    <div>
-      <label htmlFor="photoupload">
-        <div>Upload photo</div>
-        <input
-          id="photoupload"
-          style={{ display: "none" }}
-          ref={uploader}
-          type="file"
-          accept="image/*"
-          capture="environment"
-          // @ts-ignore
-          onChange={photoUpload}
-        ></input>
-      </label>
-      <img src={base64} />
-    </div>
+    <label
+      style={{
+        display: "inline-block",
+      }}
+      htmlFor="photoupload"
+    >
+      <div
+        style={{
+          width: 64,
+          height: 40,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        📸️
+      </div>
+      <input
+        id="photoupload"
+        style={{ display: "none" }}
+        ref={uploader}
+        type="file"
+        accept="image/*"
+        capture="environment"
+        // @ts-ignore
+        onChange={photoUpload}
+      ></input>
+    </label>
   );
 };
 
