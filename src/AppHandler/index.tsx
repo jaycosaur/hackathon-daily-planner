@@ -8,7 +8,6 @@ import {ITaskImage} from "../types/ITaskImage";
 
 const serverBaseUrl = "https://spineless.xyz/prp-daily-planner-1";
 
-
 const useUsers = () => {
   return useQuery<{}, {}, IUser[]>({
     queryKey: "users",
@@ -94,7 +93,7 @@ export const AppHandler: React.FC = ({children}) => {
     await refetchTasks();
 
     return createdTask;
-  }, []);
+  }, [refetchTasks]);
 
   const updateTask = useCallback(async (task: ITask) => {
     await fetch(serverBaseUrl + "/tasks/" + task._id, {
@@ -107,7 +106,7 @@ export const AppHandler: React.FC = ({children}) => {
 
     // re-fetch the list of tasks in the system before we return
     await refetchTasks();
-  }, []);
+  }, [refetchTasks]);
 
   const retrieveTaskImage = useCallback(async (imageId: string): Promise<ITaskImage> => {
     const response = await fetch(serverBaseUrl + "/task-images/" + imageId);

@@ -2,8 +2,6 @@ import "./App.css";
 
 import Map from "./map";
 import { useWindowSize } from "./useWindowSize";
-import {useContext, useEffect} from "react";
-import {AppContext} from "./AppHandler/AppContext";
 
 function App() {
   const { width, height } = useWindowSize();
