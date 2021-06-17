@@ -64,6 +64,14 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({
       </div>
 
       <div className="task-activities">
+        <TaskActivityCard
+          taskActivity={{
+            _id: "first",
+            taskId: task._id,
+            text: `Created by ${task.createdUserId}`,
+            type: ETaskActivityType.StatusUpdate,
+          }}
+        />
         {retrieveActivityForTask(task._id).map((taskActivity) => (
           <TaskActivityCard taskActivity={taskActivity} />
         ))}
