@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import Container from "@material-ui/core/Container";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
@@ -6,16 +6,16 @@ import FilterList from "@material-ui/icons/FilterList";
 import ImportExport from "@material-ui/icons/ImportExport";
 import Search from "@material-ui/icons/Search";
 import Add from "@material-ui/icons/Add";
-import { AppContext } from "../AppHandler/AppContext";
 import Task from "../TaskCard";
-import {ETaskStatus, ITask} from "../types/ITask";
+import { ETaskStatus, ITask } from "../types/ITask";
+import { useFilteredTasks } from "../FilterControls/useFilteredTasks";
 
 export interface IListViewProps {
   onTaskSelect(task: ITask): void;
 }
 
 const ListView: React.FC<IListViewProps> = ({ onTaskSelect }) => {
-  const { tasks } = useContext(AppContext);
+  const { tasks } = useFilteredTasks();
 
   const pendingTasks = tasks.filter(
     ({ status }) => status === ETaskStatus.Pending
@@ -91,7 +91,10 @@ const ListView: React.FC<IListViewProps> = ({ onTaskSelect }) => {
         <p>In-Progress {inProgressTasks.length}</p>
         <p>Blocked {blockedTasks.length}</p>
       </div>
-      {tasks && tasks.map((t) => <Task key={t._id} task={t} onClick={() => onTaskSelect(t)} />)}
+      {tasks &&
+        tasks.map((t) => (
+          <Task key={t._id} task={t} onClick={() => onTaskSelect(t)} />
+        ))}
     </Container>
   );
 };

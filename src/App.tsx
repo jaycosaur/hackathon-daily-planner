@@ -109,15 +109,13 @@ export const App: React.FC = () => {
             />
             {view === Pages.TASK_EDIT ? (
               <BottomNavigationAction
-                label="Map"
-                icon={<MapIcon />}
+                icon={<CloseIcon />}
                 value={Pages.MAP_VIEW}
               />
             ) : (
               <BottomNavigationAction
-                label="List"
-                icon={<ListIcon />}
-                value={Pages.TASK_VIEW}
+                icon={<AddIcon />}
+                value={Pages.TASK_EDIT}
               />
             )}
           </BottomNavigation>
