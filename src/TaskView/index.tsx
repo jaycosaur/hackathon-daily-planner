@@ -37,18 +37,40 @@ const TaskView = (props: { task?: ITask }) => {
     // });
     const classes = useStyles();
 
-    const { isLoading, users, activeUser, login, tasks } =
+    const { isLoading, users, activeUser, login, tasks, createTask } =
         useContext(AppContext);
 
-    const [_id, use_id] = useState();
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-    const [status, setStatus] = useState("");
+    const { task } = props;
+
+    const [_id, use_id] = useState(task?._id ?? "");
+    const [title, setTitle] = useState(task?._id ?? "");
+    const [description, setDescription] = useState(task?._id ?? "");
+    const [status, setStatus] = useState<ETaskStatus>(
+        task?.status ?? ETaskStatus.Pending
+    );
+    const [priority, setPriority] = useState<ETaskPriority>(
+        task?.priority ?? ETaskPriority.High
+    );
+    const [createdUserId, setCreatedUserId] = useState("");
+    const [assignedUserId, setAssignedUserId] = useState("");
     const [location, setLocation] = useState<Position | null>(null);
 
-    const save = () => {};
+    const save = () => {
+        const task: ITask = {
+            _id,
+            title,
+            createdUserId,
+            assignedUserId,
+            description,
+            status,
+            location,
+            priority,
+            imageId: null,
+            dueDate: null,
+        };
 
-    console.log(users);
+        createTask(task);
+    };
 
     return (
         <form className={classes.root}>
@@ -78,7 +100,9 @@ const TaskView = (props: { task?: ITask }) => {
                         select
                         label="Status"
                         value={status}
-                        onChange={(e) => setDescription(e.target.value)}
+                        onChange={(e) =>
+                            setStatus(e.target.value as ETaskStatus)
+                        }
                     >
                         {Object.entries(ETaskStatus).map((entry) => {
                             const [key, value] = entry;
@@ -95,8 +119,10 @@ const TaskView = (props: { task?: ITask }) => {
                     <TextField
                         select
                         label="Priority"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
+                        value={priority}
+                        onChange={(e) =>
+                            setPriority(e.target.value as ETaskPriority)
+                        }
                     >
                         {Object.entries(ETaskPriority).map((entry) => {
                             const [key, value] = entry;
@@ -131,23 +157,11 @@ const TaskView = (props: { task?: ITask }) => {
                 />
 
                 <Grid item xs={12}>
-                    <Button>Save</Button>
+                    <Button onClick={save}>Save</Button>
                 </Grid>
             </Grid>
         </form>
     );
-    // const [task, setTask] = useState<ITask>({
-    //     _id: "someId",
-    //     title: "hello",
-    //     createdUserId: "1",
-    //     assignedUserId: "2",
-    //     description: "desc",
-    //     status: ETaskStatus.Pending,
-    //     priority: ETaskPriority.Medium,
-    //     location: null,
-    //     imageId: null,
-    //     dueDate: null,
-    // });
 };
 
 export default TaskView;
