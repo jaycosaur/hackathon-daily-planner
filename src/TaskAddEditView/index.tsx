@@ -10,7 +10,13 @@ import { Autocomplete } from "@material-ui/lab";
 import { AppContext } from "../AppHandler/AppContext";
 import { useContext, useState } from "react";
 import { Position } from "../map/types";
-import { ETaskPriority, ETaskStatus, ITask } from "../types/ITask";
+import {
+  ETaskPriority,
+  ETaskStatus,
+  ITask,
+  taskPriorityAsString,
+  taskStatusAsString,
+} from "../types/ITask";
 import TaskOnMap from "./TaskOnMap";
 import { IUser } from "../types/IUser";
 import { useWindowSize } from "../useWindowSize";
@@ -134,7 +140,7 @@ const TaskAddEditView = (props: {
           const [key, value] = entry;
           return (
             <MenuItem key={key} value={value}>
-              {value}
+              {taskStatusAsString(value)}
             </MenuItem>
           );
         })}
@@ -150,7 +156,7 @@ const TaskAddEditView = (props: {
           const [key, value] = entry;
           return (
             <MenuItem key={key} value={value}>
-              {value}
+              {taskPriorityAsString(value)}
             </MenuItem>
           );
         })}

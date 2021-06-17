@@ -87,9 +87,6 @@ const useTaskImages = () => {
       const result = await (await fetch(serverBaseUrl + "/task-images")).json();
       const taskImages: ITaskImage[] = result.items;
 
-      console.log("HELP");
-      console.log(result);
-
       // dirty dirty index
       const indexedTaskImage = new Map<guid, ITaskImage[]>(); // map taskId to activities for this task
       for (const taskImage of taskImages) {
@@ -263,7 +260,6 @@ export const AppHandler: React.FC = ({ children }) => {
   const retrieveImagesForTask = useCallback(
     (taskId: guid) => {
       const res = taskImages.get(taskId) || [];
-      console.log("WHY", res);
       return res;
     },
     [taskImages]
