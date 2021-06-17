@@ -12,7 +12,17 @@ function App() {
 
   return (
     <div className="App" style={{ width, height }}>
-      <Map width={width} height={height} polygons={[]} />
+      <Map
+        width={width}
+        height={height}
+        points={[
+          {
+            latitude: -33.881144323948234,
+            longitude: 151.2135851533549,
+            id: "1",
+          },
+        ]}
+      />
     </div>
   );
 }
