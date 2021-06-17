@@ -110,7 +110,12 @@ const FilterControls = () => {
 
   return (
     <div
-      style={{ padding: "12px 12px 6px", background: "rgba(255,255,255,0.7)" }}
+      style={{
+        padding: "12px 12px 6px",
+        background: "rgba(255,255,255,0.7)",
+        backgroundImage:
+          "linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(255,255,255,0))",
+      }}
     >
       <TextField
         value={filters.searchTerm}
