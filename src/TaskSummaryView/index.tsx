@@ -65,6 +65,7 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({
 
       <div className="task-activities">
         <TaskActivityCard
+          key={"first"}
           taskActivity={{
             _id: "first",
             taskId: task._id,
@@ -73,10 +74,14 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({
           }}
         />
         {retrieveActivityForTask(task._id).map((taskActivity) => (
-          <TaskActivityCard taskActivity={taskActivity} />
+          <TaskActivityCard
+            taskActivity={taskActivity}
+            key={taskActivity._id}
+          />
         ))}
         {images.map((i) => (
           <TaskActivityCard
+            key={i._id}
             taskActivity={{
               _id: i._id,
               taskId: i.taskId,
