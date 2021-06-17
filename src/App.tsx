@@ -1,18 +1,5 @@
 import React, { useContext, useState } from "react";
 import "./App.css";
-<<<<<<< HEAD
-import {v4 as uuid} from "uuid";
-import {AppBar, CircularProgress, IconButton} from "@material-ui/core";
-import Map from "./map";
-// import TaskView from "./TaskView";
-import {useWindowSize} from "./useWindowSize";
-import {ThemeProvider} from "@material-ui/core";
-import {lightTheme} from "./theme/themes";
-import MapIcon from '@material-ui/icons/Map';
-import ListIcon from '@material-ui/icons/List';
-import {AppContext} from "./AppHandler/AppContext";
-import TaskView from "./TaskView";
-=======
 import {
   AppBar,
   Button,
@@ -32,7 +19,6 @@ import { AppContext } from "./AppHandler/AppContext";
 import MapView from "./MapView";
 import TaskView from "./TaskView";
 import ListView from "./ListView";
->>>>>>> b8381dd6e2786df6c30c4320c8b26ca8b4ce5806
 
 const appBarHeight = 50;
 
@@ -42,12 +28,6 @@ enum Pages {
   "TASK_EDIT",
 }
 
-<<<<<<< HEAD
-  const [showingTaskList, setShowingTaskList] = useState(true);
-  const toggleTaskList = useCallback(() => {
-    setShowingTaskList(x => !x);
-  }, [setShowingTaskList]);
-=======
 const NavButtons = ({
   currentPage,
   onSelect,
@@ -89,7 +69,6 @@ const NavButtons = ({
     );
   }
 };
->>>>>>> b8381dd6e2786df6c30c4320c8b26ca8b4ce5806
 
 const AddNewTaskFab = ({ onClick }: { onClick: () => void }) => {
   return (
