@@ -31,18 +31,6 @@ const TaskAddEditView = (props: {
   task?: ITask;
   onCompleted: (task: ITask) => void;
 }) => {
-  // const [task, setTask] = useState<ITask>({
-  //     _id: "someId",
-  //     title: "hello",
-  //     createdUserId: "1",
-  //     assignedUserId: "2",
-  //     description: "desc",
-  //     status: ETaskStatus.Pending,
-  //     priority: ETaskPriority.Medium,
-  //     location: null,
-  //     imageId: null,
-  //     dueDate: null,
-  // });
   const classes = useStyles();
 
   const { isLoading, users, activeUser, login, tasks, createTask, updateTask } =
@@ -86,7 +74,7 @@ const TaskAddEditView = (props: {
 
     let returnTask: ITask;
 
-    if (props.task._id) {
+    if (props.task?._id) {
       task._id = props.task._id;
       await updateTask(task);
       returnTask = task;
