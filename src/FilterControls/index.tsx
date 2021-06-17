@@ -133,7 +133,14 @@ const FilterControls = () => {
           ),
         }}
       />
-      <div style={{ marginTop: 6 }}>
+      <div
+        style={{
+          marginTop: 6,
+          flex: 0,
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
         <Chip
           avatar={<FilterListIcon />}
           label="Crew"
@@ -141,7 +148,6 @@ const FilterControls = () => {
             setShowUserFilter(true);
           }}
           color={filters.userId ? "secondary" : undefined}
-          style={{ margin: "0px 12px" }}
         />
         <Chip
           avatar={<FilterListIcon />}
@@ -150,7 +156,6 @@ const FilterControls = () => {
             setShowStatusFilter(true);
           }}
           color={filters.status ? "secondary" : undefined}
-          style={{ margin: "0px 12px" }}
         />
         <Chip
           avatar={<FilterListIcon />}
@@ -159,7 +164,6 @@ const FilterControls = () => {
             setShowDateFilter(true);
           }}
           color={filters.openTask ? "secondary" : undefined}
-          style={{ margin: "0px 12px" }}
         />
       </div>
       <CrewPicker

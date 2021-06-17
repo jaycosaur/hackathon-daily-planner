@@ -120,7 +120,7 @@ export const App: React.FC = () => {
             </PageContainer>
             <div style={{ background: "white" }}>
               <BottomNavigation
-                value={"Map"}
+                value={view}
                 onChange={(event, newValue) => {
                   setActiveTaskId(null); // sorry
                   setView(newValue);
