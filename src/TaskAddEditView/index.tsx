@@ -26,7 +26,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TaskView = (props: { task?: ITask; onCompleted: () => void }) => {
+const TaskView = (props: {
+  task?: ITask;
+  onCompleted: (task: ITask) => void;
+}) => {
   // const [task, setTask] = useState<ITask>({
   //     _id: "someId",
   //     title: "hello",
@@ -62,7 +65,7 @@ const TaskView = (props: { task?: ITask; onCompleted: () => void }) => {
 
   const windowSize = useWindowSize();
 
-  const save = () => {
+  const save = async () => {
     const task: ITask = {
       _id,
       title,
@@ -76,8 +79,8 @@ const TaskView = (props: { task?: ITask; onCompleted: () => void }) => {
       dueDate: null,
     };
 
-    createTask(task);
-    onCompleted();
+    const ret = await createTask(task);
+    onCompleted(ret);
   };
 
   return (
