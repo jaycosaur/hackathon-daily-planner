@@ -4,13 +4,15 @@ import { Button, TextareaAutosize } from "@material-ui/core";
 import { ETaskActivityType } from "../types/ITaskActivity";
 import { AppContext } from "../AppHandler/AppContext";
 import PhotoUpload from "../PhotoUpload";
+import { ITaskImage } from "../types/ITaskImage";
 
 export interface ITaskActivityBar {
   task: ITask;
 }
 
 export const TaskActivityBar: React.FC<ITaskActivityBar> = ({ task }) => {
-  const { createTaskActivity } = useContext(AppContext);
+  const { createTaskActivity, createTaskImage, activeUser } =
+    useContext(AppContext);
   const [commentMessage, setCommentMessage] = useState<string>("");
 
   const handleChange = useCallback(
@@ -44,6 +46,16 @@ export const TaskActivityBar: React.FC<ITaskActivityBar> = ({ task }) => {
     [handleSubmit]
   );
 
+  const handlePhotoUpload = async (data: string) => {
+    const image: ITaskImage = {
+      taskId: task._id,
+      userId: activeUser?._id,
+      data: data,
+    };
+    const res = await createTaskImage(image);
+    console.log("RES", res);
+  };
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -60,11 +72,7 @@ export const TaskActivityBar: React.FC<ITaskActivityBar> = ({ task }) => {
         className="textarea"
       />
       <Button onClick={handleSubmit}>⬆️</Button>
-      <PhotoUpload
-        onUpload={(base64data) => {
-          console.log(base64data);
-        }}
-      ></PhotoUpload>
+      <PhotoUpload onUpload={handlePhotoUpload}></PhotoUpload>
     </form>
   );
 };

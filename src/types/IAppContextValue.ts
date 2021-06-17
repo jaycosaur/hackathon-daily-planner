@@ -1,8 +1,8 @@
-import {IUser} from "./IUser";
-import {ITask} from "./ITask";
-import {ITaskImage} from "./ITaskImage";
-import {ITaskActivity} from "./ITaskActivity";
-import {guid} from "./guid";
+import { IUser } from "./IUser";
+import { ITask } from "./ITask";
+import { ITaskImage } from "./ITaskImage";
+import { ITaskActivity } from "./ITaskActivity";
+import { guid } from "./guid";
 
 export interface IAppContextValue {
   isLoading: boolean;
@@ -18,6 +18,7 @@ export interface IAppContextValue {
 
   retrieveActivityForTask(taskId: guid): ITaskActivity[];
   createTaskActivity(taskActivity: ITaskActivity): Promise<ITaskActivity>;
-
+  createTaskImage(image: ITaskImage): Promise<ITaskImage>;
   retrieveTaskImage(imageId: guid): Promise<ITaskImage>;
+  retrieveImagesForTask(taskId: guid): ITaskImage[];
 }

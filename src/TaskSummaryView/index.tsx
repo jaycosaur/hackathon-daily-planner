@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
 import "./style.css";
 import { ITask, taskStatusAsChip } from "../types/ITask";
-import {Button, Chip} from "@material-ui/core";
+import { Button, Chip } from "@material-ui/core";
 import FaceIcon from "@material-ui/icons/Face";
 import { AppContext } from "../AppHandler/AppContext";
 import TaskOnMap from "../TaskAddEditView/TaskOnMap";
 import { useWindowSize } from "../useWindowSize";
 import { TaskActivityCard } from "../TaskActivityCard";
-import {TaskActivityBar} from "./TaskActivityBar";
+import { TaskActivityBar } from "./TaskActivityBar";
 
 export interface ITaskSummaryViewProps {
   task: ITask;
@@ -18,7 +18,8 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({
   task,
   onEdit,
 }) => {
-  const { users, retrieveActivityForTask } = useContext(AppContext);
+  const { users, retrieveActivityForTask, retrieveImagesForTask } =
+    useContext(AppContext);
   const windowSize = useWindowSize();
 
   if (task === undefined) {
@@ -27,6 +28,8 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({
   }
 
   const activeUserForTask = users.find((x) => x._id === task.assignedUserId);
+
+  const images = retrieveImagesForTask(task._id);
 
   return (
     <div className="component-TaskSummaryView">
@@ -58,9 +61,19 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({
       </div>
 
       <div className="task-activities">
+        no
         {retrieveActivityForTask(task._id).map((taskActivity) => (
           <TaskActivityCard taskActivity={taskActivity} />
         ))}
+        {images.map((i) => (
+          <img
+            src={i.data}
+            style={{
+              width: "100%",
+            }}
+          />
+        ))}
+        yes
       </div>
 
       <div className="task-activity-bar">

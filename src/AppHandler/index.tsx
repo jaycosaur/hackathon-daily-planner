@@ -1,12 +1,12 @@
-import React, {useCallback, useEffect, useMemo, useState} from "react";
-import {AppContext} from "./AppContext";
-import {IAppContextValue} from "../types/IAppContextValue";
-import {IUser} from "../types/IUser";
-import {useQuery} from "react-query";
-import {ITask} from "../types/ITask";
-import {ITaskImage} from "../types/ITaskImage";
-import {guid} from "../types/guid";
-import {ITaskActivity} from "../types/ITaskActivity";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { AppContext } from "./AppContext";
+import { IAppContextValue } from "../types/IAppContextValue";
+import { IUser } from "../types/IUser";
+import { useQuery } from "react-query";
+import { ITask } from "../types/ITask";
+import { ITaskImage } from "../types/ITaskImage";
+import { guid } from "../types/guid";
+import { ITaskActivity } from "../types/ITaskActivity";
 
 const serverBaseUrl = "https://spineless.xyz/prp-daily-planner-1";
 const localStorageUserKey = "user_id";
@@ -22,17 +22,17 @@ const useUsers = () => {
       // please don't tell anyone how I live
       const result = await (await fetch(serverBaseUrl + "/users")).json();
       return result.items;
-    }
+    },
   });
-}
+};
 
 async function createUser(user: IUser): Promise<IUser> {
   const response = await fetch(serverBaseUrl + "/users", {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json",
     },
-    body: JSON.stringify(user)
+    body: JSON.stringify(user),
   });
 
   return response.json();
@@ -46,9 +46,9 @@ const useTasks = () => {
       // please don't tell anyone how I live
       const result = await (await fetch(serverBaseUrl + "/tasks")).json();
       return result.items;
-    }
+    },
   });
-}
+};
 
 const useTaskActivities = () => {
   return useQuery<{}, {}, Map<guid, ITaskActivity[]>>({
@@ -56,7 +56,9 @@ const useTaskActivities = () => {
     refetchInterval: 120 * 1000, // refetch task activity every 2 minutes
     queryFn: async () => {
       // please don't tell anyone how I live
-      const result = await (await fetch(serverBaseUrl + "/task-activities")).json();
+      const result = await (
+        await fetch(serverBaseUrl + "/task-activities")
+      ).json();
       const taskActivities: ITaskActivity[] = result.items;
 
       // dirty dirty index
@@ -70,45 +72,93 @@ const useTaskActivities = () => {
       }
 
       return indexedTaskActivity;
-    }
+    },
   });
-}
+};
 
-export const AppHandler: React.FC = ({children}) => {
-  const {isLoading: isLoadingUsers, data: users, refetch: refetchUsers} = useUsers();
-  const {isLoading: isLoadingTasks, data: tasks, refetch: refetchTasks} = useTasks();
-  const {isLoading: isLoadingTaskActivities, data: taskActivities, refetch: refetchTasksActivities} = useTaskActivities();
+// NFI, just copy pasta
+const useTaskImages = () => {
+  return useQuery<{}, {}, Map<guid, ITaskImage[]>>({
+    queryKey: "task-images",
+    refetchInterval: 120 * 1000, // refetch task activity every 2 minutes
+    queryFn: async () => {
+      // please don't tell anyone how I live
+      const result = await (await fetch(serverBaseUrl + "/task-images")).json();
+      const taskImages: ITaskImage[] = result.items;
+
+      console.log("HELP");
+      console.log(result);
+
+      // dirty dirty index
+      const indexedTaskImage = new Map<guid, ITaskImage[]>(); // map taskId to activities for this task
+      for (const taskImage of taskImages) {
+        if (!indexedTaskImage.has(taskImage.taskId)) {
+          indexedTaskImage.set(taskImage.taskId, []);
+        }
+
+        indexedTaskImage.get(taskImage.taskId).push(taskImage);
+      }
+
+      return indexedTaskImage;
+    },
+  });
+};
+
+export const AppHandler: React.FC = ({ children }) => {
+  const {
+    isLoading: isLoadingUsers,
+    data: users,
+    refetch: refetchUsers,
+  } = useUsers();
+  const {
+    isLoading: isLoadingTasks,
+    data: tasks,
+    refetch: refetchTasks,
+  } = useTasks();
+  const {
+    isLoading: isLoadingTaskActivities,
+    data: taskActivities,
+    refetch: refetchTasksActivities,
+  } = useTaskActivities();
+  const {
+    isLoading: isLoadingTaskImages,
+    data: taskImages,
+    refetch: refetchTaskImages,
+  } = useTaskImages();
 
   const isLoading = isLoadingUsers || isLoadingTasks || isLoadingTaskActivities;
 
   const [activeUser, setActiveUser] = useState<null | IUser>(null);
-  const login = useCallback(async (email: string) => {
-    if (isLoadingUsers) {
-      throw new Error("Cannot login before users are loaded");
-    }
+  const login = useCallback(
+    async (email: string) => {
+      if (isLoadingUsers) {
+        throw new Error("Cannot login before users are loaded");
+      }
 
-    // look for user in users
-    const existingUser = users.find(x => x.email === email);
+      // look for user in users
+      const existingUser = users.find((x) => x.email === email);
 
-    if (existingUser !== undefined) {
-      // user already exists in system, continue with login
-      localStorage.setItem(localStorageUserKey, existingUser._id);
-      setActiveUser(existingUser);
-      return;
-    }
+      if (existingUser !== undefined) {
+        // user already exists in system, continue with login
+        localStorage.setItem(localStorageUserKey, existingUser._id);
+        setActiveUser(existingUser);
+        return;
+      }
 
-    // user doesn't exist in the database, create them
-    const createdUser = await createUser({
-      _id: undefined, // will be generated by server
-      email
-    });
-    localStorage.setItem(localStorageUserKey, createdUser._id);
+      // user doesn't exist in the database, create them
+      const createdUser = await createUser({
+        _id: undefined, // will be generated by server
+        email,
+      });
+      localStorage.setItem(localStorageUserKey, createdUser._id);
 
-    // re-fetch the list of users in the system before we continue
-    await refetchUsers();
+      // re-fetch the list of users in the system before we continue
+      await refetchUsers();
 
-    setActiveUser(createdUser);
-  }, [isLoadingUsers, users, refetchUsers, setActiveUser]);
+      setActiveUser(createdUser);
+    },
+    [isLoadingUsers, users, refetchUsers, setActiveUser]
+  );
 
   const logout = useCallback(async () => {
     localStorage.setItem(localStorageUserKey, "");
@@ -125,106 +175,155 @@ export const AppHandler: React.FC = ({children}) => {
     const storedUserId = localStorage.getItem(localStorageUserKey);
     if (storedUserId) {
       // re-auth with existing user key
-      setActiveUser(users.find(x => x._id === storedUserId));
+      setActiveUser(users.find((x) => x._id === storedUserId));
     }
   }, [isLoading, users, activeUser]);
 
-  const createTask = useCallback(async (task: ITask) => {
-    const response = await fetch(serverBaseUrl + "/tasks", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(task)
-    });
+  const createTask = useCallback(
+    async (task: ITask) => {
+      const response = await fetch(serverBaseUrl + "/tasks", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(task),
+      });
 
-    const createdTask = response.json();
+      const createdTask = response.json();
 
-    // re-fetch the list of tasks in the system before we return
-    await refetchTasks();
+      // re-fetch the list of tasks in the system before we return
+      await refetchTasks();
 
-    return createdTask;
-  }, [refetchTasks]);
+      return createdTask;
+    },
+    [refetchTasks]
+  );
 
-  const updateTask = useCallback(async (task: ITask) => {
-    await fetch(serverBaseUrl + "/tasks/" + task._id, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(task)
-    });
+  const updateTask = useCallback(
+    async (task: ITask) => {
+      await fetch(serverBaseUrl + "/tasks/" + task._id, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(task),
+      });
 
-    // re-fetch the list of tasks in the system before we return
-    await refetchTasks();
-  }, [refetchTasks]);
+      // re-fetch the list of tasks in the system before we return
+      await refetchTasks();
+    },
+    [refetchTasks]
+  );
 
-  const retrieveTaskImage = useCallback(async (imageId: string): Promise<ITaskImage> => {
-    // check local cache before going out to network
-    if (taskImagesCache.has(imageId)) {
-      return taskImagesCache.get(imageId);
-    }
+  const createTaskImage = useCallback(
+    async (image: ITaskImage) => {
+      const response = await fetch(serverBaseUrl + "/task-images", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(image),
+      });
 
-    const response = await fetch(serverBaseUrl + "/task-images/" + imageId);
-    const taskImage: ITaskImage = await response.json();
+      const createdImage = response.json();
 
-    // store in local cache to avoid a request next time
-    taskImagesCache.set(taskImage._id, taskImage);
+      await refetchTaskImages();
+      return createdImage;
+    },
+    [refetchTaskImages]
+  );
 
-    return taskImage;
-  }, []);
+  const retrieveTaskImage = useCallback(
+    async (imageId: string): Promise<ITaskImage> => {
+      // check local cache before going out to network
+      if (taskImagesCache.has(imageId)) {
+        return taskImagesCache.get(imageId);
+      }
 
-  const retrieveActivityForTask = useCallback((taskId: guid) => {
-    // we pre-index in the fetch so this function can be used in render bodies without any slowdown
-    return taskActivities.get(taskId) || [];
-  }, [taskActivities]);
+      const response = await fetch(serverBaseUrl + "/task-images/" + imageId);
+      const taskImage: ITaskImage = await response.json();
 
-  const createTaskActivity = useCallback(async (taskActivity: ITaskActivity) => {
-    const response = await fetch(serverBaseUrl + "/task-activities", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(taskActivity)
-    });
-    const createdTaskActivity = response.json();
+      // store in local cache to avoid a request next time
+      taskImagesCache.set(taskImage._id, taskImage);
 
-    await refetchTasksActivities();
+      return taskImage;
+    },
+    []
+  );
 
-    return createdTaskActivity;
-  }, [refetchTasksActivities]);
+  const retrieveActivityForTask = useCallback(
+    (taskId: guid) => {
+      // we pre-index in the fetch so this function can be used in render bodies without any slowdown
+      return taskActivities.get(taskId) || [];
+    },
+    [taskActivities]
+  );
 
-  const providerValue = useMemo<IAppContextValue>(() => ({
-    isLoading,
+  const retrieveImagesForTask = useCallback(
+    (taskId: guid) => {
+      const res = taskImages.get(taskId) || [];
+      console.log("WHY", res);
+      return res;
+    },
+    [taskImages]
+  );
 
-    activeUser,
-    users,
-    login,
-    logout,
+  const createTaskActivity = useCallback(
+    async (taskActivity: ITaskActivity) => {
+      const response = await fetch(serverBaseUrl + "/task-activities", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(taskActivity),
+      });
+      const createdTaskActivity = response.json();
 
-    tasks,
-    createTask,
-    updateTask,
+      await refetchTasksActivities();
 
-    retrieveActivityForTask,
-    createTaskActivity,
+      return createdTaskActivity;
+    },
+    [refetchTasksActivities]
+  );
 
-    retrieveTaskImage
-  }), [
-    isLoading,
-    activeUser,
-    users,
-    login,
-    logout,
-    tasks,
-    createTask,
-    updateTask,
-    retrieveActivityForTask,
-    createTaskActivity,
-    retrieveTaskImage
-  ]);
+  const providerValue = useMemo<IAppContextValue>(
+    () => ({
+      isLoading,
 
-  return <AppContext.Provider value={providerValue}>
-    {children}
-  </AppContext.Provider>;
-}
+      activeUser,
+      users,
+      login,
+      logout,
+
+      tasks,
+      createTask,
+      updateTask,
+
+      retrieveActivityForTask,
+      createTaskActivity,
+
+      retrieveTaskImage,
+      createTaskImage,
+      retrieveImagesForTask,
+    }),
+    [
+      isLoading,
+      activeUser,
+      users,
+      login,
+      logout,
+      tasks,
+      createTask,
+      updateTask,
+      retrieveActivityForTask,
+      createTaskActivity,
+      retrieveTaskImage,
+      createTaskImage,
+      retrieveImagesForTask,
+    ]
+  );
+
+  return (
+    <AppContext.Provider value={providerValue}>{children}</AppContext.Provider>
+  );
+};
