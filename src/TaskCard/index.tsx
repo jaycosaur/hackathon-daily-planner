@@ -1,11 +1,17 @@
 import React from "react";
+import Paper from "@material-ui/core/Paper";
 import { format, fromUnixTime } from "date-fns";
 import Chip from "@material-ui/core/Chip";
 
 const Task = ({ task }) => {
   const { title, status, priority, dueDate } = task;
   return (
-    <div style={{ border: "1px solid black", padding: "1rem" }}>
+    <Paper
+      style={{
+        border: "1px solid black",
+        padding: "1rem",
+      }}
+    >
       <div style={{ display: "flex", gap: "0.5rem" }}>
         <span>
           <h3>{title}</h3>
@@ -20,7 +26,7 @@ const Task = ({ task }) => {
         <Chip size="small" label={status} />
         <Chip size="small" label={priority} style={{ margin: "0px 5px" }} />
       </div>
-    </div>
+    </Paper>
   );
 };
 
