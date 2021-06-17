@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TaskView = (props: { task?: ITask; onCompleted: () => {} }) => {
+const TaskView = (props: { task?: ITask; onCompleted: () => void }) => {
   // const [task, setTask] = useState<ITask>({
   //     _id: "someId",
   //     title: "hello",

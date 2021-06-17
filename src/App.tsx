@@ -109,7 +109,7 @@ export const App: React.FC = () => {
 
         <div className="app-content">
           {view === Pages.MAP_VIEW && <MapView width={width} height={height} />}
-          {view === Pages.TASK_EDIT && <TaskView />}
+          {view === Pages.TASK_EDIT && <TaskView onCompleted={() => {}} />}
           {view === Pages.TASK_VIEW && <ListView />}
         </div>
       </div>
