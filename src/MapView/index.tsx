@@ -24,12 +24,7 @@ const colorMapFromUsers = (
   return `hsl(${positionToRange}, 100%, 50%)`;
 };
 
-const MapView: React.FC<IMapViewProps> = ({
-  width,
-  height,
-  onTaskSelect,
-  onEmptyPositionSelect,
-}) => {
+const MapView: React.FC<IMapViewProps> = ({ width, height, onTaskSelect }) => {
   const { tasks } = useFilteredTasks();
   const userIds = tasks.map((task) => task.assignedUserId).sort();
 
@@ -47,7 +42,6 @@ const MapView: React.FC<IMapViewProps> = ({
             tooltip: task._id,
             color: colorMapFromUsers(task.assignedUserId, userIds),
           }))}
-        onClickPoint={(pt) => onEmptyPositionSelect(pt)}
         onPointSelected={(pt) => onTaskSelect(pt.id)}
       />
     </>

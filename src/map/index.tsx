@@ -113,6 +113,9 @@ const MapComponent = (props: {
     MapBaseLayer.SAT
   );
 
+  const [userPosition, setUserPosition] =
+    React.useState<{ latitude: number; longitude: number } | null>(null);
+
   const { latitude, longitude } = usePosition(true);
 
   return (
@@ -124,7 +127,13 @@ const MapComponent = (props: {
         />
       )}
       <Map
-        center={props.center ? toPosArray(props.center) : toPosArray(position)}
+        center={
+          props.center
+            ? toPosArray(props.center)
+            : latitude
+            ? toPosArray({ latitude, longitude })
+            : toPosArray(position)
+        }
         zoom={20}
         maxZoom={24}
         minZoom={17}
