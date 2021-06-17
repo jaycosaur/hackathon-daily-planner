@@ -1,12 +1,25 @@
 
 .component-TaskSummaryView {
-
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .component-TaskSummaryView .task-summary-ribbon {
     display: flex;
+    padding: 0 10px;
 }
 
 .component-TaskSummaryView .spacer {
     flex: 1;
+}
+
+.component-TaskSummaryView .task-activities {
+    flex: 1;
+    background-color: #ccc;
+}
+
+.component-TaskSummaryView .task-activity-bar {
+    background-color: red;
+    height: 80px;
 }

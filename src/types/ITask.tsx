@@ -83,7 +83,7 @@ export const taskStatusAsChip = (
       icon={getStatusIcon(status)}
       size="small"
       label={taskStatusAsString(status)}
-      style={style}
+      style={{...style, backgroundColor: taskStatusAsColor(status)}}
     />
   );
 };

@@ -1,6 +1,6 @@
 import React, {useContext} from "react";
 import "./style.css";
-import {getStatusIcon, ITask, taskStatusAsColor, taskStatusAsString} from "../types/ITask";
+import {getStatusIcon, ITask, taskStatusAsChip, taskStatusAsColor, taskStatusAsString} from "../types/ITask";
 import {Button, Chip} from "@material-ui/core";
 import FaceIcon from '@material-ui/icons/Face';
 import {AppContext} from "../AppHandler/AppContext";
@@ -15,7 +15,6 @@ export interface ITaskSummaryViewProps {
 
 export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({ task, onEdit }) => {
   const { users, retrieveActivityForTask } = useContext(AppContext);
-  // TODO: this will change with modals
   const windowSize = useWindowSize();
 
   if (task === undefined) {
@@ -25,15 +24,11 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({ task, onEdit 
 
   const activeUserForTask = users.find(x => x._id === task.assignedUserId);
 
+  // TODO: use shared chip
   return <div className="component-TaskSummaryView">
     <h2>{task.title}</h2>
     <div className="task-summary-ribbon">
-      <Chip
-        icon={getStatusIcon(task.status)}
-        label={taskStatusAsString(task.status)}
-        style={{color: taskStatusAsColor(task.status)}}
-        variant="outlined"
-      />
+      {taskStatusAsChip(task.status)}
       {
         activeUserForTask &&
         <Chip
@@ -67,5 +62,8 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({ task, onEdit 
       }
     </div>
 
+    <div className="task-activity-bar">
+      Hello
+    </div>
   </div>;
 }
