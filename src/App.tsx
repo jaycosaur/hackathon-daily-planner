@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, {useCallback, useContext, useState} from "react";
 import "./App.css";
 import {
   BottomNavigation,
@@ -18,6 +18,8 @@ import MapView from "./MapView";
 import ListView from "./ListView";
 import { LoginPage } from "./LoginPage";
 import {TaskView} from "./TaskView";
+import {guid} from "./types/guid";
+import {Position} from "./map/types";
 
 const appBarHeight = 50;
 
@@ -32,6 +34,16 @@ export const App: React.FC = () => {
   const { isLoading, activeUser } = useContext(AppContext);
 
   const [view, setView] = useState(Pages.MAP_VIEW);
+
+  const [activeTaskId, setActiveTaskId] = useState<null | guid>();
+  const handleSelectTask = useCallback((x) => {
+    setActiveTaskId(x);
+    setView(Pages.TASK_EDIT);
+  }, [setActiveTaskId]);
+
+  const handleCreateTaskFromPosition = useCallback((pt: Position) => {
+    alert("Create task from position??");
+  }, []);
 
   if (isLoading || !width || !height) {
     return (
@@ -54,19 +66,24 @@ export const App: React.FC = () => {
       <div className="App" style={{ width, height: height - appBarHeight }}>
         <div className="app-content">
           {view === Pages.MAP_VIEW && (
-            <MapView width={width} height={height - appBarHeight} />
+            <MapView
+              width={width}
+              height={height - appBarHeight}
+              onTaskSelect={handleSelectTask}
+              onEmptyPositionSelect={handleCreateTaskFromPosition}
+            />
           )}
           {view === Pages.TASK_EDIT && (
-            // TODO: this needs to take a task ID to allow editing existing tasks
-            <TaskView />
+            <TaskView taskId={activeTaskId} />
           )}
-          {view === Pages.TASK_VIEW && <ListView />}
+          {view === Pages.TASK_VIEW && <ListView onTaskSelect={handleSelectTask} />}
         </div>
       </div>
       <div style={{ background: "white" }}>
         <BottomNavigation
           value={"Map"}
           onChange={(event, newValue) => {
+            setActiveTaskId(null); // sorry
             setView(newValue);
           }}
           showLabels

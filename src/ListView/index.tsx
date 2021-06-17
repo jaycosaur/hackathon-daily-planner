@@ -8,9 +8,13 @@ import Search from "@material-ui/icons/Search";
 import Add from "@material-ui/icons/Add";
 import { AppContext } from "../AppHandler/AppContext";
 import Task from "../TaskCard";
-import { ETaskStatus } from "../types/ITask";
+import {ETaskStatus, ITask} from "../types/ITask";
 
-const ListView = () => {
+export interface IListViewProps {
+  onTaskSelect(task: ITask): void;
+}
+
+const ListView: React.FC<IListViewProps> = ({ onTaskSelect }) => {
   const { tasks } = useContext(AppContext);
 
   const pendingTasks = tasks.filter(
@@ -87,7 +91,7 @@ const ListView = () => {
         <p>In-Progress {inProgressTasks.length}</p>
         <p>Blocked {blockedTasks.length}</p>
       </div>
-      {tasks && tasks.map((t) => <Task key={t._id} task={t} />)}
+      {tasks && tasks.map((t) => <Task key={t._id} task={t} onClick={() => onTaskSelect(t)} />)}
     </Container>
   );
 };

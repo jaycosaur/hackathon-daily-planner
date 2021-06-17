@@ -2,8 +2,14 @@ import React from "react";
 import Paper from "@material-ui/core/Paper";
 import { format, fromUnixTime } from "date-fns";
 import Chip from "@material-ui/core/Chip";
+import {ITask} from "../types/ITask";
 
-const Task = ({ task }) => {
+export interface ITaskProps {
+  task: ITask;
+  onClick(): void;
+}
+
+const Task: React.FC<ITaskProps> = ({ task, onClick }) => {
   const { title, status, priority, dueDate } = task;
   return (
     <Paper
@@ -11,6 +17,7 @@ const Task = ({ task }) => {
         border: "1px solid black",
         padding: "1rem",
       }}
+      onClick={onClick}
     >
       <div style={{ display: "flex", gap: "0.5rem" }}>
         <span>

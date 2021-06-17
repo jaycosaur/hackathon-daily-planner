@@ -1,14 +1,23 @@
 import React, { useContext } from "react";
 import Map from "../map";
 import { AppContext } from "../AppHandler/AppContext";
+import {guid} from "../types/guid";
+import {Position} from "../map/types";
 
-const MapView = (props: { width: number; height: number }) => {
+export interface IMapViewProps {
+  width: number;
+  height: number;
+  onTaskSelect(taskId: guid): void;
+  onEmptyPositionSelect(pt: Position): void;
+}
+
+const MapView: React.FC<IMapViewProps> = ({ width, height, onTaskSelect, onEmptyPositionSelect }) => {
   const { tasks } = useContext(AppContext);
   return (
     <>
       <Map
-        width={props.width}
-        height={props.height}
+        width={width}
+        height={height}
         points={tasks
           .filter((task) => task.location)
           .map((task) => ({
@@ -16,12 +25,8 @@ const MapView = (props: { width: number; height: number }) => {
             latitude: task.location.latitude,
             longitude: task.location.longitude,
           }))}
-        onClickPoint={(pt) => {
-          console.log("MAP CLICKED", pt);
-        }}
-        onPointSelected={(pt) => {
-          console.log("TASK SELECTED", pt);
-        }}
+        onClickPoint={(pt) => onEmptyPositionSelect(pt)}
+        onPointSelected={(pt) => onTaskSelect(pt.id)}
       />
     </>
   );
