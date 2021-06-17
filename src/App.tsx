@@ -10,6 +10,7 @@ import {lightTheme} from "./theme/themes";
 import MapIcon from '@material-ui/icons/Map';
 import ListIcon from '@material-ui/icons/List';
 import {AppContext} from "./AppHandler/AppContext";
+import TaskView from "./TaskView";
 
 const appBarHeight = 50;
 
@@ -17,7 +18,7 @@ export const App: React.FC = () => {
   const {width, height} = useWindowSize();
   const {isLoading} = useContext(AppContext);
 
-  const [showingTaskList, setShowingTaskList] = useState(false);
+  const [showingTaskList, setShowingTaskList] = useState(true);
   const toggleTaskList = useCallback(() => {
     setShowingTaskList(x => !x);
   }, [setShowingTaskList]);
@@ -74,8 +75,7 @@ export const App: React.FC = () => {
 
         {
           showingTaskList &&
-            <h1>Taskss</h1>
-          // <TaskView/>
+            <TaskView/>
         }
       </div>
     </div>
