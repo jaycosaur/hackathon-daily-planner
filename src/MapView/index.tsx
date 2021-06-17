@@ -1,34 +1,27 @@
-import React from "react";
+import React, { useContext } from "react";
 import Map from "../map";
-import { v4 as uuid } from "uuid";
+import { AppContext } from "../AppHandler/AppContext";
 
 const MapView = (props: { width: number; height: number }) => {
-  const [points, setPoints] = React.useState<
-    Array<{
-      latitude: number;
-      longitude: number;
-      id: string;
-    }>
-  >([
-    {
-      latitude: -33.881144323948234,
-      longitude: 151.2135851533549,
-      id: "1",
-    },
-  ]);
-
+  const { tasks } = useContext(AppContext);
   return (
     <>
       <Map
         width={props.width}
         height={props.height}
-        points={points}
-        onClickPoint={(pt) =>
-          setPoints((old) => [...old, { id: uuid(), ...pt }])
-        }
-        onPointSelected={(pt) =>
-          setPoints((old) => old.filter((old) => old.id !== pt.id))
-        }
+        points={tasks
+          .filter((task) => task.location)
+          .map((task) => ({
+            id: task._id,
+            latitude: task.location.latitude,
+            longitude: task.location.longitude,
+          }))}
+        onClickPoint={(pt) => {
+          console.log("MAP CLICKED", pt);
+        }}
+        onPointSelected={(pt) => {
+          console.log("TASK SELECTED", pt);
+        }}
       />
     </>
   );
