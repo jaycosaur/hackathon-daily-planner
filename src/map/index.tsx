@@ -86,10 +86,6 @@ const MapComponent = (props: {
   onPointSelected?: (point: Point) => void;
 }) => {
   const onClick = (event: any) => {
-    console.log("new point", {
-      latitude: event.latlng.lat,
-      longitude: event.latlng.lng,
-    });
     if (!props.onClickPoint) {
       return;
     }
@@ -100,7 +96,6 @@ const MapComponent = (props: {
   };
 
   const pointClickCallback = (e: any, point: Point) => {
-    console.log("CLICKED", point);
     if (!props.onPointSelected) {
       return;
     }
@@ -133,8 +128,8 @@ const MapComponent = (props: {
         onClick={onClick}
         animate={true}
         preferCanvas={true}
-        scrollWheelZoom={false}
-        zoomControl={true}
+        scrollWheelZoom={true}
+        zoomControl={false}
       >
         <BaseLayer type={baseLayer} />
         {props.points?.map((point) => (
