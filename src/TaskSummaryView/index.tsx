@@ -80,6 +80,13 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({
               }}
           />
         }
+        {
+          retrieveActivityForTask(task._id).length === 0 &&
+            <div>
+                <h3>There's nothing here.</h3>
+                <h4>Write some updates ✍️</h4>
+            </div>
+        }
         {retrieveActivityForTask(task._id).map((taskActivity) => (
           <TaskActivityCard
             taskActivity={taskActivity}
