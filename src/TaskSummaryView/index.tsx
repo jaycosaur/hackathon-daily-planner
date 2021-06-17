@@ -1,9 +1,12 @@
 import React, {useContext} from "react";
 import "./style.css";
-import {ITask, taskStatusAsColor, taskStatusAsString} from "../types/ITask";
-import {Button, Chip, Typography} from "@material-ui/core";
+import {getStatusIcon, ITask, taskStatusAsColor, taskStatusAsString} from "../types/ITask";
+import {Button, Chip} from "@material-ui/core";
 import FaceIcon from '@material-ui/icons/Face';
 import {AppContext} from "../AppHandler/AppContext";
+import TaskOnMap from "../TaskAddEditView/TaskOnMap";
+import {useWindowSize} from "../useWindowSize";
+import {TaskActivityCard} from "../TaskActivityCard";
 
 export interface ITaskSummaryViewProps {
   task: ITask;
@@ -11,15 +14,22 @@ export interface ITaskSummaryViewProps {
 }
 
 export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({ task, onEdit }) => {
-  const { users } = useContext(AppContext);
+  const { users, retrieveActivityForTask } = useContext(AppContext);
+  // TODO: this will change with modals
+  const windowSize = useWindowSize();
+
+  if (task === undefined) {
+    // not sure what situations were causing this component to render without a task, but no time to debug
+    return null;
+  }
 
   const activeUserForTask = users.find(x => x._id === task.assignedUserId);
 
   return <div className="component-TaskSummaryView">
-    <Typography variant="h1">{task.title}</Typography>
+    <h2>{task.title}</h2>
     <div className="task-summary-ribbon">
       <Chip
-        // icon={<FaceIcon />}
+        icon={getStatusIcon(task.status)}
         label={taskStatusAsString(task.status)}
         style={{color: taskStatusAsColor(task.status)}}
         variant="outlined"
@@ -37,11 +47,25 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({ task, onEdit 
       <div className="spacer" />
 
       <Button>Mark completed</Button>
-      <Button>Edit</Button>
+      <Button onClick={onEdit}>Edit</Button>
     </div>
-  </div>
+    <div className="task-map">
+      <TaskOnMap
+        width={windowSize.width || 0}
+        height={200}
+        onClick={() => {}}
+        onDelete={() => {}}
+        point={task.location}
+      />
+    </div>
 
-  return <h1>TaskSummaryView
-    <button onClick={onEdit}>Edit</button>
-  </h1>;
+    <div className="task-activities">
+      {
+        retrieveActivityForTask(task._id).map(taskActivity =>
+          <TaskActivityCard taskActivity={taskActivity} />
+        )
+      }
+    </div>
+
+  </div>;
 }
