@@ -35,23 +35,24 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({
 
   return (
     <div className="component-TaskSummaryView">
-      <h2>{ellipsis(task.title, 50)}</h2>
-      <div className="task-summary-ribbon">
-        {taskStatusAsChip(task.status)}
-        {activeUserForTask && (
-          <Chip
-            icon={<FaceIcon />}
-            label={activeUserForTask.email.split("@")[0]}
-            color="primary"
-            variant="outlined"
-          />
-        )}
+      <div className="task-summary-bar">
+        <h2>{ellipsis(task.title, 50)}</h2>
+        <div className="task-summary-ribbon">
+          {taskStatusAsChip(task.status)}
+          {activeUserForTask && (
+            <Chip
+              icon={<FaceIcon />}
+              label={activeUserForTask.email.split("@")[0]}
+              color="primary"
+              variant="outlined"
+            />
+          )}
 
-        <div className="spacer" />
-
-        {/*<Button>Mark completed</Button>*/}
-        <Button onClick={onEdit}>Edit</Button>
+          <Button onClick={onEdit}>Edit</Button>
+        </div>
       </div>
+      <div className="task-summary-bar-spacer"></div>
+
       <div className="task-map">
         {windowSize.width && (
           <TaskOnMap
@@ -85,17 +86,6 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({
             key={taskActivity._id}
           />
         ))}
-        {/*{images.map((i) => (*/}
-        {/*  <TaskActivityCard*/}
-        {/*    key={i._id}*/}
-        {/*    taskActivity={{*/}
-        {/*      _id: i._id,*/}
-        {/*      taskId: i.taskId,*/}
-        {/*      taskImageId: i._id,*/}
-        {/*      type: ETaskActivityType.Image,*/}
-        {/*    }}*/}
-        {/*  />*/}
-        {/*))}*/}
       </div>
 
       <div className="task-activity-bar">
