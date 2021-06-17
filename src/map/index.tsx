@@ -1,113 +1,110 @@
 import React from "react";
-import {
-  Map,
-  TileLayer,
-  Tooltip,
-  Polyline,
-  Polygon,
-  CircleMarker,
-  Circle,
-  Marker,
-} from "react-leaflet";
-import { renderToStaticMarkup } from "react-dom/server";
-import { divIcon } from "leaflet";
+import { Map, TileLayer, Tooltip, CircleMarker } from "react-leaflet";
 
-import { Position, PositionEvent, Polygon as PolygonInternal } from "./types";
-import { Avatar, Button, ButtonGroup } from "@material-ui/core";
-import moment from "moment";
+import { Position } from "./types";
+import { Button, ButtonGroup } from "@material-ui/core";
 
 const toPosArray = (pos: Position) =>
   [pos.latitude, pos.longitude] as [number, number];
 const position = { latitude: -33.881189, longitude: 151.2134519 } as Position; // home :D
 
-const Comp = (props: {
+enum MapBaseLayer {
+  "SAT",
+  "ROAD",
+}
+
+type Point = {
+  latitude: number;
+  longitude: number;
+  id: string;
+  color?: string;
+};
+
+const BaseLayer: React.FC<{ type: MapBaseLayer }> = ({ type }) => {
+  if (type === MapBaseLayer.SAT) {
+    return (
+      <TileLayer
+        url={"http://mt0.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"}
+        attribution="something"
+        maxNativeZoom={24}
+      />
+    );
+  }
+
+  return (
+    <TileLayer
+      url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      attribution="something"
+      maxNativeZoom={19}
+    />
+  );
+};
+
+const LayerSelectComponent: React.FC<{
+  selectedBaseLayer: MapBaseLayer;
+  onSelect: (baseLayer: MapBaseLayer) => void;
+}> = (props) => {
+  const buttonSelectedStyle = { background: "#ffdd00", color: "black" };
+  const buttonNotSelectedStyle = { background: "#888", color: "white" };
+  return (
+    <ButtonGroup
+      variant="contained"
+      color="primary"
+      aria-label="outlined primary button group"
+      style={{ position: "fixed", bottom: 20, left: 20, zIndex: 100 }}
+    >
+      <Button
+        style={
+          props.selectedBaseLayer === MapBaseLayer.SAT
+            ? buttonSelectedStyle
+            : buttonNotSelectedStyle
+        }
+        onClick={() => props.onSelect(MapBaseLayer.SAT)}
+      >
+        SAT
+      </Button>
+      <Button
+        style={
+          props.selectedBaseLayer === MapBaseLayer.ROAD
+            ? buttonSelectedStyle
+            : buttonNotSelectedStyle
+        }
+        onClick={() => props.onSelect(MapBaseLayer.ROAD)}
+      >
+        ROAD
+      </Button>
+    </ButtonGroup>
+  );
+};
+
+const MapComponent = (props: {
   center?: Position;
   width: number;
   height: number;
-  positions?: Record<string, PositionEvent>;
-  polygons: PolygonInternal[];
+  points?: Point[];
+  onClickPoint?: (point: Position) => void;
+  onPointSelected?: (point: Point) => void;
 }) => {
-  const [points, setPoints] = React.useState<Position[]>([]);
-  const { polygons } = props;
   const onClick = (event: any) => {
-    const newPoints = [
-      ...points,
-      {
-        latitude: event.latlng.lat,
-        longitude: event.latlng.lng,
-      },
-    ];
-    console.log(newPoints);
-    setPoints(newPoints);
-  };
-
-  const pointClickCallback = (e: any, index: any) => {
-    if (index === 0 && points.length >= 3) {
-      // props.addPolygon(points);
-      setPoints([]);
-    } else {
-      setPoints(points.filter((_, i) => i !== index));
-    }
-    e.originalEvent.preventDefault();
-  };
-
-  const [polygonHovered, setPolygonHovered] = React.useState(null);
-
-  const onHoverEnterPolygon = (id: any) => {
-    setPolygonHovered(id);
-  };
-
-  const onHoverLeavePolygon = (event: any) => {
-    setPolygonHovered(null);
-  };
-
-  const getPosMarker = (position: PositionEvent) => {
-    const isMachine = position.type === "machine";
-    const isDriver = position.type === "driver";
-    const color = position.isAlerting ? "red" : isMachine ? "yellow" : "#222";
-    console.log(position.userId, position.isAlerting);
-    const customIcon = () => (
-      <Avatar
-        style={{
-          top: isDriver ? -32 : -16,
-          left: isDriver ? -32 : -16,
-          background: isMachine ? undefined : isDriver ? "yellow" : color,
-          border: isMachine ? undefined : "4px solid white",
-          color: isMachine || isDriver ? "black" : "white",
-        }}
-        src={isMachine ? undefined : undefined}
-      >
-        {position.name.split(" ").map((e) => e.substr(0, 1).toUpperCase())}
-      </Avatar>
-    );
-    const customIconMarkup = renderToStaticMarkup(customIcon());
-    const customMarkerIcon = divIcon({
-      html: customIconMarkup,
+    console.log("new point", {
+      latitude: event.latlng.lat,
+      longitude: event.latlng.lng,
     });
-    const radius = position.type === "machine" ? 15 : 5;
-    return (
-      <>
-        <Circle
-          key={position.userId}
-          center={[position.latitude, position.longitude]}
-          radius={radius}
-          color="white"
-          fillColor={color}
-          fill={false}
-          weight={5}
-          opacity={isDriver ? 0 : 1}
-          fillOpacity={0.8}
-        />
-        <Marker
-          icon={customMarkerIcon}
-          position={[position.latitude, position.longitude]}
-        >
-          <Tooltip direction="top" offset={[0, -10]}>
-            {position.name} last seen {moment(position.timestamp).format("lll")}
-          </Tooltip>
-        </Marker>
-      </>
-    );
+    if (!props.onClickPoint) {
+      return;
+    }
+    props.onClickPoint({
+      latitude: event.latlng.lat,
+      longitude: event.latlng.lng,
+    });
+  };
+
+  const pointClickCallback = (e: any, point: Point) => {
+    console.log("CLICKED", point);
+    if (!props.onPointSelected) {
+      return;
+    }
+    props.onPointSelected(point);
   };
 
   // old sat = http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}
@@ -115,31 +112,16 @@ const Comp = (props: {
   // new sat = http://{s}.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.png
   // another sat http://mt0.google.com/vt/lyrs=s&x={x}&y={y}&z={z}
 
-  const [baseLayer, setBaseLayer] = React.useState(0);
+  const [baseLayer, setBaseLayer] = React.useState<MapBaseLayer>(
+    MapBaseLayer.SAT
+  );
 
-  const buttonSelectedStyle = { background: "#ffdd00", color: "black" };
-  const buttonNotSelectedStyle = { background: "#888", color: "white" };
   return (
     <>
-      <ButtonGroup
-        variant="contained"
-        color="primary"
-        aria-label="outlined primary button group"
-        style={{ position: "fixed", bottom: 20, left: 20, zIndex: 100 }}
-      >
-        <Button
-          style={baseLayer === 0 ? buttonSelectedStyle : buttonNotSelectedStyle}
-          onClick={() => setBaseLayer(0)}
-        >
-          SAT
-        </Button>
-        <Button
-          style={baseLayer === 1 ? buttonSelectedStyle : buttonNotSelectedStyle}
-          onClick={() => setBaseLayer(1)}
-        >
-          ROAD
-        </Button>
-      </ButtonGroup>
+      <LayerSelectComponent
+        onSelect={setBaseLayer}
+        selectedBaseLayer={baseLayer}
+      />
       <Map
         center={props.center ? toPosArray(props.center) : toPosArray(position)}
         zoom={20}
@@ -152,57 +134,27 @@ const Comp = (props: {
         scrollWheelZoom={false}
         zoomControl={true}
       >
-        {baseLayer === 0 && (
-          <TileLayer
-            url={"http://mt0.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"}
-            attribution="something"
-            maxNativeZoom={24}
-          />
-        )}
-
-        {baseLayer === 1 && (
-          <TileLayer
-            url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution="something"
-            maxNativeZoom={19}
-          />
-        )}
-        {polygons.map((polygon, id) => (
-          <Polygon
-            key={polygon.id}
-            fillColor={"red"}
-            positions={polygon.positions.map(toPosArray)}
-            onMouseover={() => onHoverEnterPolygon(id)}
-            onMouseout={() => onHoverLeavePolygon(id)}
+        <BaseLayer type={baseLayer} />
+        {props.points?.map((point) => (
+          <CircleMarker
+            key={point.id}
+            center={toPosArray(point)}
+            radius={10}
+            fill={true}
+            onClick={(e: any) => pointClickCallback(e, point)}
             bubblingMouseEvents={false}
-            stroke={true}
-            weight={2}
-            opacity={1}
-            color={polygonHovered === id ? "white" : "red"}
+            fillOpacity={1}
+            fillColor={point.color || "#ffdd00"}
+            color={point.color || "#ffdd00"}
           >
-            <Tooltip>Danger Zone {polygon.id}</Tooltip>
-          </Polygon>
+            <Tooltip direction="top" offset={[0, -10]}>
+              My id!: {point.id}
+            </Tooltip>
+          </CircleMarker>
         ))}
-        {props.positions &&
-          Object.values(props.positions)
-            .filter((a) => a.latitude && a.longitude)
-            .map((positions) => getPosMarker(positions))}
-        <Polyline positions={points.map(toPosArray)} color="#ffdd00" />
-        {points.map((pt, index) => {
-          return (
-            <CircleMarker
-              key={index}
-              center={toPosArray(pt)}
-              radius={5}
-              onClick={(e: any) => pointClickCallback(e, index)}
-              bubblingMouseEvents={false}
-              color="#ffdd00"
-            />
-          );
-        })}
       </Map>
     </>
   );
 };
 
-export default Comp;
+export default MapComponent;
