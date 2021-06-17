@@ -149,8 +149,8 @@ const MapComponent = (props: {
             fill={true}
             bubblingMouseEvents={false}
             fillOpacity={1}
-            fillColor={"#ff0000"}
-            color={"#ff0000"}
+            fillColor={"#03fce3"}
+            color={"#ffffff"}
           ></CircleMarker>
         )}
         {props.points?.map((point) => (
