@@ -1,12 +1,9 @@
-import React from "react";
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
 import FilterListIcon from "@material-ui/icons/FilterList";
 
 import Chip from "@material-ui/core/Chip";
-import { AppContext } from "../AppHandler/AppContext";
-import { ITask } from "../types/ITask";
 import { useFilters } from "./FilterContext";
 
 const FilterControls = () => {
