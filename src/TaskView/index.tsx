@@ -1,5 +1,6 @@
 import { Box, Button, Grid, MenuItem, TextField } from "@material-ui/core";
 import React, { useState } from "react";
+import { Position } from "../map/types";
 import { ETaskPriority, ETaskStatus, ITask } from "../types/ITask";
 import TaskOnMap from "./TaskOnMap";
 
@@ -20,6 +21,7 @@ const TaskView = (props: { task?: ITask }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [status, setStatus] = useState("");
+  const [location, setLocation] = useState<Position | null>(null);
 
   return (
     <Grid container spacing={3} alignItems="stretch">
@@ -66,7 +68,13 @@ const TaskView = (props: { task?: ITask }) => {
       <Grid item xs={12}>
         <TextField label="Task Title"></TextField>
       </Grid>
-      <TaskOnMap width={400} height={400} task={props.task} />
+      <TaskOnMap
+        width={400}
+        height={400}
+        task={{ ...props.task, location }}
+        onClick={setLocation}
+        onDelete={() => setLocation(null)}
+      />
 
       <Grid item xs={12}>
         <Button>Save</Button>
