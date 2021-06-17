@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from "react";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {AppContext} from "./AppContext";
 import {IAppContextValue} from "../types/IAppContextValue";
 import {IUser} from "../types/IUser";
@@ -86,13 +86,13 @@ export const AppHandler: React.FC = ({children}) => {
   }, []);
 
   // try and auto login if we have a user-id in local storage
-  useCallback(() => {
+  useEffect(() => {
     if (isLoading || activeUser !== null) {
       // we aren't ready, or we are already logged in
       return;
     }
 
-    const storedUserId = localStorage.get(localStorageUserKey);
+    const storedUserId = localStorage.getItem(localStorageUserKey);
     if (storedUserId) {
       // re-auth with existing user key
       setActiveUser(users.find(x => x._id === storedUserId));

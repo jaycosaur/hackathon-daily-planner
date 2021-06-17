@@ -3,6 +3,7 @@
     background: url( "https://srv-01-ap-southeast-2.data.propelleraero.com/or2e3858fa/background-e5df2131.jpg?Policy=eyJTdGF0ZW1lbnQiOlt7IlJlc291cmNlIjoiaHR0cHM6Ly8qL29yMmUzODU4ZmEvKiIsIkNvbmRpdGlvbiI6eyJEYXRlTGVzc1RoYW4iOnsiQVdTOkVwb2NoVGltZSI6MTYyNTA0NTExM319fV19&Signature=r0wwlfCetm9ybo2axTqFfHEjFAGeb2KGPrtULOX~U4Za~-lvn66Tqa3TItI5sLIvR5PS~mT4Hs6FBJ12C5STH3Kgr4zaLRL-SzQX9V-frfpiDEA3pHjHApNxKmbjV2CxdP0g7Z2Fx3proQnddX1lcyI3aELTvpGettuhdGtHAxRs4rP6BDXCdjeDD42NNRqXYpmtn7kmX3Ad4y8~4RENXRLuHZ0eyEBiqQTvg24m~m-rLbPvK-HVbrITVdFrx3kCkctsQBustUQHMOwtf9eB-Luzlq2fHtQm-BgYpKl7U~6eR9dXQ0dvGEXrAWpTOLoJMF~FS3aF5xFlNhwrtIyolw__&Key-Pair-Id=APKAI6AKZOWIA7VNVEUQ&response-content-disposition=attachment&response-cache-control=max-age=31536000" ) no-repeat center center fixed;
     height: 100vh;
     padding: 5%;
+    box-sizing: border-box;
 }
 
 .component-LoginPage .login-dialog {

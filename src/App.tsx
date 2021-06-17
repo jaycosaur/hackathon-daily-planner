@@ -19,6 +19,7 @@ import { AppContext } from "./AppHandler/AppContext";
 import MapView from "./MapView";
 import TaskView from "./TaskView";
 import ListView from "./ListView";
+import {LoginPage} from "./LoginPage";
 
 const appBarHeight = 50;
 
@@ -79,7 +80,7 @@ const AddNewTaskFab = ({ onClick }: { onClick: () => void }) => {
 };
 export const App: React.FC = () => {
   const { width, height } = useWindowSize();
-  const { isLoading } = useContext(AppContext);
+  const { isLoading, activeUser } = useContext(AppContext);
 
   const [view, setView] = useState(Pages.MAP_VIEW);
 
@@ -89,6 +90,12 @@ export const App: React.FC = () => {
         <CircularProgress />
       </div>
     );
+  }
+
+  if (activeUser === null) {
+    return <ThemeProvider theme={lightTheme}>
+      <LoginPage />
+    </ThemeProvider>
   }
 
   return (

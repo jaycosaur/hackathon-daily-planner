@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import Container from "@material-ui/core/Container";
 import { AppContext } from "../AppHandler/AppContext";
-import Task from "../Task";
+import Task from "../task";
 
 const ListView = () => {
   const { tasks } = useContext(AppContext);
