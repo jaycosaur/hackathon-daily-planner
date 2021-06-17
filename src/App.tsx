@@ -1,6 +1,7 @@
 import "./App.css";
 
 import Map from "./map";
+import TaskView from "./TaskView";
 import { useWindowSize } from "./useWindowSize";
 
 function App() {
@@ -12,7 +13,8 @@ function App() {
 
   return (
     <div className="App" style={{ width, height }}>
-      <Map width={width} height={height} polygons={[]} />
+      {/* <Map width={width} height={height} polygons={[]} /> */}
+      <TaskView></TaskView>
     </div>
   );
 }
