@@ -107,18 +107,11 @@ export const App: React.FC = () => {
           </Toolbar>
         </AppBar>
 
-<<<<<<< HEAD
-        {
-          showingTaskList &&
-            <TaskView/>
-        }
-=======
         <div className="app-content">
           {view === Pages.MAP_VIEW && <MapView width={width} height={height} />}
           {view === Pages.TASK_EDIT && <TaskView />}
           {view === Pages.TASK_VIEW && <ListView />}
         </div>
->>>>>>> b8381dd6e2786df6c30c4320c8b26ca8b4ce5806
       </div>
     </ThemeProvider>
   );
