@@ -11,6 +11,7 @@ import { lightTheme } from "./theme/themes";
 import MapIcon from "@material-ui/icons/Map";
 import ListIcon from "@material-ui/icons/List";
 import AddIcon from "@material-ui/icons/Add";
+import CloseIcon from "@material-ui/icons/Close";
 
 import { AppContext } from "./AppHandler/AppContext";
 import MapView from "./MapView";
@@ -59,25 +60,37 @@ export const App: React.FC = () => {
           {view === Pages.TASK_VIEW && <ListView />}
         </div>
       </div>
-      <BottomNavigation
-        value={"Map"}
-        onChange={(event, newValue) => {
-          setView(newValue);
-        }}
-        showLabels
-      >
-        <BottomNavigationAction
-          label="Map"
-          icon={<MapIcon />}
-          value={Pages.MAP_VIEW}
-        />
-        <BottomNavigationAction
-          label="List"
-          icon={<ListIcon />}
-          value={Pages.TASK_VIEW}
-        />
-        <BottomNavigationAction icon={<AddIcon />} value={Pages.TASK_EDIT} />
-      </BottomNavigation>
+      <div style={{ background: "white" }}>
+        <BottomNavigation
+          value={"Map"}
+          onChange={(event, newValue) => {
+            setView(newValue);
+          }}
+          showLabels
+        >
+          <BottomNavigationAction
+            label="Map"
+            icon={<MapIcon />}
+            value={Pages.MAP_VIEW}
+          />
+          <BottomNavigationAction
+            label="List"
+            icon={<ListIcon />}
+            value={Pages.TASK_VIEW}
+          />
+          {view === Pages.TASK_EDIT ? (
+            <BottomNavigationAction
+              icon={<CloseIcon />}
+              value={Pages.MAP_VIEW}
+            />
+          ) : (
+            <BottomNavigationAction
+              icon={<AddIcon />}
+              value={Pages.TASK_EDIT}
+            />
+          )}
+        </BottomNavigation>
+      </div>
     </ThemeProvider>
   );
 };
