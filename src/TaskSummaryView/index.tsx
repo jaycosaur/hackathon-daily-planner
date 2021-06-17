@@ -61,7 +61,6 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({
       </div>
 
       <div className="task-activities">
-        no
         {retrieveActivityForTask(task._id).map((taskActivity) => (
           <TaskActivityCard taskActivity={taskActivity} />
         ))}
@@ -73,7 +72,6 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({
             }}
           />
         ))}
-        yes
       </div>
 
       <div className="task-activity-bar">
