@@ -11,7 +11,7 @@ export interface IAppContextValue {
 
   tasks: ITask[];
   createTask(task: ITask): Promise<ITask>;
-  updateTask(task: ITask): Promise<ITask>;
+  updateTask(task: ITask): Promise<void>;
 
   retrieveTaskImage(imageId: string): Promise<ITaskImage>;
 
