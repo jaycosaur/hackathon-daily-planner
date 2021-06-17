@@ -10,6 +10,7 @@ import { TaskActivityCard } from "../TaskActivityCard";
 import { TaskActivityBar } from "./TaskActivityBar";
 import { ETaskActivityType } from "../types/ITaskActivity";
 import moment from "moment";
+import {ellipsis} from "../util/ellipsis";
 
 export interface ITaskSummaryViewProps {
   task: ITask;
@@ -34,7 +35,7 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({
 
   return (
     <div className="component-TaskSummaryView">
-      <h2>{task.title}</h2>
+      <h2>{ellipsis(task.title, 50)}</h2>
       <div className="task-summary-ribbon">
         {taskStatusAsChip(task.status)}
         {activeUserForTask && (
