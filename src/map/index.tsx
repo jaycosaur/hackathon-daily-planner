@@ -113,9 +113,7 @@ const MapComponent = (props: {
     MapBaseLayer.SAT
   );
 
-  const { latitude, longitude, errorMessage } = usePosition(true);
-
-  console.log(latitude, longitude, errorMessage);
+  const { latitude, longitude } = usePosition(true);
 
   return (
     <>
