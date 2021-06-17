@@ -69,7 +69,7 @@ export const App: React.FC = () => {
 
   const [activeTaskId, setActiveTaskId] = useState<null | guid>();
   const handleSelectTask = useCallback(
-    (x) => {
+    (x: string) => {
       setActiveTaskId(x);
       setView(Pages.TASK_EDIT);
     },
@@ -112,7 +112,10 @@ export const App: React.FC = () => {
               )}
               {view === Pages.TASK_EDIT && <TaskView taskId={activeTaskId} />}
               {view === Pages.TASK_VIEW && (
-                <ListView onTaskSelect={handleSelectTask} topPadding={100} />
+                <ListView
+                  onTaskSelect={(task) => handleSelectTask(task._id)}
+                  topPadding={100}
+                />
               )}
             </PageContainer>
             <div style={{ background: "white" }}>
