@@ -1,8 +1,13 @@
 import "./App.css";
+import React from "react";
+import { v4 as uuid } from "uuid";
 
 import Map from "./map";
 import TaskView from "./TaskView";
 import { useWindowSize } from "./useWindowSize";
+import { ThemeProvider } from "@material-ui/core";
+
+import { lightTheme } from "./theme/themes";
 
 function App() {
     const { width, height } = useWindowSize();

@@ -7,9 +7,11 @@ import {
     TextField,
 } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
-import React, { useContext, useState } from "react";
 import { AppContext } from "../AppHandler/AppContext";
+import React, { useState } from "react";
+import { Position } from "../map/types";
 import { ETaskPriority, ETaskStatus, ITask } from "../types/ITask";
+import TaskOnMap from "./TaskOnMap";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -42,6 +44,7 @@ const TaskView = (props: { task?: ITask }) => {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [status, setStatus] = useState("");
+    const [location, setLocation] = useState<Position | null>(null);
 
     const save = () => {};
 
@@ -115,12 +118,36 @@ const TaskView = (props: { task?: ITask }) => {
                         )}
                     />
                 </Grid>
+
+                <Grid item xs={12}>
+                    <TextField label="Task Title"></TextField>
+                </Grid>
+                <TaskOnMap
+                    width={400}
+                    height={400}
+                    task={{ ...props.task, location }}
+                    onClick={setLocation}
+                    onDelete={() => setLocation(null)}
+                />
+
                 <Grid item xs={12}>
                     <Button>Save</Button>
                 </Grid>
             </Grid>
         </form>
     );
+    // const [task, setTask] = useState<ITask>({
+    //     _id: "someId",
+    //     title: "hello",
+    //     createdUserId: "1",
+    //     assignedUserId: "2",
+    //     description: "desc",
+    //     status: ETaskStatus.Pending,
+    //     priority: ETaskPriority.Medium,
+    //     location: null,
+    //     imageId: null,
+    //     dueDate: null,
+    // });
 };
 
 export default TaskView;
