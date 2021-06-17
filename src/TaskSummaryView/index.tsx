@@ -1,12 +1,13 @@
 import React, { useContext } from "react";
 import "./style.css";
 import { ITask, taskStatusAsChip } from "../types/ITask";
-import { Button, Chip } from "@material-ui/core";
+import {Button, Chip} from "@material-ui/core";
 import FaceIcon from "@material-ui/icons/Face";
 import { AppContext } from "../AppHandler/AppContext";
 import TaskOnMap from "../TaskAddEditView/TaskOnMap";
 import { useWindowSize } from "../useWindowSize";
 import { TaskActivityCard } from "../TaskActivityCard";
+import {TaskActivityBar} from "./TaskActivityBar";
 
 export interface ITaskSummaryViewProps {
   task: ITask;
@@ -27,7 +28,6 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({
 
   const activeUserForTask = users.find((x) => x._id === task.assignedUserId);
 
-  // TODO: use shared chip
   return (
     <div className="component-TaskSummaryView">
       <h2>{task.title}</h2>
@@ -44,7 +44,7 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({
 
         <div className="spacer" />
 
-        <Button>Mark completed</Button>
+        {/*<Button>Mark completed</Button>*/}
         <Button onClick={onEdit}>Edit</Button>
       </div>
       <div className="task-map">
@@ -63,7 +63,9 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({
         ))}
       </div>
 
-      <div className="task-activity-bar">Hello</div>
+      <div className="task-activity-bar">
+        <TaskActivityBar task={task} />
+      </div>
     </div>
   );
 };
