@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import "./App.css";
 import {
   BottomNavigation,
@@ -20,6 +20,8 @@ import { LoginPage } from "./LoginPage";
 import FilterControls from "./FilterControls";
 import { FilterProvider } from "./FilterControls/FilterContext";
 import { TaskView } from "./TaskView";
+import { guid } from "./types/guid";
+import { Position } from "./map/types";
 
 const appBarHeight = 50;
 
@@ -34,6 +36,19 @@ export const App: React.FC = () => {
   const { isLoading, activeUser } = useContext(AppContext);
 
   const [view, setView] = useState(Pages.MAP_VIEW);
+
+  const [activeTaskId, setActiveTaskId] = useState<null | guid>();
+  const handleSelectTask = useCallback(
+    (x) => {
+      setActiveTaskId(x);
+      setView(Pages.TASK_EDIT);
+    },
+    [setActiveTaskId]
+  );
+
+  const handleCreateTaskFromPosition = useCallback((pt: Position) => {
+    alert("Create task from position??");
+  }, []);
 
   if (isLoading || !width || !height) {
     return (
@@ -60,28 +75,24 @@ export const App: React.FC = () => {
         <div className="App" style={{ width, height: height - appBarHeight }}>
           <div className="app-content">
             {view === Pages.MAP_VIEW && (
-              <MapView width={width} height={height - appBarHeight} />
+              <MapView
+                width={width}
+                height={height - appBarHeight}
+                onTaskSelect={handleSelectTask}
+                onEmptyPositionSelect={handleCreateTaskFromPosition}
+              />
             )}
-            {view === Pages.TASK_EDIT && (
-              // TODO: this needs to take a task ID to allow editing existing tasks
-              <TaskView />
+            {view === Pages.TASK_EDIT && <TaskView taskId={activeTaskId} />}
+            {view === Pages.TASK_VIEW && (
+              <ListView onTaskSelect={handleSelectTask} />
             )}
-            {view === Pages.TASK_VIEW && <ListView />}
-          </div>
-          <div className="App" style={{ width, height: height - appBarHeight }}>
-            <div className="app-content">
-              {view === Pages.MAP_VIEW && (
-                <MapView width={width} height={height - appBarHeight} />
-              )}
-              {view === Pages.TASK_EDIT && <TaskView />}
-              {view === Pages.TASK_VIEW && <ListView />}
-            </div>
           </div>
         </div>
         <div style={{ background: "white" }}>
           <BottomNavigation
             value={"Map"}
             onChange={(event, newValue) => {
+              setActiveTaskId(null); // sorry
               setView(newValue);
             }}
             showLabels
@@ -98,13 +109,15 @@ export const App: React.FC = () => {
             />
             {view === Pages.TASK_EDIT ? (
               <BottomNavigationAction
-                icon={<CloseIcon />}
+                label="Map"
+                icon={<MapIcon />}
                 value={Pages.MAP_VIEW}
               />
             ) : (
               <BottomNavigationAction
-                icon={<AddIcon />}
-                value={Pages.TASK_EDIT}
+                label="List"
+                icon={<ListIcon />}
+                value={Pages.TASK_VIEW}
               />
             )}
           </BottomNavigation>
