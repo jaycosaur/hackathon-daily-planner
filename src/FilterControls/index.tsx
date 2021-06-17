@@ -110,7 +110,7 @@ const FilterControls = () => {
 
   return (
     <div
-      style={{ padding: "12px 12px 6px", background: "rgba(255,255,255,0.5)" }}
+      style={{ padding: "12px 12px 6px", background: "rgba(255,255,255,0.7)" }}
     >
       <TextField
         value={filters.searchTerm}
