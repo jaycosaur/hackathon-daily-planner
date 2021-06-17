@@ -77,37 +77,37 @@ export const App: React.FC = () => {
               {view === Pages.TASK_VIEW && <ListView />}
             </div>
           </div>
-          <div style={{ background: "white" }}>
-            <BottomNavigation
-              value={"Map"}
-              onChange={(event, newValue) => {
-                setView(newValue);
-              }}
-              showLabels
-            >
+        </div>
+        <div style={{ background: "white" }}>
+          <BottomNavigation
+            value={"Map"}
+            onChange={(event, newValue) => {
+              setView(newValue);
+            }}
+            showLabels
+          >
+            <BottomNavigationAction
+              label="Map"
+              icon={<MapIcon />}
+              value={Pages.MAP_VIEW}
+            />
+            <BottomNavigationAction
+              label="List"
+              icon={<ListIcon />}
+              value={Pages.TASK_VIEW}
+            />
+            {view === Pages.TASK_EDIT ? (
               <BottomNavigationAction
-                label="Map"
-                icon={<MapIcon />}
+                icon={<CloseIcon />}
                 value={Pages.MAP_VIEW}
               />
+            ) : (
               <BottomNavigationAction
-                label="List"
-                icon={<ListIcon />}
-                value={Pages.TASK_VIEW}
+                icon={<AddIcon />}
+                value={Pages.TASK_EDIT}
               />
-              {view === Pages.TASK_EDIT ? (
-                <BottomNavigationAction
-                  icon={<CloseIcon />}
-                  value={Pages.MAP_VIEW}
-                />
-              ) : (
-                <BottomNavigationAction
-                  icon={<AddIcon />}
-                  value={Pages.TASK_EDIT}
-                />
-              )}
-            </BottomNavigation>
-          </div>
+            )}
+          </BottomNavigation>
         </div>
       </ThemeProvider>
     </FilterProvider>

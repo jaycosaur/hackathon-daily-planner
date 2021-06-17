@@ -1,9 +1,8 @@
-import React, { useContext } from "react";
 import Map from "../map";
-import { AppContext } from "../AppHandler/AppContext";
+import { useFilteredTasks } from "../FilterControls/useFilteredTasks";
 
 const MapView = (props: { width: number; height: number }) => {
-  const { tasks } = useContext(AppContext);
+  const { tasks } = useFilteredTasks();
   return (
     <>
       <Map
