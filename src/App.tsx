@@ -13,7 +13,6 @@ import { lightTheme } from "./theme/themes";
 import MapIcon from "@material-ui/icons/Map";
 import ListIcon from "@material-ui/icons/List";
 import CloseIcon from "@material-ui/icons/Close";
-import { Fab } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 
 import { AppContext } from "./AppHandler/AppContext";
