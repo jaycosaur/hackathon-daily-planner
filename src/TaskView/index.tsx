@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { AppContext } from "../AppHandler/AppContext";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Position } from "../map/types";
 import { ETaskPriority, ETaskStatus, ITask } from "../types/ITask";
 import TaskOnMap from "./TaskOnMap";
