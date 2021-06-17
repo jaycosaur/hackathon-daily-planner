@@ -13,12 +13,15 @@ import { Position } from "../map/types";
 import { ETaskPriority, ETaskStatus, ITask } from "../types/ITask";
 import TaskOnMap from "./TaskOnMap";
 import { IUser } from "../types/IUser";
+import { useWindowSize } from "../useWindowSize";
+import { unixTimestamp } from "../types/unixTimestamp";
+import { setDate } from "date-fns";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     "& .MuiTextField-root": {
-      margin: theme.spacing(1),
-      width: "25ch",
+      width: "90%",
+      marginBottom: "12px",
     },
   },
 }));
@@ -55,6 +58,9 @@ const TaskView = (props: { task?: ITask; onCompleted: () => void }) => {
   const [createdUser, setCreatedUser] = useState<IUser>();
   const [assignedUser, setAssignedUser] = useState<IUser>();
   const [location, setLocation] = useState<Position | null>(null);
+  const [dueDate, setDueDate] = useState<unixTimestamp>(null);
+
+  const windowSize = useWindowSize();
 
   const save = () => {
     const task: ITask = {
@@ -75,90 +81,98 @@ const TaskView = (props: { task?: ITask; onCompleted: () => void }) => {
   };
 
   return (
-    <form className={classes.root}>
-      <Grid container spacing={3} alignItems="stretch">
-        <Grid item xs={12}>
-          <h2>Add/Edit task</h2>
-        </Grid>
-
-        <Grid item xs={12}>
-          <TextField
-            label="Task Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          ></TextField>
-        </Grid>
-
-        <Grid item xs={12}>
-          <TextField
-            label="Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          ></TextField>
-        </Grid>
-
-        <Grid item xs={12}>
-          <TextField
-            select
-            label="Status"
-            value={status}
-            onChange={(e) => setStatus(e.target.value as ETaskStatus)}
-          >
-            {Object.entries(ETaskStatus).map((entry) => {
-              const [key, value] = entry;
-              return (
-                <MenuItem key={key} value={value}>
-                  {value}
-                </MenuItem>
-              );
-            })}
-          </TextField>
-        </Grid>
-
-        <Grid item xs={12}>
-          <TextField
-            select
-            label="Priority"
-            value={priority}
-            onChange={(e) => setPriority(e.target.value as ETaskPriority)}
-          >
-            {Object.entries(ETaskPriority).map((entry) => {
-              const [key, value] = entry;
-              return (
-                <MenuItem key={key} value={value}>
-                  {value}
-                </MenuItem>
-              );
-            })}
-          </TextField>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Autocomplete
-            options={users}
-            getOptionLabel={(user) => user.email}
-            renderInput={(params) => (
-              <TextField {...params} label="Assigned user" />
-            )}
-            onChange={(event, user: IUser) => {
-              user && setAssignedUser(user);
-            }}
-          />
-        </Grid>
-
+    <div
+      className={classes.root}
+      style={{
+        overflowY: "scroll",
+        height: "100%",
+      }}
+    >
+      <h2>Add/Edit task</h2>
+      <div
+        style={{
+          paddingBottom: 12,
+        }}
+      >
         <TaskOnMap
-          width={400}
-          height={400}
+          width={windowSize.width || 0}
+          height={200}
           task={{ ...props.task, location }}
           onClick={setLocation}
           onDelete={() => setLocation(null)}
         />
-
-        <Grid item xs={12}>
-          <Button onClick={save}>Save</Button>
-        </Grid>
-      </Grid>
-    </form>
+      </div>
+      <TextField
+        label="Task Title"
+        value={title}
+        variant="outlined"
+        onChange={(e) => setTitle(e.target.value)}
+      ></TextField>
+      <TextField
+        label="Description"
+        value={description}
+        variant="outlined"
+        onChange={(e) => setDescription(e.target.value)}
+      ></TextField>
+      <TextField
+        select
+        label="Status"
+        value={status}
+        variant="outlined"
+        onChange={(e) => setStatus(e.target.value as ETaskStatus)}
+      >
+        {Object.entries(ETaskStatus).map((entry) => {
+          const [key, value] = entry;
+          return (
+            <MenuItem key={key} value={value}>
+              {value}
+            </MenuItem>
+          );
+        })}
+      </TextField>
+      <TextField
+        select
+        label="Priority"
+        value={priority}
+        variant="outlined"
+        onChange={(e) => setPriority(e.target.value as ETaskPriority)}
+      >
+        {Object.entries(ETaskPriority).map((entry) => {
+          const [key, value] = entry;
+          return (
+            <MenuItem key={key} value={value}>
+              {value}
+            </MenuItem>
+          );
+        })}
+      </TextField>
+      <Autocomplete
+        options={users}
+        getOptionLabel={(user) => user.email}
+        renderInput={(params) => (
+          <TextField {...params} label="Assigned user" variant="outlined" />
+        )}
+        onChange={(event, user: IUser) => {
+          user && setAssignedUser(user);
+        }}
+      />
+      <TextField
+        variant="outlined"
+        type="date"
+        value={dueDate}
+        onChange={(e) => console.log(e.target.value)}
+      ></TextField>
+      <Button
+        onClick={save}
+        variant="contained"
+        style={{
+          marginBottom: 12,
+          width: "90%",
+        }}
+      >
+        Save
+      </Button>
+    </div>
   );
 };
 
