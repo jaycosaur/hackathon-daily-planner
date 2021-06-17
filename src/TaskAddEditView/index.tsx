@@ -45,7 +45,7 @@ const TaskAddEditView = (props: {
   // });
   const classes = useStyles();
 
-  const { isLoading, users, activeUser, login, tasks, createTask } =
+  const { isLoading, users, activeUser, login, tasks, createTask, updateTask } =
     useContext(AppContext);
 
   const { task, onCompleted } = props;
@@ -84,8 +84,17 @@ const TaskAddEditView = (props: {
       dueDate: moment(dueDate).unix(),
     };
 
-    const ret = await createTask(task);
-    onCompleted(ret);
+    let returnTask: ITask;
+
+    if (props.task._id) {
+      task._id = props.task._id;
+      await updateTask(task);
+      returnTask = task;
+    } else {
+      returnTask = await createTask(task);
+    }
+
+    onCompleted(returnTask);
   };
 
   return (
@@ -96,7 +105,7 @@ const TaskAddEditView = (props: {
         height: "100%",
       }}
     >
-      <h2>Add/Edit task</h2>
+      <h2>{task?._id ? "Edit" : "Add"} task</h2>
       <div
         style={{
           paddingBottom: 12,
@@ -180,7 +189,7 @@ const TaskAddEditView = (props: {
           width: "90%",
         }}
       >
-        Save
+        {task?._id ? "Update" : "Add"}
       </Button>
     </div>
   );
