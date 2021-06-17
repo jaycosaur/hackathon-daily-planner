@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useRef, useState } from "react";
 import { readAndCompressImage } from "browser-image-resizer";
-import { Button } from "@material-ui/core";
-
+import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
 export interface IPhotoUploadProps {
   onUpload: (base64data: string) => void;
 }
@@ -59,7 +58,7 @@ const PhotoUpload: React.FC<IPhotoUploadProps> = ({ children, onUpload }) => {
           justifyContent: "center",
         }}
       >
-        📸️
+        <PhotoCameraIcon fontSize="small" />
       </div>
       <input
         id="photoupload"

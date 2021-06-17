@@ -1,10 +1,12 @@
 import React, { useCallback, useContext, useState } from "react";
 import { ITask } from "../types/ITask";
-import { Button, TextareaAutosize } from "@material-ui/core";
+import { Button, TextField } from "@material-ui/core";
 import { ETaskActivityType } from "../types/ITaskActivity";
 import { AppContext } from "../AppHandler/AppContext";
 import PhotoUpload from "../PhotoUpload";
 import { ITaskImage } from "../types/ITaskImage";
+import AttachFileIcon from "@material-ui/icons/AttachFile";
+import SendIcon from "@material-ui/icons/Send";
 
 export interface ITaskActivityBar {
   task: ITask;
@@ -65,14 +67,24 @@ export const TaskActivityBar: React.FC<ITaskActivityBar> = ({ task }) => {
         justifyContent: "center",
       }}
     >
-      <TextareaAutosize
+      <TextField
+        id="standard-textarea"
+        placeholder="Write a message"
         value={commentMessage}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         className="textarea"
+        multiline
+        variant="outlined"
       />
-      <Button onClick={handleSubmit}>⬆️</Button>
-      <PhotoUpload onUpload={handlePhotoUpload}></PhotoUpload>
+
+      <Button onClick={handleSubmit} size="small">
+        <SendIcon fontSize="small" />
+      </Button>
+      <Button onClick={() => console.log("UPLOAD")} size="small">
+        <AttachFileIcon fontSize="small" />
+      </Button>
+      <PhotoUpload onUpload={handlePhotoUpload} />
     </form>
   );
 };
