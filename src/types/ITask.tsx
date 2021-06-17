@@ -83,7 +83,7 @@ export const taskStatusAsChip = (
       icon={getStatusIcon(status)}
       size="small"
       label={taskStatusAsString(status)}
-      style={{...style, backgroundColor: taskStatusAsColor(status)}}
+      style={{ ...style, backgroundColor: taskStatusAsColor(status) }}
     />
   );
 };
@@ -102,5 +102,7 @@ export interface ITask {
   location: null | ILocation;
 
   imageId: null | guid;
+
+  startDate: null | unixTimestamp;
   dueDate: null | unixTimestamp;
 }

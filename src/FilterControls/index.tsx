@@ -36,7 +36,7 @@ const FilterControls = () => {
       <div style={{ marginTop: 6 }}>
         <Chip
           avatar={<FilterListIcon />}
-          label="My Tasks"
+          label="Crew"
           onClick={() => {
             setFilters({
               ...filters,
@@ -47,7 +47,18 @@ const FilterControls = () => {
         />
         <Chip
           avatar={<FilterListIcon />}
-          label="Open Tasks"
+          label="Status"
+          onClick={() => {
+            setFilters({
+              ...filters,
+              openTask: !filters.openTask,
+            });
+          }}
+          color={filters.openTask ? "secondary" : undefined}
+        />
+        <Chip
+          avatar={<FilterListIcon />}
+          label="Dates"
           onClick={() => {
             setFilters({
               ...filters,
