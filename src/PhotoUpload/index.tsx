@@ -21,6 +21,7 @@ const PhotoUpload: React.FC<IPhotoUploadProps> = ({ children, onUpload }) => {
       quality: 0.2,
       maxWidth: 800,
       maxHeight: 600,
+      autoRotate: true,
     }).then((resized) => {
       console.log("resized", resized);
       const blobReader = new FileReader();

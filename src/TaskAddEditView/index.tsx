@@ -46,8 +46,8 @@ const TaskAddEditView = (props: {
   const { task, onCompleted } = props;
 
   const [_id, use_id] = useState(task?._id ?? undefined);
-  const [title, setTitle] = useState(task?._id ?? "");
-  const [description, setDescription] = useState(task?._id ?? "");
+  const [title, setTitle] = useState(task?.title ?? "");
+  const [description, setDescription] = useState(task?.description ?? "");
   const [status, setStatus] = useState<ETaskStatus>(
     task?.status ?? ETaskStatus.Pending
   );
