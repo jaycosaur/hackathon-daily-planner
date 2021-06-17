@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useRef, useState } from "react";
 import { readAndCompressImage } from "browser-image-resizer";
 import { Button } from "@material-ui/core";

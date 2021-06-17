@@ -1,3 +1,4 @@
+import React from "react";
 import Map from "../map";
 import { useFilteredTasks } from "../FilterControls/useFilteredTasks";
 import { guid } from "../types/guid";
@@ -10,6 +11,19 @@ export interface IMapViewProps {
   onEmptyPositionSelect(pt: Position): void;
 }
 
+const colorMapFromUsers = (
+  userId: string | null,
+  userIds: string[]
+): string => {
+  if (!userId) {
+    return "white";
+  }
+  const numberOfUsers = userIds.length;
+  const position = userIds.indexOf(userId);
+  const positionToRange = (255 * position) / numberOfUsers;
+  return `hsl(${positionToRange}, 100%, 50%)`;
+};
+
 const MapView: React.FC<IMapViewProps> = ({
   width,
   height,
@@ -17,6 +31,8 @@ const MapView: React.FC<IMapViewProps> = ({
   onEmptyPositionSelect,
 }) => {
   const { tasks } = useFilteredTasks();
+  const userIds = tasks.map((task) => task.assignedUserId).sort();
+
   return (
     <>
       <Map
@@ -29,6 +45,7 @@ const MapView: React.FC<IMapViewProps> = ({
             latitude: task.location.latitude,
             longitude: task.location.longitude,
             tooltip: task._id,
+            color: colorMapFromUsers(task.assignedUserId, userIds),
           }))}
         onClickPoint={(pt) => onEmptyPositionSelect(pt)}
         onPointSelected={(pt) => onTaskSelect(pt.id)}
