@@ -101,13 +101,15 @@ const TaskAddEditView = (props: {
           paddingBottom: 24,
         }}
       >
-        <TaskOnMap
-          width={windowSize.width || 0}
-          height={200}
-          onClick={setLocation}
-          onDelete={() => setLocation(null)}
-          point={location}
-        />
+        {windowSize.width && (
+          <TaskOnMap
+            width={windowSize.width}
+            height={200}
+            onClick={setLocation}
+            onDelete={() => setLocation(null)}
+            point={location}
+          />
+        )}
       </div>
       <TextField
         label="Task Title"
