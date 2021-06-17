@@ -108,15 +108,15 @@ const TaskAddEditView = (props: {
       <h2>{task?._id ? "Edit" : "Add"} task</h2>
       <div
         style={{
-          paddingBottom: 12,
+          paddingBottom: 24,
         }}
       >
         <TaskOnMap
           width={windowSize.width || 0}
           height={200}
-          task={{ ...props.task, location }}
           onClick={setLocation}
           onDelete={() => setLocation(null)}
+          point={location}
         />
       </div>
       <TextField
