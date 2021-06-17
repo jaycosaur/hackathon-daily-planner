@@ -62,7 +62,11 @@ const TaskAddEditView = (props: {
   const [createdUser, setCreatedUser] = useState<IUser>();
   const [assignedUser, setAssignedUser] = useState<IUser>();
   const [location, setLocation] = useState<Position | null>(null);
-  const [dueDate, setDueDate] = useState<string>(null);
+  const [dueDate, setDueDate] = useState<string>(
+    task?.dueDate
+      ? moment.unix(task.dueDate).format("YYYY-MM-DD")
+      : moment().format("YYYY-MM-DD")
+  );
 
   const windowSize = useWindowSize();
 
@@ -77,7 +81,7 @@ const TaskAddEditView = (props: {
       location,
       priority,
       imageId: null,
-      dueDate: null,
+      dueDate: moment(dueDate).unix(),
     };
 
     const ret = await createTask(task);
