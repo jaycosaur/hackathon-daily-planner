@@ -18,15 +18,19 @@ const MapView = (props: { width: number; height: number }) => {
   ]);
 
   return (
-    <Map
-      width={props.width}
-      height={props.height}
-      points={points}
-      onClickPoint={(pt) => setPoints((old) => [...old, { id: uuid(), ...pt }])}
-      onPointSelected={(pt) =>
-        setPoints((old) => old.filter((old) => old.id !== pt.id))
-      }
-    />
+    <>
+      <Map
+        width={props.width}
+        height={props.height}
+        points={points}
+        onClickPoint={(pt) =>
+          setPoints((old) => [...old, { id: uuid(), ...pt }])
+        }
+        onPointSelected={(pt) =>
+          setPoints((old) => old.filter((old) => old.id !== pt.id))
+        }
+      />
+    </>
   );
 };
 

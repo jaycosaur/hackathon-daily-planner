@@ -5,6 +5,7 @@
   "dependencies": {
     "@fontsource/nunito-sans": "^4.4.5",
     "@material-ui/core": "^4.11.4",
+    "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.58",
     "@material-ui/icons": "^4.11.2",
     "@testing-library/jest-dom": "^5.11.4",
@@ -14,6 +15,7 @@
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "date-fns": "^2.22.1",
     "leaflet": "^1.7.1",
     "moment": "^2.29.1",
     "react": "^17.0.2",
