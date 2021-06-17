@@ -59,11 +59,13 @@ export const TaskActivityBar: React.FC<ITaskActivityBar> = ({task}) => {
       });
 
       await createTaskActivity({
+        _id: undefined,
         taskId: task._id,
+        createdByUserId: activeUser._id,
         createdAt: moment().unix(),
         type: ETaskActivityType.Image,
         taskImageId: taskImage._id
-      } as any);
+      });
 
       // app handler will re-load task activities and display the image
     }, [task._id, activeUser?._id, createTaskActivity, createTaskImage]);
