@@ -22,10 +22,6 @@ export const App: React.FC = () => {
     setShowingTaskList(x => !x);
   }, [setShowingTaskList]);
 
-  if (!width || !height) {
-    return null;
-  }
-
   const [points, setPoints] = React.useState<
     Array<{
       latitude: number;
