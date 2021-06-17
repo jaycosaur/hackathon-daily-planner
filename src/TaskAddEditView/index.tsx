@@ -17,6 +17,7 @@ import { useWindowSize } from "../useWindowSize";
 import { unixTimestamp } from "../types/unixTimestamp";
 import { setDate } from "date-fns";
 import moment from "moment";
+import PhotoUpload from "../PhotoUpload";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -169,6 +170,7 @@ const TaskAddEditView = (props: {
           setDueDate(e.target.value);
         }}
       ></TextField>
+      <PhotoUpload></PhotoUpload>
       <Button
         onClick={save}
         variant="contained"
