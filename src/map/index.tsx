@@ -1,5 +1,6 @@
 import React from "react";
 import { Map, TileLayer, Tooltip, CircleMarker } from "react-leaflet";
+import { usePosition } from "use-position";
 
 import { Position } from "./types";
 import { Button, ButtonGroup } from "@material-ui/core";
@@ -112,6 +113,10 @@ const MapComponent = (props: {
     MapBaseLayer.SAT
   );
 
+  const { latitude, longitude, errorMessage } = usePosition(true);
+
+  console.log(latitude, longitude, errorMessage);
+
   return (
     <>
       {false && (
@@ -133,6 +138,21 @@ const MapComponent = (props: {
         zoomControl={false}
       >
         <BaseLayer type={baseLayer} />
+        {typeof longitude === "number" && (
+          <CircleMarker
+            key={"me"}
+            center={toPosArray({
+              latitude,
+              longitude,
+            })}
+            radius={10}
+            fill={true}
+            bubblingMouseEvents={false}
+            fillOpacity={1}
+            fillColor={"#ff0000"}
+            color={"#ff0000"}
+          ></CircleMarker>
+        )}
         {props.points?.map((point) => (
           <CircleMarker
             key={point.id}
