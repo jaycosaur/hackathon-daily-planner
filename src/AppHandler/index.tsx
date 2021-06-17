@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { AppContext } from "./AppContext";
 import { IAppContextValue } from "../types/IAppContextValue";
