@@ -27,16 +27,19 @@ export const TaskActivityBar: React.FC<ITaskActivityBar> = ({task}) => {
     const handleSubmit = useCallback(() => {
       // post text as new event
       createTaskActivity({
+        _id: undefined,
         type: ETaskActivityType.Text,
         taskId: task._id,
         text: commentMessage,
-      } as any).catch(console.error);
+        createdAt: moment().unix(),
+        createdByUserId: activeUser._id
+      }).catch(console.error);
 
       setCommentMessage("");
 
       // sorry mum
       setTimeout(() => setCommentMessage(""), 500);
-    }, [commentMessage, setCommentMessage, createTaskActivity, task._id]);
+    }, [commentMessage, setCommentMessage, createTaskActivity, task._id, activeUser._id]);
 
     const handleKeyDown = useCallback(
       (e: any) => {

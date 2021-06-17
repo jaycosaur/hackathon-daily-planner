@@ -8,6 +8,7 @@ import {
   ListItemAvatar,
   ListItemText,
 } from "@material-ui/core";
+import moment from "moment";
 
 export interface ITaskActivityCardProps {
   taskActivity: ITaskActivity;
@@ -35,16 +36,17 @@ function useTaskImage(imageId?: string): undefined | ITaskImage {
   return taskImage;
 }
 
-const ChatBubble: React.FC<{ text: string; email: string }> = ({
+const ChatBubble: React.FC<{ text: string; email: string, date: string }> = ({
   text,
   email,
+  date
 }) => (
   <ListItem alignItems="flex-start">
     <ListItemAvatar>
-      <Avatar>{email[0]}</Avatar>
+      <Avatar>{email[0].toUpperCase()}</Avatar>
     </ListItemAvatar>
     <ListItemText
-      primary="Message"
+      primary={email.split("@")[0] + ` (${date})`}
       secondary={<React.Fragment>{text}</React.Fragment>}
     />
   </ListItem>
@@ -67,8 +69,14 @@ export const TaskActivityCard: React.FC<ITaskActivityCardProps> = ({
   // load image, if we have one
   const taskImage = useTaskImage(taskActivity.taskImageId);
 
+  const {users} = useContext(AppContext);
+
   if (taskActivity.type === ETaskActivityType.Text) {
-    return <ChatBubble text={taskActivity.text} email="DUMMY" />;
+    return <ChatBubble
+      text={taskActivity.text}
+      email={users.find(x => x._id === taskActivity.createdByUserId)?.email || "[Unknown]"}
+      date={moment.unix(taskActivity.createdAt).fromNow()}
+    />;
   }
 
   if (taskActivity.type === ETaskActivityType.StatusUpdate) {
@@ -76,6 +84,7 @@ export const TaskActivityCard: React.FC<ITaskActivityCardProps> = ({
   }
 
   if (taskActivity.type === ETaskActivityType.Image) {
+    // TODO: dates & poster
     return (
       <ListItem alignItems="flex-start">
         <ListItemText primary="Image Uploaded" />

@@ -10,7 +10,9 @@ export enum ETaskActivityType {
 export interface ITaskActivity {
   _id: guid;
   taskId: guid;
+
   createdAt: unixTimestamp;
+  createdByUserId: guid;
 
   type: ETaskActivityType,
 

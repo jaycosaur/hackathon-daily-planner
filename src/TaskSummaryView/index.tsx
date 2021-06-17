@@ -21,7 +21,7 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({
   task,
   onEdit,
 }) => {
-  const { users, retrieveActivityForTask } =
+  const { users, activeUser, retrieveActivityForTask } =
     useContext(AppContext);
   const windowSize = useWindowSize();
 
@@ -73,6 +73,7 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({
                 _id: "first",
                 taskId: task._id,
                 createdAt: moment().unix(),
+                createdByUserId: activeUser._id,
                 text: `Created by ${createdUserForTask.email.split("@")[0]}`,
                 type: ETaskActivityType.StatusUpdate,
               }}
