@@ -8,7 +8,7 @@
 
 .App .app-content {
   /* sorry */
-  height: calc(100vh - 50px);
+  /* height: calc(100vh - 50px); */
 }
 
 .App.loading-spinner {

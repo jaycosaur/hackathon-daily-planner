@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { AppContext } from "../AppHandler/AppContext";
-import { ITask } from "../types/ITask";
+import { ETaskStatus, ITask } from "../types/ITask";
 import { useFilters } from "./FilterContext";
 
 const textSearchTasks = (searchTerm: string, tasks: ITask[]): ITask[] => {
@@ -15,9 +15,13 @@ export const useFilteredTasks = () => {
   const { filters } = useFilters();
   const { tasks } = useContext(AppContext);
 
-  const filteredTasks = filters.searchTerm
+  const searchedTasks = filters.searchTerm
     ? textSearchTasks(filters.searchTerm, tasks)
     : tasks;
+
+  const filteredTasks = filters.openTask
+    ? searchedTasks.filter((task) => task.status !== ETaskStatus.Done)
+    : searchedTasks;
 
   return {
     tasks: filteredTasks,

@@ -24,6 +24,7 @@ import { guid } from "./types/guid";
 import { Position } from "./map/types";
 
 const appBarHeight = 50;
+const BOTTOM_BAR_HEIGHT = 56;
 
 enum Pages {
   "TASK_VIEW",
@@ -38,16 +39,24 @@ const hasSearch = (page: Pages) => {
   return false;
 };
 
-const PageContainer: React.FC<{ page: Pages }> = (props) => {
+const PageContainer: React.FC<{ page: Pages; height: number }> = (props) => {
+  const showSearch = hasSearch(props.page);
   return (
     <div>
-      {hasSearch(props.page) && (
+      {showSearch && (
         <div style={{ position: "fixed", zIndex: 100, width: "100%" }}>
           <FilterControls />
         </div>
       )}
-
-      {props.children}
+      <div
+        className="page-cont"
+        style={{
+          height: props.height,
+          overflow: "auto",
+        }}
+      >
+        {props.children}
+      </div>
     </div>
   );
 };
@@ -90,9 +99,9 @@ export const App: React.FC = () => {
   return (
     <FilterProvider>
       <ThemeProvider theme={lightTheme}>
-        <div className="App" style={{ width, height: height - appBarHeight }}>
-          <div className="app-content">
-            <PageContainer page={view}>
+        <div className="App">
+          <div className="app-content" style={{ overflow: "hidden" }}>
+            <PageContainer page={view} height={height - BOTTOM_BAR_HEIGHT}>
               {view === Pages.MAP_VIEW && (
                 <MapView
                   width={width}
@@ -106,39 +115,39 @@ export const App: React.FC = () => {
                 <ListView onTaskSelect={handleSelectTask} />
               )}
             </PageContainer>
+            <div style={{ background: "white" }}>
+              <BottomNavigation
+                value={"Map"}
+                onChange={(event, newValue) => {
+                  setActiveTaskId(null); // sorry
+                  setView(newValue);
+                }}
+                showLabels
+              >
+                <BottomNavigationAction
+                  label="Map"
+                  icon={<MapIcon />}
+                  value={Pages.MAP_VIEW}
+                />
+                <BottomNavigationAction
+                  label="List"
+                  icon={<ListIcon />}
+                  value={Pages.TASK_VIEW}
+                />
+                {view === Pages.TASK_EDIT ? (
+                  <BottomNavigationAction
+                    icon={<CloseIcon />}
+                    value={Pages.MAP_VIEW}
+                  />
+                ) : (
+                  <BottomNavigationAction
+                    icon={<AddIcon />}
+                    value={Pages.TASK_EDIT}
+                  />
+                )}
+              </BottomNavigation>
+            </div>
           </div>
-        </div>
-        <div style={{ background: "white" }}>
-          <BottomNavigation
-            value={"Map"}
-            onChange={(event, newValue) => {
-              setActiveTaskId(null); // sorry
-              setView(newValue);
-            }}
-            showLabels
-          >
-            <BottomNavigationAction
-              label="Map"
-              icon={<MapIcon />}
-              value={Pages.MAP_VIEW}
-            />
-            <BottomNavigationAction
-              label="List"
-              icon={<ListIcon />}
-              value={Pages.TASK_VIEW}
-            />
-            {view === Pages.TASK_EDIT ? (
-              <BottomNavigationAction
-                icon={<CloseIcon />}
-                value={Pages.MAP_VIEW}
-              />
-            ) : (
-              <BottomNavigationAction
-                icon={<AddIcon />}
-                value={Pages.TASK_EDIT}
-              />
-            )}
-          </BottomNavigation>
         </div>
       </ThemeProvider>
     </FilterProvider>
