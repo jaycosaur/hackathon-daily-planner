@@ -16,6 +16,7 @@ import { IUser } from "../types/IUser";
 import { useWindowSize } from "../useWindowSize";
 import { unixTimestamp } from "../types/unixTimestamp";
 import { setDate } from "date-fns";
+import moment from "moment";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TaskView = (props: {
+const TaskAddEditView = (props: {
   task?: ITask;
   onCompleted: (task: ITask) => void;
 }) => {
@@ -61,7 +62,7 @@ const TaskView = (props: {
   const [createdUser, setCreatedUser] = useState<IUser>();
   const [assignedUser, setAssignedUser] = useState<IUser>();
   const [location, setLocation] = useState<Position | null>(null);
-  const [dueDate, setDueDate] = useState<unixTimestamp>(null);
+  const [dueDate, setDueDate] = useState<string>(null);
 
   const windowSize = useWindowSize();
 
@@ -163,7 +164,9 @@ const TaskView = (props: {
         variant="outlined"
         type="date"
         value={dueDate}
-        onChange={(e) => console.log(e.target.value)}
+        onChange={(e) => {
+          setDueDate(e.target.value);
+        }}
       ></TextField>
       <Button
         onClick={save}
@@ -179,4 +182,4 @@ const TaskView = (props: {
   );
 };
 
-export default TaskView;
+export default TaskAddEditView;
