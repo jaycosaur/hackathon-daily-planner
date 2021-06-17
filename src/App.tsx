@@ -22,25 +22,42 @@ function App() {
     //   }, 1000);
     // }, []);
 
+    const [points, setPoints] = React.useState<
+        Array<{
+            latitude: number;
+            longitude: number;
+            id: string;
+        }>
+    >([
+        {
+            latitude: -33.881144323948234,
+            longitude: 151.2135851533549,
+            id: "1",
+        },
+    ]);
+
     if (!width || !height) {
         return null;
     }
 
     return (
-        <div className="App" style={{ width, height }}>
-            {/* <Map
-                width={width}
-                height={height}
-                points={[
-                    {
-                        latitude: -33.881144323948234,
-                        longitude: 151.2135851533549,
-                        id: "1",
-                    },
-                ]}
-            /> */}
-            <TaskView></TaskView>
-        </div>
+        <ThemeProvider theme={lightTheme}>
+            <div className="App" style={{ width, height }}>
+                <Map
+                    width={width}
+                    height={height}
+                    points={points}
+                    onClickPoint={(pt) =>
+                        setPoints((old) => [...old, { id: uuid(), ...pt }])
+                    }
+                    onPointSelected={(pt) =>
+                        setPoints((old) =>
+                            old.filter((old) => old.id !== pt.id)
+                        )
+                    }
+                />
+            </div>
+        </ThemeProvider>
     );
 }
 
