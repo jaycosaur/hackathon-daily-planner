@@ -52,13 +52,15 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({
         <Button onClick={onEdit}>Edit</Button>
       </div>
       <div className="task-map">
-        <TaskOnMap
-          width={windowSize.width || 0}
-          height={200}
-          onClick={() => {}}
-          onDelete={() => {}}
-          point={task.location}
-        />
+        {windowSize.width && (
+          <TaskOnMap
+            width={windowSize.width}
+            height={200}
+            onClick={() => {}}
+            onDelete={() => {}}
+            point={task.location}
+          />
+        )}
       </div>
 
       <div className="task-activities">
