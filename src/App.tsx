@@ -2,9 +2,21 @@ import "./App.css";
 
 import Map from "./map";
 import { useWindowSize } from "./useWindowSize";
+import {useContext, useEffect} from "react";
+import {AppContext} from "./AppHandler/AppContext";
 
 function App() {
   const { width, height } = useWindowSize();
+
+  // const { isLoading, users, activeUser, login } = useContext(AppContext);
+  // console.log(isLoading, users, activeUser);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     login("jye.lewis@propelleraero.com.au")
+  //       .then(() => console.log("Logged in"))
+  //       .catch(console.error);
+  //   }, 1000);
+  // }, []);
 
   if (!width || !height) {
     return null;
