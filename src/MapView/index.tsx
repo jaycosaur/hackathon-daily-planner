@@ -3,7 +3,6 @@ import Map from "../map";
 import { useFilteredTasks } from "../FilterControls/useFilteredTasks";
 import { guid } from "../types/guid";
 import { Position } from "../map/types";
-import { AppContext } from "../AppHandler/AppContext";
 
 export interface IMapViewProps {
   width: number;

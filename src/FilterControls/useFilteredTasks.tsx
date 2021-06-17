@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { AppContext } from "../AppHandler/AppContext";
-import { ETaskStatus, ITask } from "../types/ITask";
+import { ITask } from "../types/ITask";
 import { useFilters } from "./FilterContext";
 
 const textSearchTasks = (searchTerm: string, tasks: ITask[]): ITask[] => {
