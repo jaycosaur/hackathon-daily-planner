@@ -11,7 +11,6 @@ const TaskOnMap: React.FC<{
   onClick: (position: Position) => void;
   onDelete: () => void;
 }> = ({ width, height, onClick, onDelete, point }) => {
-  console.log(point);
   return (
     <Map
       width={width}
