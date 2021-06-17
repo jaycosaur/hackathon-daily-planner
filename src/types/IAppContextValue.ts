@@ -1,6 +1,8 @@
 import {IUser} from "./IUser";
 import {ITask} from "./ITask";
 import {ITaskImage} from "./ITaskImage";
+import {ITaskActivity} from "./ITaskActivity";
+import {guid} from "./guid";
 
 export interface IAppContextValue {
   isLoading: boolean;
@@ -14,7 +16,8 @@ export interface IAppContextValue {
   createTask(task: ITask): Promise<ITask>;
   updateTask(task: ITask): Promise<void>;
 
-  retrieveTaskImage(imageId: string): Promise<ITaskImage>;
+  retrieveActivityForTask(taskId: guid): ITaskActivity[];
+  createTaskActivity(taskActivity: ITaskActivity): Promise<ITaskActivity>;
 
-  // TODO: activity log/messages/comments
+  retrieveTaskImage(imageId: guid): Promise<ITaskImage>;
 }

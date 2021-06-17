@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
-  Box,
   Button,
   Grid,
   makeStyles,
@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { AppContext } from "../AppHandler/AppContext";
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { Position } from "../map/types";
 import { ETaskPriority, ETaskStatus, ITask } from "../types/ITask";
 import TaskOnMap from "./TaskOnMap";

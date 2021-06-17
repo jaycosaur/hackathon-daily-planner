@@ -8,7 +8,6 @@
 
 .App .app-content {
   /* sorry */
-  position: fixed;
   height: calc(100vh - 50px);
 }
 

@@ -17,7 +17,7 @@ export enum ETaskPriority {
 }
 
 export interface ITask {
-  _id: null | guid;
+  _id: guid;
   createdUserId: guid;
   assignedUserId: guid;
 

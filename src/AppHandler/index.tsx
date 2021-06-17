@@ -5,9 +5,14 @@ import {IUser} from "../types/IUser";
 import {useQuery} from "react-query";
 import {ITask} from "../types/ITask";
 import {ITaskImage} from "../types/ITaskImage";
+import {guid} from "../types/guid";
+import {ITaskActivity} from "../types/ITaskActivity";
 
 const serverBaseUrl = "https://spineless.xyz/prp-daily-planner-1";
 const localStorageUserKey = "user_id";
+
+// task images are immutable & expensive to fetch, cache in memory
+const taskImagesCache = new Map<guid, ITaskImage>();
 
 const useUsers = () => {
   return useQuery<{}, {}, IUser[]>({
@@ -45,11 +50,36 @@ const useTasks = () => {
   });
 }
 
+const useTaskActivities = () => {
+  return useQuery<{}, {}, Map<guid, ITaskActivity[]>>({
+    queryKey: "task-activity",
+    refetchInterval: 120 * 1000, // refetch task activity every 2 minutes
+    queryFn: async () => {
+      // please don't tell anyone how I live
+      const result = await (await fetch(serverBaseUrl + "/task-activities")).json();
+      const taskActivities: ITaskActivity[] = result.items;
+
+      // dirty dirty index
+      const indexedTaskActivity = new Map<guid, ITaskActivity[]>(); // map taskId to activities for this task
+      for (const taskActivity of taskActivities) {
+        if (!indexedTaskActivity.has(taskActivity.taskId)) {
+          indexedTaskActivity.set(taskActivity.taskId, []);
+        }
+
+        indexedTaskActivity.get(taskActivity.taskId).push(taskActivity);
+      }
+
+      return indexedTaskActivity;
+    }
+  });
+}
+
 export const AppHandler: React.FC = ({children}) => {
   const {isLoading: isLoadingUsers, data: users, refetch: refetchUsers} = useUsers();
   const {isLoading: isLoadingTasks, data: tasks, refetch: refetchTasks} = useTasks();
+  const {isLoading: isLoadingTaskActivities, data: taskActivities, refetch: refetchTasksActivities} = useTaskActivities();
 
-  const isLoading = isLoadingUsers || isLoadingTasks;
+  const isLoading = isLoadingUsers || isLoadingTasks || isLoadingTaskActivities;
 
   const [activeUser, setActiveUser] = useState<null | IUser>(null);
   const login = useCallback(async (email: string) => {
@@ -130,9 +160,39 @@ export const AppHandler: React.FC = ({children}) => {
   }, [refetchTasks]);
 
   const retrieveTaskImage = useCallback(async (imageId: string): Promise<ITaskImage> => {
+    // check local cache before going out to network
+    if (taskImagesCache.has(imageId)) {
+      return taskImagesCache.get(imageId);
+    }
+
     const response = await fetch(serverBaseUrl + "/task-images/" + imageId);
-    return response.json();
+    const taskImage: ITaskImage = await response.json();
+
+    // store in local cache to avoid a request next time
+    taskImagesCache.set(taskImage._id, taskImage);
+
+    return taskImage;
   }, []);
+
+  const retrieveActivityForTask = useCallback((taskId: guid) => {
+    // we pre-index in the fetch so this function can be used in render bodies without any slowdown
+    return taskActivities.get(taskId) || [];
+  }, [taskActivities]);
+
+  const createTaskActivity = useCallback(async (taskActivity: ITaskActivity) => {
+    const response = await fetch(serverBaseUrl + "/task-activities", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(taskActivity)
+    });
+    const createdTaskActivity = response.json();
+
+    await refetchTasksActivities();
+
+    return createdTaskActivity;
+  }, [refetchTasksActivities]);
 
   const providerValue = useMemo<IAppContextValue>(() => ({
     isLoading,
@@ -146,8 +206,23 @@ export const AppHandler: React.FC = ({children}) => {
     createTask,
     updateTask,
 
+    retrieveActivityForTask,
+    createTaskActivity,
+
     retrieveTaskImage
-  }), [isLoading, activeUser, users, login, logout, tasks, createTask, updateTask, retrieveTaskImage]);
+  }), [
+    isLoading,
+    activeUser,
+    users,
+    login,
+    logout,
+    tasks,
+    createTask,
+    updateTask,
+    retrieveActivityForTask,
+    createTaskActivity,
+    retrieveTaskImage
+  ]);
 
   return <AppContext.Provider value={providerValue}>
     {children}
