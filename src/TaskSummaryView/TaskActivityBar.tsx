@@ -45,7 +45,14 @@ export const TaskActivityBar: React.FC<ITaskActivityBar> = ({ task }) => {
   );
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form
+      onSubmit={handleSubmit}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
       <TextareaAutosize
         value={commentMessage}
         onChange={handleChange}
