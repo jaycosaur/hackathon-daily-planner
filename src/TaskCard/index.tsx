@@ -1,10 +1,11 @@
 import React from "react";
 import Paper from "@material-ui/core/Paper";
-import { format, fromUnixTime } from "date-fns";
 import Chip from "@material-ui/core/Chip";
 import { ITask, taskPriorityAsString, taskStatusAsChip } from "../types/ITask";
 import LocationDisabledIcon from "@material-ui/icons/LocationDisabled";
 import MyLocationIcon from "@material-ui/icons/MyLocation";
+import moment from "moment";
+import {ellipsis} from "../util/ellipsis";
 
 export interface ITaskProps {
   task: ITask;
@@ -23,11 +24,11 @@ const Task: React.FC<ITaskProps> = ({ task, onClick }) => {
     >
       <div style={{ display: "flex", gap: "0.5rem" }}>
         <span>
-          <h3>{title}</h3>
+          <h3>{ellipsis(title, 20)}</h3>
         </span>
         <span>
           <h5 style={{ color: "grey" }}>
-            {dueDate && format(fromUnixTime(dueDate), "PPPPpppp")}
+            {dueDate && moment.unix(dueDate).fromNow()}
           </h5>
         </span>
       </div>

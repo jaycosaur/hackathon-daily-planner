@@ -18,7 +18,7 @@ export interface IAppContextValue {
 
   retrieveActivityForTask(taskId: guid): ITaskActivity[];
   createTaskActivity(taskActivity: ITaskActivity): Promise<ITaskActivity>;
-  createTaskImage(image: ITaskImage): Promise<ITaskImage>;
+
   retrieveTaskImage(imageId: guid): Promise<ITaskImage>;
-  retrieveImagesForTask(taskId: guid): ITaskImage[];
+  createTaskImage(image: ITaskImage): Promise<ITaskImage>;
 }

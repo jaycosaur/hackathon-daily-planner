@@ -101,8 +101,7 @@ export interface ITask {
 
   location: null | ILocation;
 
-  imageId: null | guid;
-
+  // TODO: change these as per the design
   startDate: null | unixTimestamp;
   dueDate: null | unixTimestamp;
 }

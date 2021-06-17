@@ -1,4 +1,5 @@
 import {guid} from "./guid";
+import {unixTimestamp} from "./unixTimestamp";
 
 export enum ETaskActivityType {
   StatusUpdate = "status-update", // e.g. John assigned task to himself, Steve changed priority to high
@@ -9,6 +10,7 @@ export enum ETaskActivityType {
 export interface ITaskActivity {
   _id: guid;
   taskId: guid;
+  createdAt: unixTimestamp;
 
   type: ETaskActivityType,
 

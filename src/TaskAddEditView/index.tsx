@@ -45,7 +45,7 @@ const TaskAddEditView = (props: {
 
   const { task, onCompleted } = props;
 
-  const [_id, use_id] = useState(task?._id ?? "");
+  const [_id, use_id] = useState(task?._id ?? undefined);
   const [title, setTitle] = useState(task?._id ?? "");
   const [description, setDescription] = useState(task?._id ?? "");
   const [status, setStatus] = useState<ETaskStatus>(
@@ -54,7 +54,6 @@ const TaskAddEditView = (props: {
   const [priority, setPriority] = useState<ETaskPriority>(
     task?.priority ?? ETaskPriority.High
   );
-  const [createdUser, setCreatedUser] = useState<IUser>();
   const [assignedUser, setAssignedUser] = useState<IUser>();
   const [location, setLocation] = useState<Position | null>(null);
   const [dueDate, setDueDate] = useState<string>(
@@ -69,13 +68,12 @@ const TaskAddEditView = (props: {
     const task: ITask = {
       _id,
       title,
-      createdUserId: createdUser?._id,
+      createdUserId: activeUser?._id,
       assignedUserId: assignedUser?._id,
       description,
       status,
       location,
       priority,
-      imageId: null,
       startDate: null,
       dueDate: moment(dueDate).unix(),
     };

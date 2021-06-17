@@ -9,6 +9,7 @@ import { useWindowSize } from "../useWindowSize";
 import { TaskActivityCard } from "../TaskActivityCard";
 import { TaskActivityBar } from "./TaskActivityBar";
 import { ETaskActivityType } from "../types/ITaskActivity";
+import moment from "moment";
 
 export interface ITaskSummaryViewProps {
   task: ITask;
@@ -19,7 +20,7 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({
   task,
   onEdit,
 }) => {
-  const { users, retrieveActivityForTask, retrieveImagesForTask } =
+  const { users, retrieveActivityForTask } =
     useContext(AppContext);
   const windowSize = useWindowSize();
 
@@ -29,8 +30,7 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({
   }
 
   const activeUserForTask = users.find((x) => x._id === task.assignedUserId);
-
-  const images = retrieveImagesForTask(task._id);
+  const createdUserForTask = users.find((x) => x._id === task.createdUserId);
 
   return (
     <div className="component-TaskSummaryView">
@@ -64,32 +64,36 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({
       </div>
 
       <div className="task-activities">
-        <TaskActivityCard
-          key={"first"}
-          taskActivity={{
-            _id: "first",
-            taskId: task._id,
-            text: `Created by ${task.createdUserId}`,
-            type: ETaskActivityType.StatusUpdate,
-          }}
-        />
+        {
+          createdUserForTask &&
+          <TaskActivityCard
+              key={"first"}
+              taskActivity={{
+                _id: "first",
+                taskId: task._id,
+                createdAt: moment().unix(),
+                text: `Created by ${createdUserForTask.email.split("@")[0]}`,
+                type: ETaskActivityType.StatusUpdate,
+              }}
+          />
+        }
         {retrieveActivityForTask(task._id).map((taskActivity) => (
           <TaskActivityCard
             taskActivity={taskActivity}
             key={taskActivity._id}
           />
         ))}
-        {images.map((i) => (
-          <TaskActivityCard
-            key={i._id}
-            taskActivity={{
-              _id: i._id,
-              taskId: i.taskId,
-              taskImageId: i._id,
-              type: ETaskActivityType.Image,
-            }}
-          />
-        ))}
+        {/*{images.map((i) => (*/}
+        {/*  <TaskActivityCard*/}
+        {/*    key={i._id}*/}
+        {/*    taskActivity={{*/}
+        {/*      _id: i._id,*/}
+        {/*      taskId: i.taskId,*/}
+        {/*      taskImageId: i._id,*/}
+        {/*      type: ETaskActivityType.Image,*/}
+        {/*    }}*/}
+        {/*  />*/}
+        {/*))}*/}
       </div>
 
       <div className="task-activity-bar">

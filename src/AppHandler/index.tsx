@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { AppContext } from "./AppContext";
 import { IAppContextValue } from "../types/IAppContextValue";
@@ -77,31 +76,6 @@ const useTaskActivities = () => {
   });
 };
 
-// NFI, just copy pasta
-const useTaskImages = () => {
-  return useQuery<{}, {}, Map<guid, ITaskImage[]>>({
-    queryKey: "task-images",
-    refetchInterval: 120 * 1000, // refetch task activity every 2 minutes
-    queryFn: async () => {
-      // please don't tell anyone how I live
-      const result = await (await fetch(serverBaseUrl + "/task-images")).json();
-      const taskImages: ITaskImage[] = result.items;
-
-      // dirty dirty index
-      const indexedTaskImage = new Map<guid, ITaskImage[]>(); // map taskId to activities for this task
-      for (const taskImage of taskImages) {
-        if (!indexedTaskImage.has(taskImage.taskId)) {
-          indexedTaskImage.set(taskImage.taskId, []);
-        }
-
-        indexedTaskImage.get(taskImage.taskId).push(taskImage);
-      }
-
-      return indexedTaskImage;
-    },
-  });
-};
-
 export const AppHandler: React.FC = ({ children }) => {
   const {
     isLoading: isLoadingUsers,
@@ -118,11 +92,6 @@ export const AppHandler: React.FC = ({ children }) => {
     data: taskActivities,
     refetch: refetchTasksActivities,
   } = useTaskActivities();
-  const {
-    isLoading: isLoadingTaskImages,
-    data: taskImages,
-    refetch: refetchTaskImages,
-  } = useTaskImages();
 
   const isLoading = isLoadingUsers || isLoadingTasks || isLoadingTaskActivities;
 
@@ -224,11 +193,9 @@ export const AppHandler: React.FC = ({ children }) => {
       });
 
       const createdImage = response.json();
-
-      await refetchTaskImages();
       return createdImage;
     },
-    [refetchTaskImages]
+    []
   );
 
   const retrieveTaskImage = useCallback(
@@ -255,14 +222,6 @@ export const AppHandler: React.FC = ({ children }) => {
       return taskActivities.get(taskId) || [];
     },
     [taskActivities]
-  );
-
-  const retrieveImagesForTask = useCallback(
-    (taskId: guid) => {
-      const res = taskImages.get(taskId) || [];
-      return res;
-    },
-    [taskImages]
   );
 
   const createTaskActivity = useCallback(
@@ -301,7 +260,6 @@ export const AppHandler: React.FC = ({ children }) => {
 
       retrieveTaskImage,
       createTaskImage,
-      retrieveImagesForTask,
     }),
     [
       isLoading,
@@ -316,7 +274,6 @@ export const AppHandler: React.FC = ({ children }) => {
       createTaskActivity,
       retrieveTaskImage,
       createTaskImage,
-      retrieveImagesForTask,
     ]
   );
 
