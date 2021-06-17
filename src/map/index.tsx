@@ -26,7 +26,7 @@ const BaseLayer: React.FC<{ type: MapBaseLayer }> = ({ type }) => {
   if (type === MapBaseLayer.SAT) {
     return (
       <TileLayer
-        url={"http://mt0.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"}
+        url={"https://mt0.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"}
         attribution="something"
         maxNativeZoom={24}
       />
