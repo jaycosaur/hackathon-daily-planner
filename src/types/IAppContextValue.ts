@@ -8,6 +8,7 @@ export interface IAppContextValue {
   activeUser: null | IUser; // null if not logged in
   users: IUser[];
   login(email: string): Promise<void>;
+  logout(): void;
 
   tasks: ITask[];
   createTask(task: ITask): Promise<ITask>;
