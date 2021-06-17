@@ -18,6 +18,7 @@ import AddIcon from "@material-ui/icons/Add";
 import { AppContext } from "./AppHandler/AppContext";
 import MapView from "./MapView";
 import TaskView from "./TaskView";
+import ListView from "./ListView";
 
 const appBarHeight = 50;
 
@@ -109,7 +110,7 @@ export const App: React.FC = () => {
         <div className="app-content">
           {view === Pages.MAP_VIEW && <MapView width={width} height={height} />}
           {view === Pages.TASK_EDIT && <TaskView />}
-          {view === Pages.TASK_VIEW && <h1>Taskss</h1>}
+          {view === Pages.TASK_VIEW && <ListView />}
         </div>
       </div>
     </ThemeProvider>
