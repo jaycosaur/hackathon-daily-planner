@@ -112,7 +112,7 @@ export const App: React.FC = () => {
               )}
               {view === Pages.TASK_EDIT && <TaskView taskId={activeTaskId} />}
               {view === Pages.TASK_VIEW && (
-                <ListView onTaskSelect={handleSelectTask} />
+                <ListView onTaskSelect={handleSelectTask} topPadding={100} />
               )}
             </PageContainer>
             <div style={{ background: "white" }}>

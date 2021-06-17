@@ -13,9 +13,10 @@ import { Badge } from "@material-ui/core";
 
 export interface IListViewProps {
   onTaskSelect(task: ITask): void;
+  topPadding: number;
 }
 
-const ListView: React.FC<IListViewProps> = ({ onTaskSelect }) => {
+const ListView: React.FC<IListViewProps> = ({ onTaskSelect, topPadding }) => {
   const { tasks } = useFilteredTasks();
 
   const pendingTasks = tasks.filter(
@@ -37,6 +38,7 @@ const ListView: React.FC<IListViewProps> = ({ onTaskSelect }) => {
         margin: "1rem 0px",
       }}
     >
+      <div style={{ height: topPadding, width: "100%" }} />
       <div style={{ display: "flex", gap: "0.5rem" }}>
         <div
           style={{
