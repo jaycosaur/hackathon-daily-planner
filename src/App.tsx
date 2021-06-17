@@ -15,7 +15,7 @@ import CloseIcon from "@material-ui/icons/Close";
 
 import { AppContext } from "./AppHandler/AppContext";
 import MapView from "./MapView";
-import TaskView from "./TaskView";
+import TaskAddEditView from "./TaskAddEditView";
 import ListView from "./ListView";
 import { LoginPage } from "./LoginPage";
 
@@ -56,7 +56,9 @@ export const App: React.FC = () => {
           {view === Pages.MAP_VIEW && (
             <MapView width={width} height={height - appBarHeight} />
           )}
-          {view === Pages.TASK_EDIT && <TaskView onCompleted={() => {}} />}
+          {view === Pages.TASK_EDIT && (
+            <TaskAddEditView onCompleted={() => {}} />
+          )}
           {view === Pages.TASK_VIEW && <ListView />}
         </div>
       </div>
