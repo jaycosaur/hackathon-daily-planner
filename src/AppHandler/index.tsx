@@ -8,7 +8,8 @@ import { ITaskImage } from "../types/ITaskImage";
 import { guid } from "../types/guid";
 import { ITaskActivity } from "../types/ITaskActivity";
 
-const serverBaseUrl = "https://spineless.xyz/prp-daily-planner-1";
+// const serverBaseUrl = "https://spineless.xyz/prp-daily-planner-1"; // og testing database
+const serverBaseUrl = "https://spineless.xyz/prp-daily-planner-2"; // live demo database
 const taskRefreshInterval = 5 * 1000
 const localStorageUserKey = "user_id";
 
@@ -143,7 +144,7 @@ export const AppHandler: React.FC = ({ children }) => {
     const storedUserId = localStorage.getItem(localStorageUserKey);
     if (storedUserId) {
       // re-auth with existing user key
-      setActiveUser(users.find((x) => x._id === storedUserId));
+      setActiveUser(users.find((x) => x._id === storedUserId) || null);
     }
   }, [isLoading, users, activeUser]);
 
