@@ -9,6 +9,7 @@ import { guid } from "../types/guid";
 import { ITaskActivity } from "../types/ITaskActivity";
 
 const serverBaseUrl = "https://spineless.xyz/prp-daily-planner-1";
+const taskRefreshInterval = 10 * 1000
 const localStorageUserKey = "user_id";
 
 // task images are immutable & expensive to fetch, cache in memory
@@ -17,7 +18,7 @@ const taskImagesCache = new Map<guid, ITaskImage>();
 const useUsers = () => {
   return useQuery<{}, {}, IUser[]>({
     queryKey: "users",
-    refetchInterval: 60 * 1000, // refetch users every 60 seconds
+    refetchInterval: taskRefreshInterval,
     queryFn: async () => {
       // please don't tell anyone how I live
       const result = await (await fetch(serverBaseUrl + "/users")).json();
@@ -41,7 +42,7 @@ async function createUser(user: IUser): Promise<IUser> {
 const useTasks = () => {
   return useQuery<{}, {}, ITask[]>({
     queryKey: "tasks",
-    refetchInterval: 10 * 1000, // refetch tasks every 10 seconds
+    refetchInterval: taskRefreshInterval,
     queryFn: async () => {
       // please don't tell anyone how I live
       const result = await (await fetch(serverBaseUrl + "/tasks")).json();
@@ -53,7 +54,7 @@ const useTasks = () => {
 const useTaskActivities = () => {
   return useQuery<{}, {}, Map<guid, ITaskActivity[]>>({
     queryKey: "task-activity",
-    refetchInterval: 120 * 1000, // refetch task activity every 2 minutes
+    refetchInterval: taskRefreshInterval,
     queryFn: async () => {
       // please don't tell anyone how I live
       const result = await (
