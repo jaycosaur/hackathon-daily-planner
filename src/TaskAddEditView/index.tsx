@@ -24,6 +24,7 @@ import { unixTimestamp } from "../types/unixTimestamp";
 import { setDate } from "date-fns";
 import moment from "moment";
 import PhotoUpload from "../PhotoUpload";
+import {guid} from "../types/guid";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,7 +55,7 @@ const TaskAddEditView = (props: {
   const [priority, setPriority] = useState<ETaskPriority>(
     task?.priority ?? ETaskPriority.High
   );
-  const [assignedUser, setAssignedUser] = useState<IUser>();
+  const [assignedUserId, setAssignedUserId] = useState<null | guid>(task?.assignedUserId);
   const [location, setLocation] = useState<Position | null>(null);
   const [dueDate, setDueDate] = useState<string>(
     task?.dueDate
@@ -74,7 +75,7 @@ const TaskAddEditView = (props: {
       _id,
       title,
       createdUserId: activeUser?._id,
-      assignedUserId: assignedUser?._id,
+      assignedUserId,
       description,
       status,
       location,
@@ -167,11 +168,12 @@ const TaskAddEditView = (props: {
       <Autocomplete
         options={users}
         getOptionLabel={(user) => user.email}
+        value={users.find(x => x._id === assignedUserId)}
         renderInput={(params) => (
           <TextField {...params} label="Assigned user" variant="outlined" />
         )}
         onChange={(event, user: IUser) => {
-          user && setAssignedUser(user);
+          setAssignedUserId(user ? user._id : null);
         }}
       />
       <TextField
