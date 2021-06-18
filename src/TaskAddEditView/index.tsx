@@ -216,7 +216,7 @@ const TaskAddEditView = (props: {
           marginBottom: 12,
           width: "90%",
         }}
-        disabled={title == ""}
+        disabled={title === ""}
         color="primary"
       >
         {task?._id ? "Update" : "Add"}

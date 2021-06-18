@@ -1,5 +1,5 @@
 import React from "react";
-import { Map, TileLayer, Tooltip, CircleMarker, Marker } from "react-leaflet";
+import { Map, TileLayer, CircleMarker, Marker } from "react-leaflet";
 import { divIcon } from "leaflet";
 import { usePosition } from "use-position";
 

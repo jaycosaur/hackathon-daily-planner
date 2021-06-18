@@ -71,7 +71,7 @@ const ListView: React.FC<IListViewProps> = ({ onTaskSelect, topPadding }) => {
         <CardContent
           style={{
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: "space-around",
             padding: 6,
           }}
         >
