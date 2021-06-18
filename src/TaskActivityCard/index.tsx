@@ -47,7 +47,7 @@ const ChatBubble: React.FC<{ text: string; email: string, date: string }> = ({
     </ListItemAvatar>
     <ListItemText
       primary={email.split("@")[0] + ` (${date})`}
-      secondary={<React.Fragment>{text}</React.Fragment>}
+      secondary={<React.Fragment><pre>{text.trim()}</pre></React.Fragment>}
     />
   </ListItem>
 );
