@@ -15,7 +15,7 @@
   height: 110px;
   position: fixed;
   z-index: 10;
-  background-color: #eee;
+  /*background-color: #eee;*/
   width: 100%;
 }
 .component-TaskSummaryView .task-summary-bar-spacer {
