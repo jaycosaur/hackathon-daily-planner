@@ -82,7 +82,7 @@ const ImageBubble: React.FC<{ src: string; email: string; date: string }> = ({
     <ListItemText
       primary={email.split("@")[0] + ` (${date})`}
       secondary={
-        <img style={{ marginTop: 8 }} src={src} alt="" width={"50%"} />
+        <img style={{ marginTop: 12 }} src={src} alt="" width={"50%"} />
       }
     />
   </ListItem>
@@ -101,7 +101,7 @@ const AudioBubble: React.FC<{ src: string; email: string; date: string }> = ({
       primary={email.split("@")[0] + ` (${date})`}
       secondary={
         <>
-          <audio style={{ marginTop: 8 }} controls>
+          <audio style={{ marginTop: 12 }} controls>
             <source src={src} type="audio/mp3" />
           </audio>
         </>
