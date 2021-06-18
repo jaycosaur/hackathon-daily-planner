@@ -50,9 +50,6 @@ const ListView: React.FC<IListViewProps> = ({ onTaskSelect, topPadding }) => {
   const inProgressTasks = tasks.filter(
     ({ status }) => status === ETaskStatus.InProgress
   );
-  const blockedTasks = tasks.filter(
-    ({ status }) => status === ETaskStatus.Blocked
-  );
   const doneTasks = tasks.filter(({ status }) => status === ETaskStatus.Done);
 
   tasks.sort((a, b) => a.dueDate - b.dueDate);
@@ -83,11 +80,6 @@ const ListView: React.FC<IListViewProps> = ({ onTaskSelect, topPadding }) => {
           <StatusSummary
             count={inProgressTasks.length}
             status={ETaskStatus.InProgress}
-          />
-          <Divider orientation="vertical" flexItem />
-          <StatusSummary
-            count={blockedTasks.length}
-            status={ETaskStatus.Blocked}
           />
           <Divider orientation="vertical" flexItem />
           <StatusSummary count={doneTasks.length} status={ETaskStatus.Done} />
