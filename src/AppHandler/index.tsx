@@ -9,7 +9,7 @@ import { guid } from "../types/guid";
 import { ITaskActivity } from "../types/ITaskActivity";
 
 const serverBaseUrl = "https://spineless.xyz/prp-daily-planner-1";
-const taskRefreshInterval = 10 * 1000
+const taskRefreshInterval = 5 * 1000
 const localStorageUserKey = "user_id";
 
 // task images are immutable & expensive to fetch, cache in memory
