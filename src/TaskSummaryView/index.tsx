@@ -105,6 +105,7 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({
         ))}
       </div>
 
+      <div style={{ height: '100px' }}></div>
       <div className="task-activity-bar">
         <TaskActivityBar task={task} />
       </div>

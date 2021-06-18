@@ -31,7 +31,6 @@
   background-color: #eee;
   text-align: left;
   padding: 5px;
-  min-height: calc(100vh - 432px);
 }
 
 .component-TaskSummaryView .task-activity-bar {
@@ -39,6 +38,10 @@
   min-height: 50px;
   border-bottom: 1px solid #ccc;
   text-align: left;
+  position: fixed;
+  bottom: 56px;
+  left: 0;
+  right: 0;
 }
 
 .component-TaskSummaryView .task-activity-bar .MuiButton-text {
