@@ -29,7 +29,15 @@ export const useFilteredTasks = () => {
       )
     : filteredStatusTasks;
 
+  const filteredDateTasks = filters.dateRange
+    ? filteredUserTasks.filter(
+        (task) =>
+          task.startDate >= filters.dateRange[0] &&
+          task.dueDate <= filters.dateRange[1]
+      )
+    : filteredUserTasks;
+
   return {
-    tasks: filteredUserTasks,
+    tasks: filteredDateTasks,
   };
 };
