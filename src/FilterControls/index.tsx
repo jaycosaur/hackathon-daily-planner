@@ -3,6 +3,7 @@ import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import SearchIcon from "@material-ui/icons/Search";
 import FilterListIcon from "@material-ui/icons/FilterList";
+import "./style.css";
 
 import Chip from "@material-ui/core/Chip";
 import { useFilters } from "./FilterContext";
@@ -134,7 +135,12 @@ const DateRangePicker: React.FC<{
       fullWidth={true}
     >
       <DialogTitle id="simple-dialog-title">Filter by Crew</DialogTitle>
-      <ListItem autoFocus button onClick={() => onSelect(null)} style={{ marginBottom: '15px' }}>
+      <ListItem
+        autoFocus
+        button
+        onClick={() => onSelect(null)}
+        style={{ marginBottom: "15px" }}
+      >
         <ListItemAvatar>
           <Avatar>
             <ClearIcon />
@@ -151,7 +157,7 @@ const DateRangePicker: React.FC<{
         onChange={(e) => {
           setStartDate(e.target.value);
         }}
-        style={{ marginBottom: '15px' }}
+        style={{ marginBottom: "15px" }}
       />
       <TextField
         variant="outlined"
@@ -161,7 +167,7 @@ const DateRangePicker: React.FC<{
         onChange={(e) => {
           setEndDate(e.target.value);
         }}
-        style={{ marginBottom: '15px' }}
+        style={{ marginBottom: "15px" }}
       />
       <Button onClick={handleSubmit}>Add Filter</Button>
     </Dialog>
@@ -177,6 +183,7 @@ const FilterControls = () => {
 
   return (
     <div
+      className="my-class"
       style={{
         padding: "12px 12px 6px",
         background: "rgba(255,255,255,0.7)",
