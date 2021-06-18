@@ -16,15 +16,7 @@ const VoiceMemo: React.FC<IVoiceMemoProps> = ({ onUpload }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
-    navigator.getUserMedia(
-      { audio: true },
-      () => {
-        console.log("Permission Granted");
-      },
-      () => {
-        console.log("Permission Denied");
-      }
-    );
+    navigator.mediaDevices.getUserMedia({ audio: true }).catch(console.error);
   }, []);
 
   const startRecording = async () => {
