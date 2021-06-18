@@ -9,13 +9,8 @@ export interface IVoiceMemoProps {
 }
 
 const VoiceMemo: React.FC<IVoiceMemoProps> = ({ onUpload }) => {
-  const [Mp3Recorder, setMp3Recorder] = useState(
-    new MicRecorder({ bitRate: 128 })
-  );
+  const [Mp3Recorder] = useState(new MicRecorder({ bitRate: 128 }));
   const [isRecording, setIsRecording] = useState(false);
-  const [blobUrl, setBlobUrl] = useState("");
-  const [isBlocked, setIsBlocked] = useState(false);
-  const [buffer, setBuffer] = useState();
   const [b64, setB64] = useState<string | null>(null);
 
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -25,11 +20,9 @@ const VoiceMemo: React.FC<IVoiceMemoProps> = ({ onUpload }) => {
       { audio: true },
       () => {
         console.log("Permission Granted");
-        setIsBlocked(false);
       },
       () => {
         console.log("Permission Denied");
-        setIsBlocked(true);
       }
     );
   }, []);
@@ -44,8 +37,6 @@ const VoiceMemo: React.FC<IVoiceMemoProps> = ({ onUpload }) => {
       .getMp3()
       .then(([buffer, blob]) => {
         setIsRecording(false);
-        setBlobUrl(blob);
-        setBuffer(buffer);
 
         const file = new File(buffer, "recording.mp3", {
           type: blob.type,

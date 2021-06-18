@@ -4,7 +4,6 @@ import { Button, TextField } from "@material-ui/core";
 import { ETaskActivityType } from "../types/ITaskActivity";
 import { AppContext } from "../AppHandler/AppContext";
 import PhotoUpload from "../PhotoUpload";
-import AttachFileIcon from "@material-ui/icons/AttachFile";
 import SendIcon from "@material-ui/icons/Send";
 import moment from "moment";
 import VoiceMemo from "../VoiceMemo";
