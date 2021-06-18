@@ -119,7 +119,7 @@ const MapComponent = (props: {
   const { latitude, longitude } = usePosition(true);
 
   const getMarkerComponent = (badge: string) =>
-    `<div style="position:relative;top:-10px;left:10px;width:16px;height:16px;background:white;border-radius:8px;font-weight: bold;">${badge}</div>`;
+    `<div style="position:relative;top:-10px;left:10px;width:16px;height:16px;background:white;border-radius:8px;font-weight:bold;pointer-events:none;">${badge}</div>`;
 
   return (
     <>
@@ -192,6 +192,7 @@ const MapComponent = (props: {
                 className: "custom icon",
                 html: getMarkerComponent(point.badge),
               })}
+              onClick={(e: any) => pointClickCallback(e, point)}
             />
           ) : null
         )}
