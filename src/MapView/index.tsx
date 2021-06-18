@@ -43,6 +43,9 @@ const MapView: React.FC<IMapViewProps> = ({ width, height, onTaskSelect }) => {
             color: colorMapFromUsers(task.assignedUserId, userIds),
           }))}
         onPointSelected={(pt) => onTaskSelect(pt.id)}
+        onClickPoint={() => {
+          console.log("CLICK");
+        }}
       />
     </>
   );

@@ -16,7 +16,7 @@ const VoiceMemo: React.FC<IVoiceMemoProps> = ({ onUpload }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
-    navigator.mediaDevices.getUserMedia({ audio: true }).catch(console.error);
+    // navigator.mediaDevices.getUserMedia({ audio: true }).catch(console.error);
   }, []);
 
   const startRecording = async () => {
