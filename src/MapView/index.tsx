@@ -64,9 +64,6 @@ const MapView: React.FC<IMapViewProps> = ({ width, height, onTaskSelect }) => {
             badge: iconFromStatus(task.status),
           }))}
         onPointSelected={(pt) => onTaskSelect(pt.id)}
-        onClickPoint={() => {
-          console.log("CLICK");
-        }}
       />
     </>
   );
