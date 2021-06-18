@@ -1,5 +1,7 @@
 import React from "react";
-import { Map, TileLayer, Tooltip, CircleMarker } from "react-leaflet";
+import { Map, TileLayer, Tooltip, CircleMarker, Marker } from "react-leaflet";
+import { divIcon } from "leaflet";
+import DivIcon from "react-leaflet-div-icon";
 import { usePosition } from "use-position";
 
 import { Position } from "./types";
@@ -19,6 +21,7 @@ type Point = {
   longitude: number;
   id: string;
   color?: string;
+  badge?: string;
   tooltip?: React.ReactNode;
 };
 
@@ -115,6 +118,9 @@ const MapComponent = (props: {
 
   const { latitude, longitude } = usePosition(true);
 
+  const getMarkerComponent = (badge: string) =>
+    `<div style="position:relative;top:-10px;left:10px;width:16px;height:16px;background:white;border-radius:8px;font-weight: bold;">${badge}</div>`;
+
   return (
     <>
       {false && (
@@ -177,17 +183,30 @@ const MapComponent = (props: {
             color={"#ffffff"}
           ></CircleMarker>
         )}
+        {props.points?.map((point) =>
+          point.badge ? (
+            <Marker
+              key={point.id}
+              position={toPosArray(point)}
+              icon={divIcon({
+                className: "custom icon",
+                html: getMarkerComponent(point.badge),
+              })}
+            />
+          ) : null
+        )}
         {props.points?.map((point) => (
           <CircleMarker
             key={point.id}
             center={toPosArray(point)}
-            radius={10}
+            radius={12}
             fill={true}
             onClick={(e: any) => pointClickCallback(e, point)}
             bubblingMouseEvents={false}
-            fillOpacity={1}
+            fillOpacity={0.7}
             fillColor={point.color || "#ffdd00"}
-            color={point.color || "#ffdd00"}
+            weight={1}
+            color={"#000"}
           >
             <Tooltip direction="top" offset={[0, -10]}>
               {point.tooltip}
