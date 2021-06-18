@@ -63,7 +63,7 @@ const TaskAddEditView = (props: {
   );
   const [startDate, setStartDate] = useState<string>(
     task?.startDate
-      ? moment.unix(task.dueDate).format("YYYY-MM-DD")
+      ? moment.unix(task.startDate).format("YYYY-MM-DD")
       : moment().format("YYYY-MM-DD")
   );
 

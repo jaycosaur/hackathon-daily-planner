@@ -9,6 +9,7 @@ import { useFilters } from "./FilterContext";
 import React from "react";
 import {
   Avatar,
+  Button,
   Dialog,
   DialogTitle,
   List,
@@ -19,6 +20,7 @@ import {
 import { AppContext } from "../AppHandler/AppContext";
 import { ETaskStatus, taskStatusAsString } from "../types/ITask";
 import ClearIcon from "@material-ui/icons/Clear";
+import moment from "moment";
 
 const StatusPicker: React.FC<{
   open: boolean;
@@ -101,6 +103,68 @@ const CrewPicker: React.FC<{
   );
 };
 
+const DateRangePicker: React.FC<{
+  open: boolean;
+  handleClose: () => void;
+  onSelect: (dateRange: [number, number] | null) => void;
+  selected: [number, number] | null;
+}> = ({ open, handleClose, onSelect, selected }) => {
+  const { users } = React.useContext(AppContext);
+
+  const [startDate, setStartDate] = React.useState<string>(
+    selected
+      ? moment.unix(selected[0]).format("YYYY-MM-DD")
+      : moment().format("YYYY-MM-DD")
+  );
+  const [endDate, setEndDate] = React.useState<string>(
+    selected
+      ? moment.unix(selected[1]).format("YYYY-MM-DD")
+      : moment().format("YYYY-MM-DD")
+  );
+
+  const handleSubmit = () => {
+    onSelect([moment(startDate).unix(), moment(endDate).unix()]);
+  };
+
+  return (
+    <Dialog
+      onClose={handleClose}
+      aria-labelledby="simple-dialog-title"
+      open={open}
+      fullWidth={true}
+    >
+      <DialogTitle id="simple-dialog-title">Filter by Crew</DialogTitle>
+      <ListItem autoFocus button onClick={() => onSelect(null)}>
+        <ListItemAvatar>
+          <Avatar>
+            <ClearIcon />
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText primary="Clear Filter" />
+      </ListItem>
+      <TextField
+        variant="outlined"
+        type="date"
+        value={startDate}
+        label="Start Date"
+        onChange={(e) => {
+          setStartDate(e.target.value);
+        }}
+      />
+      <TextField
+        variant="outlined"
+        type="date"
+        label="End Date"
+        value={endDate}
+        onChange={(e) => {
+          setEndDate(e.target.value);
+        }}
+      />
+      <Button onClick={handleSubmit}>Add Filter</Button>
+    </Dialog>
+  );
+};
+
 const FilterControls = () => {
   const { filters, setFilters } = useFilters();
 
@@ -168,7 +232,7 @@ const FilterControls = () => {
           onClick={() => {
             setShowDateFilter(true);
           }}
-          color={filters.openTask ? "secondary" : undefined}
+          color={filters.dateRange ? "secondary" : undefined}
         />
       </div>
       <CrewPicker
@@ -194,6 +258,18 @@ const FilterControls = () => {
         }}
         handleClose={() => setShowStatusFilter(false)}
         selected={filters.status}
+      />
+      <DateRangePicker
+        open={showDateFilter}
+        onSelect={(dateRange) => {
+          setShowDateFilter(false);
+          setFilters({
+            ...filters,
+            dateRange: dateRange,
+          });
+        }}
+        handleClose={() => setShowDateFilter(false)}
+        selected={filters.dateRange}
       />
     </div>
   );
