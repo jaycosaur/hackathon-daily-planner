@@ -31,15 +31,15 @@ export function taskStatusAsString(taskStatus: ETaskStatus): string {
 export function taskStatusAsColor(taskStatus: ETaskStatus): string {
   switch (taskStatus) {
     case ETaskStatus.Pending:
-      return "#faa";
+      return "#E0BBE4";
     case ETaskStatus.InProgress:
-      return "#ff0";
+      return "#A0D8E9";
     case ETaskStatus.Blocked:
-      return "#f00";
+      return "#F3A5BC";
     case ETaskStatus.InReview:
-      return "#0af";
+      return "#eee4a3";
     case ETaskStatus.Done:
-      return "#afa";
+      return "#A7DB8C";
   }
 }
 

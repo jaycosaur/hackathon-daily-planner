@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, {useContext} from "react";
 import "./style.css";
 import { ITask, taskStatusAsChip } from "../types/ITask";
 import { Button, Chip } from "@material-ui/core";
@@ -33,25 +33,30 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({
   const activeUserForTask = users.find((x) => x._id === task.assignedUserId);
   const createdUserForTask = users.find((x) => x._id === task.createdUserId);
 
+  // sort in render, sorry
+  const taskActivities = retrieveActivityForTask(task._id);
+  taskActivities.sort((a, b) => a.createdAt - b.createdAt);
+
   return (
     <div className="component-TaskSummaryView">
-      <h2>{ellipsis(task.title, 50)}</h2>
-      <div className="task-summary-ribbon">
-        {taskStatusAsChip(task.status)}
-        {activeUserForTask && (
-          <Chip
-            icon={<FaceIcon />}
-            label={activeUserForTask.email.split("@")[0]}
-            color="primary"
-            variant="outlined"
-          />
-        )}
+      <div className="task-summary-bar">
+        <h2>{ellipsis(task.title, 25)}</h2>
+        <div className="task-summary-ribbon">
+          {taskStatusAsChip(task.status)}
+          {activeUserForTask && (
+            <Chip
+              icon={<FaceIcon />}
+              label={activeUserForTask.email.split("@")[0]}
+              color="primary"
+              variant="outlined"
+            />
+          )}
 
-        <div className="spacer" />
-
-        {/*<Button>Mark completed</Button>*/}
-        <Button onClick={onEdit}>Edit</Button>
+          <Button onClick={onEdit}>Edit</Button>
+        </div>
       </div>
+      <div className="task-summary-bar-spacer"></div>
+
       <div className="task-map">
         {windowSize.width && (
           <TaskOnMap
@@ -79,23 +84,19 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({
               }}
           />
         }
-        {retrieveActivityForTask(task._id).map((taskActivity) => (
+        {
+          taskActivities.length === 0 &&
+            <div>
+                <h3>There's nothing here.</h3>
+                <h4>Write some updates ✍️</h4>
+            </div>
+        }
+        {taskActivities.map((taskActivity) => (
           <TaskActivityCard
             taskActivity={taskActivity}
             key={taskActivity._id}
           />
         ))}
-        {/*{images.map((i) => (*/}
-        {/*  <TaskActivityCard*/}
-        {/*    key={i._id}*/}
-        {/*    taskActivity={{*/}
-        {/*      _id: i._id,*/}
-        {/*      taskId: i.taskId,*/}
-        {/*      taskImageId: i._id,*/}
-        {/*      type: ETaskActivityType.Image,*/}
-        {/*    }}*/}
-        {/*  />*/}
-        {/*))}*/}
       </div>
 
       <div className="task-activity-bar">
