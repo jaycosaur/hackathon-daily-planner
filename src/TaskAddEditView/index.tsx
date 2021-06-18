@@ -136,7 +136,7 @@ const TaskAddEditView = (props: {
         disabled
       ></TextField>
       <TextField
-        label="Task Title"
+        label="Task Title (required)"
         value={title}
         variant="outlined"
         onChange={(e) => setTitle(e.target.value)}
@@ -216,6 +216,8 @@ const TaskAddEditView = (props: {
           marginBottom: 12,
           width: "90%",
         }}
+        disabled={title == ""}
+        color="primary"
       >
         {task?._id ? "Update" : "Add"}
       </Button>
