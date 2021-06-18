@@ -78,7 +78,7 @@ export const App: React.FC = () => {
   );
 
   const handleCreateTaskFromPosition = useCallback((pt: Position) => {
-    alert("Create task from position??");
+    // not implemented
   }, []);
 
   if (isLoading || !width || !height) {
