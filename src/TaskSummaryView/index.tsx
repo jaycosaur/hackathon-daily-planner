@@ -85,8 +85,9 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({
                 createdAt: moment().unix(),
                 createdByUserId: activeUser._id,
                 text: `Created by ${createdUserForTask.email.split("@")[0]}`,
+                otherText: task.description,
                 type: ETaskActivityType.StatusUpdate,
-              }}
+              } as any}
           />
         }
         {

@@ -56,11 +56,14 @@ const ChatBubble: React.FC<{ text: string; email: string; date: string }> = ({
   </ListItem>
 );
 
-const StatusBubble: React.FC<{ text: string }> = ({ text }) => {
+const StatusBubble: React.FC<{ text: string; otherText: string }> = ({
+  text,
+  otherText,
+}) => {
   return (
     <ListItem alignItems="flex-start">
       <ListItemText
-        primary="Status Update"
+        primary={<>{otherText}</>}
         secondary={<React.Fragment>{text}</React.Fragment>}
       />
     </ListItem>
@@ -127,7 +130,13 @@ export const TaskActivityCard: React.FC<ITaskActivityCardProps> = ({
   }
 
   if (taskActivity.type === ETaskActivityType.StatusUpdate) {
-    return <StatusBubble text={taskActivity.text} />;
+    // aaaaa deadline
+    return (
+      <StatusBubble
+        text={taskActivity.text}
+        otherText={(taskActivity as any).otherText}
+      />
+    );
   }
 
   if (taskActivity.type === ETaskActivityType.Image) {
