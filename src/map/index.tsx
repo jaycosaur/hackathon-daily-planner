@@ -26,7 +26,7 @@ const BaseLayer: React.FC<{ type: MapBaseLayer }> = ({ type }) => {
   if (type === MapBaseLayer.SAT) {
     return (
       <TileLayer
-        url={"http://mt0.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"}
+        url={"https://mt0.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"}
         attribution="something"
         maxNativeZoom={24}
       />
@@ -124,7 +124,13 @@ const MapComponent = (props: {
         />
       )}
       <Map
-        center={props.center ? toPosArray(props.center) : toPosArray(position)}
+        center={
+          props.center
+            ? toPosArray(props.center)
+            : latitude
+            ? toPosArray({ latitude, longitude })
+            : toPosArray(position)
+        }
         zoom={20}
         maxZoom={24}
         minZoom={17}

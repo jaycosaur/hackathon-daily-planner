@@ -7,6 +7,7 @@ type Filters = {
   openTask: boolean;
   status: null | ETaskStatus;
   userId: string | null;
+  dateRange: null | [number, number];
 };
 
 interface FilterState {
@@ -23,6 +24,7 @@ export const FilterProvider: React.FC = ({ children }) => {
     openTask: false,
     status: null,
     userId: null,
+    dateRange: null,
   });
   const value: FilterState = { filters: state, setFilters: setState };
   return (

@@ -53,6 +53,7 @@ const PageContainer: React.FC<{ page: Pages; height: number }> = (props) => {
         style={{
           height: props.height,
           overflow: "auto",
+          backgroundColor: "#eee"
         }}
       >
         {props.children}
@@ -77,7 +78,7 @@ export const App: React.FC = () => {
   );
 
   const handleCreateTaskFromPosition = useCallback((pt: Position) => {
-    alert("Create task from position??");
+    // not implemented
   }, []);
 
   if (isLoading || !width || !height) {

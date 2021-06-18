@@ -1,7 +1,7 @@
-import { ETaskActivityType, ITaskActivity } from "../types/ITaskActivity";
-import React, { useContext, useEffect, useState } from "react";
-import { AppContext } from "../AppHandler/AppContext";
-import { ITaskImage } from "../types/ITaskImage";
+import {ETaskActivityType, ITaskActivity} from "../types/ITaskActivity";
+import React, {useContext, useEffect, useState} from "react";
+import {AppContext} from "../AppHandler/AppContext";
+import {ITaskImage} from "../types/ITaskImage";
 import {
   Avatar,
   ListItem,
@@ -15,7 +15,7 @@ export interface ITaskActivityCardProps {
 }
 
 function useTaskImage(imageId?: string): undefined | ITaskImage {
-  const { retrieveTaskImage } = useContext(AppContext);
+  const {retrieveTaskImage} = useContext(AppContext);
   const [taskImage, setTaskImage] = useState<undefined | ITaskImage>(undefined);
 
   useEffect(() => {
@@ -37,22 +37,22 @@ function useTaskImage(imageId?: string): undefined | ITaskImage {
 }
 
 const ChatBubble: React.FC<{ text: string; email: string, date: string }> = ({
-  text,
-  email,
-  date
-}) => (
+                                                                               text,
+                                                                               email,
+                                                                               date
+                                                                             }) => (
   <ListItem alignItems="flex-start">
     <ListItemAvatar>
       <Avatar>{email[0].toUpperCase()}</Avatar>
     </ListItemAvatar>
     <ListItemText
       primary={email.split("@")[0] + ` (${date})`}
-      secondary={<React.Fragment>{text}</React.Fragment>}
+      secondary={<React.Fragment><pre>{text.trim()}</pre></React.Fragment>}
     />
   </ListItem>
 );
 
-const StatusBubble: React.FC<{ text: string }> = ({ text }) => {
+const StatusBubble: React.FC<{ text: string }> = ({text}) => {
   return (
     <ListItem alignItems="flex-start">
       <ListItemText
@@ -63,9 +63,25 @@ const StatusBubble: React.FC<{ text: string }> = ({ text }) => {
   );
 };
 
+const ImageBubble: React.FC<{ src: string; email: string, date: string }> = ({
+                                                                               src,
+                                                                               email,
+                                                                               date
+                                                                             }) => (
+  <ListItem alignItems="flex-start">
+    <ListItemAvatar>
+      <Avatar>{email[0].toUpperCase()}</Avatar>
+    </ListItemAvatar>
+    <ListItemText
+      primary={email.split("@")[0] + ` (${date})`}
+      secondary={<img src={src} alt="" width={"50%"}/>}
+    />
+  </ListItem>
+);
+
 export const TaskActivityCard: React.FC<ITaskActivityCardProps> = ({
-  taskActivity,
-}) => {
+                                                                     taskActivity,
+                                                                   }) => {
   // load image, if we have one
   const taskImage = useTaskImage(taskActivity.taskImageId);
 
@@ -80,16 +96,21 @@ export const TaskActivityCard: React.FC<ITaskActivityCardProps> = ({
   }
 
   if (taskActivity.type === ETaskActivityType.StatusUpdate) {
-    return <StatusBubble text={taskActivity.text} />;
+    return <StatusBubble text={taskActivity.text}/>;
   }
 
   if (taskActivity.type === ETaskActivityType.Image) {
-    // TODO: dates & poster
+    if (!taskImage) {
+      // image may not be downloaded yet
+      return null;
+    }
+
     return (
-      <ListItem alignItems="flex-start">
-        <ListItemText primary="Image Uploaded" />
-        {taskImage && <img src={taskImage.data} alt="" width={"100%"} />}
-      </ListItem>
+      <ImageBubble
+        src={taskImage.data}
+        email={users.find(x => x._id === taskActivity.createdByUserId)?.email || "[Unknown]"}
+        date={moment.unix(taskActivity.createdAt).fromNow()}
+      />
     );
   }
 };

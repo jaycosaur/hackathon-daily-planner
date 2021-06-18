@@ -61,6 +61,11 @@ const TaskAddEditView = (props: {
       ? moment.unix(task.dueDate).format("YYYY-MM-DD")
       : moment().format("YYYY-MM-DD")
   );
+  const [startDate, setStartDate] = useState<string>(
+    task?.startDate
+      ? moment.unix(task.startDate).format("YYYY-MM-DD")
+      : moment().format("YYYY-MM-DD")
+  );
 
   const windowSize = useWindowSize();
 
@@ -172,11 +177,22 @@ const TaskAddEditView = (props: {
       <TextField
         variant="outlined"
         type="date"
+        value={startDate}
+        label="Start Date"
+        onChange={(e) => {
+          setStartDate(e.target.value);
+        }}
+      />
+      <TextField
+        variant="outlined"
+        type="date"
+        label="Due Date"
         value={dueDate}
         onChange={(e) => {
           setDueDate(e.target.value);
         }}
-      ></TextField>
+      />
+
       <Button
         onClick={save}
         variant="contained"
