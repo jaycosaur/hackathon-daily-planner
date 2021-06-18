@@ -134,7 +134,7 @@ const DateRangePicker: React.FC<{
       fullWidth={true}
     >
       <DialogTitle id="simple-dialog-title">Filter by Crew</DialogTitle>
-      <ListItem autoFocus button onClick={() => onSelect(null)}>
+      <ListItem autoFocus button onClick={() => onSelect(null)} style={{ marginBottom: '15px' }}>
         <ListItemAvatar>
           <Avatar>
             <ClearIcon />
@@ -142,6 +142,7 @@ const DateRangePicker: React.FC<{
         </ListItemAvatar>
         <ListItemText primary="Clear Filter" />
       </ListItem>
+
       <TextField
         variant="outlined"
         type="date"
@@ -150,6 +151,7 @@ const DateRangePicker: React.FC<{
         onChange={(e) => {
           setStartDate(e.target.value);
         }}
+        style={{ marginBottom: '15px' }}
       />
       <TextField
         variant="outlined"
@@ -159,6 +161,7 @@ const DateRangePicker: React.FC<{
         onChange={(e) => {
           setEndDate(e.target.value);
         }}
+        style={{ marginBottom: '15px' }}
       />
       <Button onClick={handleSubmit}>Add Filter</Button>
     </Dialog>
