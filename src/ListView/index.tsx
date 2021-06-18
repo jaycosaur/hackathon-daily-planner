@@ -55,6 +55,8 @@ const ListView: React.FC<IListViewProps> = ({ onTaskSelect, topPadding }) => {
   );
   const doneTasks = tasks.filter(({ status }) => status === ETaskStatus.Done);
 
+  tasks.sort((a, b) => a.dueDate - b.dueDate);
+
   return (
     <Container
       style={{
