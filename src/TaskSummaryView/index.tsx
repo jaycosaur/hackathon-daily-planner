@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, {useContext} from "react";
 import "./style.css";
 import { ITask, taskStatusAsChip } from "../types/ITask";
 import { Button, Chip } from "@material-ui/core";
@@ -32,6 +32,10 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({
 
   const activeUserForTask = users.find((x) => x._id === task.assignedUserId);
   const createdUserForTask = users.find((x) => x._id === task.createdUserId);
+
+  // sort in render, sorry
+  const taskActivities = retrieveActivityForTask(task._id);
+  taskActivities.sort((a, b) => a.createdAt - b.createdAt);
 
   return (
     <div className="component-TaskSummaryView">
@@ -81,13 +85,13 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({
           />
         }
         {
-          retrieveActivityForTask(task._id).length === 0 &&
+          taskActivities.length === 0 &&
             <div>
                 <h3>There's nothing here.</h3>
                 <h4>Write some updates ✍️</h4>
             </div>
         }
-        {retrieveActivityForTask(task._id).map((taskActivity) => (
+        {taskActivities.map((taskActivity) => (
           <TaskActivityCard
             taskActivity={taskActivity}
             key={taskActivity._id}

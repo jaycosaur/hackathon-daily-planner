@@ -38,7 +38,10 @@ export const TaskActivityBar: React.FC<ITaskActivityBar> = ({task}) => {
       setCommentMessage("");
 
       // sorry mum
-      setTimeout(() => setCommentMessage(""), 500);
+      setTimeout(() => {
+        setCommentMessage("");
+        document.getElementsByClassName("page-cont")[0].scrollTop = 99999;
+      }, 500);
     }, [commentMessage, setCommentMessage, createTaskActivity, task._id, activeUser._id]);
 
     const handleKeyDown = useCallback(
