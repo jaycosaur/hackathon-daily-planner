@@ -39,7 +39,12 @@ export const TaskSummaryView: React.FC<ITaskSummaryViewProps> = ({
 
   return (
     <div className="component-TaskSummaryView">
-      <div className="task-summary-bar">
+      <div className="task-summary-bar"
+           style={{
+             backgroundImage:
+               "linear-gradient(rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.5))",
+           }}
+      >
         <h2>{ellipsis(task.title, 25)}</h2>
         <div className="task-summary-ribbon">
           {taskStatusAsChip(task.status)}
