@@ -94,10 +94,11 @@ const VoiceMemo: React.FC<IVoiceMemoProps> = ({ onUpload }) => {
       <Dialog open={dialogOpen}>
         <div
           style={{
-            paddingTop: 24,
+            paddingTop: 12,
             paddingBottom: 24,
           }}
         >
+          <h3 style={{ marginLeft: 24, marginRight: 24 }}>Record voice memo</h3>
           <div
             style={{
               textAlign: "center",
