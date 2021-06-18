@@ -53,7 +53,7 @@ const PageContainer: React.FC<{ page: Pages; height: number }> = (props) => {
         style={{
           height: props.height,
           overflow: "auto",
-          backgroundColor: "#eee"
+          backgroundColor: "#eee",
         }}
       >
         {props.children}
