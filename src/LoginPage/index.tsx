@@ -8,6 +8,11 @@ export const LoginPage: React.FC = () => {
   const { login } = useContext(AppContext);
 
   const handleLogin = useCallback(() => {
+    if (email.length === 0 || email.indexOf("@") === -1) {
+      alert("Please enter an email address");
+      return;
+    }
+
     login(email)
       .catch(error => {
         console.error(error);
