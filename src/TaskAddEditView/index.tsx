@@ -58,7 +58,7 @@ const TaskAddEditView = (props: {
   const [assignedUserId, setAssignedUserId] = useState<null | guid>(
     task?.assignedUserId
   );
-  const [location, setLocation] = useState<Position | null>(null);
+  const [location, setLocation] = useState<Position | null>(task?.location);
   const [dueDate, setDueDate] = useState<string>(
     task?.dueDate
       ? moment.unix(task.dueDate).format("YYYY-MM-DD")
