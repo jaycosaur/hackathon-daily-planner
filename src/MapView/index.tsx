@@ -3,6 +3,7 @@ import Map from "../map";
 import { useFilteredTasks } from "../FilterControls/useFilteredTasks";
 import { guid } from "../types/guid";
 import { Position } from "../map/types";
+import { ETaskStatus } from "../types/ITask";
 
 export interface IMapViewProps {
   width: number;
@@ -24,6 +25,25 @@ const colorMapFromUsers = (
   return `hsl(${positionToRange}, 100%, 50%)`;
 };
 
+const iconFromStatus = (status: ETaskStatus) => {
+  if (status === ETaskStatus.Done) {
+    return "✅";
+  }
+  if (status === ETaskStatus.InProgress) {
+    return "🚜";
+  }
+  if (status === ETaskStatus.Pending) {
+    return "⏳";
+  }
+  if (status === ETaskStatus.Blocked) {
+    return "🛑";
+  }
+  if (status === ETaskStatus.InReview) {
+    return "📃";
+  }
+  return undefined;
+};
+
 const MapView: React.FC<IMapViewProps> = ({ width, height, onTaskSelect }) => {
   const { tasks } = useFilteredTasks();
   const userIds = tasks.map((task) => task.assignedUserId).sort();
@@ -41,6 +61,7 @@ const MapView: React.FC<IMapViewProps> = ({ width, height, onTaskSelect }) => {
             longitude: task.location.longitude,
             tooltip: task._id,
             color: colorMapFromUsers(task.assignedUserId, userIds),
+            badge: iconFromStatus(task.status),
           }))}
         onPointSelected={(pt) => onTaskSelect(pt.id)}
         onClickPoint={() => {
