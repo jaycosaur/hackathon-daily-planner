@@ -24,7 +24,7 @@ import { unixTimestamp } from "../types/unixTimestamp";
 import { setDate } from "date-fns";
 import moment from "moment";
 import PhotoUpload from "../PhotoUpload";
-import {guid} from "../types/guid";
+import { guid } from "../types/guid";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,7 +55,9 @@ const TaskAddEditView = (props: {
   const [priority, setPriority] = useState<ETaskPriority>(
     task?.priority ?? ETaskPriority.High
   );
-  const [assignedUserId, setAssignedUserId] = useState<null | guid>(task?.assignedUserId);
+  const [assignedUserId, setAssignedUserId] = useState<null | guid>(
+    task?.assignedUserId
+  );
   const [location, setLocation] = useState<Position | null>(null);
   const [dueDate, setDueDate] = useState<string>(
     task?.dueDate
@@ -114,13 +116,25 @@ const TaskAddEditView = (props: {
         {windowSize.width && (
           <TaskOnMap
             width={windowSize.width}
-            height={200}
+            height={391}
             onClick={setLocation}
             onDelete={() => setLocation(null)}
             point={location}
           />
         )}
       </div>
+      <TextField
+        label="Tap map to add location"
+        value={
+          location
+            ? `Lng: ${location.longitude.toFixed(
+                6
+              )}, Lat: ${location.latitude.toFixed(6)}`
+            : ""
+        }
+        variant="outlined"
+        disabled
+      ></TextField>
       <TextField
         label="Task Title"
         value={title}
@@ -168,7 +182,7 @@ const TaskAddEditView = (props: {
       <Autocomplete
         options={users}
         getOptionLabel={(user) => user.email}
-        value={users.find(x => x._id === assignedUserId)}
+        value={users.find((x) => x._id === assignedUserId)}
         renderInput={(params) => (
           <TextField {...params} label="Assigned user" variant="outlined" />
         )}
