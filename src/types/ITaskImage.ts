@@ -4,5 +4,6 @@ export interface ITaskImage {
   _id?: guid;
   taskId: guid;
   userId?: guid;
-  data: string; // base64 image data
+  data?: string; // base64 image data
+  audioData?: string;
 }
