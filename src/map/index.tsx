@@ -113,9 +113,6 @@ const MapComponent = (props: {
     MapBaseLayer.SAT
   );
 
-  const [userPosition, setUserPosition] =
-    React.useState<{ latitude: number; longitude: number } | null>(null);
-
   const { latitude, longitude } = usePosition(true);
 
   return (
