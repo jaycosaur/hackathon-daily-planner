@@ -56,7 +56,6 @@ const VoiceMemo: React.FC<IVoiceMemoProps> = ({ onUpload }) => {
         reader.readAsDataURL(file);
         reader.onloadend = () => {
           const myB64 = reader.result as string;
-          console.log(myB64);
           setB64(myB64);
         };
       })
@@ -136,6 +135,7 @@ const VoiceMemo: React.FC<IVoiceMemoProps> = ({ onUpload }) => {
                 <Button
                   onClick={() => {
                     onUpload(b64);
+                    setB64(null);
                     setDialogOpen(false);
                   }}
                 >
