@@ -207,11 +207,7 @@ const MapComponent = (props: {
             fillColor={point.color || "#ffdd00"}
             weight={1}
             color={"#000"}
-          >
-            <Tooltip direction="top" offset={[0, -10]}>
-              {point.tooltip}
-            </Tooltip>
-          </CircleMarker>
+          ></CircleMarker>
         ))}
       </Map>
     </>
